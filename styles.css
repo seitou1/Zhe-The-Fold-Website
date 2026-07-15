@@ -485,7 +485,6 @@ button {
 
 /* Readable prose + chrome — Outfit (UI role) */
 .menu-spotlight-desc,
-.menu-head-lead .en,
 .story-head-lead .en,
 .visit-head-lead .en,
 .story-spotlight .en,
@@ -1856,8 +1855,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .menu-head {
   flex-shrink: 0;
   display: grid;
-  grid-template-columns: minmax(7rem, auto) minmax(0, 1fr) auto;
-  grid-template-areas: "title lead actions";
+  grid-template-columns: minmax(7rem, auto) minmax(0, 1fr);
+  grid-template-areas: "title actions";
   gap: 0.65rem 1.5rem;
   align-items: end;
   width: 100%;
@@ -1892,26 +1891,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 /* .menu-head-title .cn — shared panel CN mark rule */
-
-.menu-head-lead {
-  grid-area: lead;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  max-width: 24rem;
-  min-width: 0;
-}
-
-.menu-head-lead .en {
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: var(--type-lead);
-  line-height: var(--type-lead-lh);
-  letter-spacing: 0.015em;
-  color: var(--tone-fg);
-  text-shadow: var(--tone-shadow-soft);
-}
 
 /* Filters + List on one right block, same baseline (no orphan List under) */
 .menu-actions {
@@ -3195,9 +3174,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-head {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "title actions"
-      "lead lead";
+    grid-template-areas: "title actions";
     gap: 0.55rem 1rem;
     align-items: end;
   }
@@ -3211,10 +3188,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   /* Tablet: keep full-bleed stage; slightly tighter spotlight */
   .visit-spotlight {
     max-width: min(30rem, 100%);
-  }
-
-  .menu-head-lead {
-    max-width: none;
   }
 
   .menu-spotlight-copy {
@@ -3664,7 +3637,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   /*
    * Menu head — phone layout:
    *   [ Title ………… List ]
-   *   [ Lead                ]
    *   [ All · Classic · …   ]
    * display:contents on .menu-actions so children join this grid.
    */
@@ -3672,7 +3644,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "title tools"
-      "lead lead"
       "filters filters";
     gap: 0.25rem 0.75rem;
     align-items: end;
@@ -3716,24 +3687,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-head-title .cn {
     font-size: 0.88rem;
-  }
-
-  .menu-head-lead {
-    max-width: none;
-    width: 100%;
-    margin: 0;
-  }
-
-  .menu-head-lead .en {
-    font-family: var(--font-ui);
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .story-wall-veil::before,

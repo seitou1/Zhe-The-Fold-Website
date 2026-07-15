@@ -2907,7 +2907,6 @@
       if (!panel || !ready || !photoBox) return;
       const texts = visibleCopy(panel, [
         ".menu-head-title",
-        ".menu-head-lead",
         ".menu-filters",
         ".menu-tools",
         ".menu-spotlight-copy",
