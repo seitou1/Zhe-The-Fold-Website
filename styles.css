@@ -6,11 +6,13 @@
 :root {
   /*
    * Surfaces vs chrome type:
-   *   paper  — page field (amber, matches wheat family)
-   *   cream  — light type on dark plates / nav (must stay bright)
+   *   void   — shell underpaint (always under photos; never amber)
+   *   cream  — light type on dark plates / nav
    *   wheat  — selected amber glow (nav active, filters)
+   *   paper  — legacy alias of void (no cream field)
    */
-  --paper: #e5d7bc;
+  --void: #12100e;
+  --paper: var(--void);
   --cream: #faf8f4;
   --ink: #1c1814;
   --ink-soft: #3a342c;
@@ -18,7 +20,7 @@
   --clay-deep: #8a6340;
   --wheat: #d0c0a0;
   --charcoal: #2e2924;
-  --line: rgba(28, 24, 20, 0.12);
+  --line: rgba(250, 248, 244, 0.12);
 
   /*
    * Type system
@@ -292,6 +294,7 @@ html.js-snap-off {
   scroll-snap-stop: always;
   display: flex;
   flex-direction: column;
+  background: var(--void);
 }
 
 /* Shared full-bleed content stage (all panels use this) */
@@ -321,6 +324,11 @@ main#top {
   width: 100%;
   height: auto;
   overflow: visible;
+  background: var(--void);
+}
+
+html {
+  background: var(--void);
 }
 
 body {
@@ -330,32 +338,19 @@ body {
   font-size: var(--type-body);
   letter-spacing: var(--type-body-track);
   line-height: var(--type-lh-body);
-  color: var(--ink);
-  background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784160000");
-  background-size: cover;
-  background-attachment: fixed;
-  background-blend-mode: soft-light;
+  color: var(--cream);
+  /* Shell is dark underpaint only — every panel photo covers it */
+  background: var(--void);
+  background-image: none;
   overflow-x: clip;
   width: 100%;
   max-width: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Amber wash — ties page field to wheat glow chrome */
+/* No page-field wash — amber field removed sitewide */
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    165deg,
-    rgba(232, 216, 184, 0.92) 0%,
-    rgba(208, 192, 160, 0.88) 42%,
-    rgba(220, 200, 164, 0.94) 72%,
-    rgba(229, 215, 188, 0.94) 100%
-  );
-  z-index: -2;
-  pointer-events: none;
+  display: none;
 }
 
 img {
@@ -393,7 +388,7 @@ button {
   font-weight: 400;
   letter-spacing: var(--type-ui-track);
   color: var(--ink);
-  background: var(--paper);
+  background: var(--cream);
   border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
   border-radius: 2px;
   box-shadow: 0 8px 28px color-mix(in srgb, var(--ink) 14%, transparent);
@@ -1326,7 +1321,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .story {
   isolation: isolate;
   color: var(--cream);
-  background: #1c1612;
+  background: var(--void);
   padding: 0;
   /* Vertical page-snap free; horizontal chapter swipe owned by JS */
   touch-action: pan-y;
@@ -1729,8 +1724,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .menu {
   isolation: isolate;
   color: var(--cream);
-  /* Match food tones so any edge flash isn’t a black bar */
-  background: #2a221c;
+  background: var(--void);
   padding: 0;
   /* Vertical page-snap free; horizontal dish swipe owned by JS */
   touch-action: pan-y;
@@ -1859,7 +1853,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784160000");
+  background-image: url("assets/paper-texture.webp?v=1784162000");
   background-size: cover;
 }
 
@@ -3082,8 +3076,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   min-height: 0;
   max-height: none;
   padding: 0;
-  border-top: 1px solid var(--line);
-  background: color-mix(in srgb, var(--wheat) 42%, var(--paper) 58%);
+  border-top: 1px solid rgba(250, 248, 244, 0.1);
+  background: var(--void);
+  color: var(--cream);
   /* Desktop: soft end snap after last panel. Mobile: none (see 768 media). */
   scroll-snap-align: end;
   scroll-snap-stop: normal;
