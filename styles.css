@@ -4,7 +4,8 @@
    ═══════════════════════════════════════════ */
 
 :root {
-  --paper: #f5f0e8;
+  /* Page field = soft amber (same family as --wheat glow), not cool off-white */
+  --paper: #e5d7bc;
   --ink: #1c1814;
   --ink-soft: #3a342c;
   --clay: #a67c52;
@@ -325,7 +326,7 @@ body {
   line-height: var(--type-lh-body);
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784148000");
+  background-image: url("assets/paper-texture.webp?v=1784149500");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -335,16 +336,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Paper wash so texture doesn't overwhelm */
+/* Amber wash — ties page field to wheat glow chrome */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background: linear-gradient(
     165deg,
-    rgba(242, 235, 224, 0.92) 0%,
-    rgba(232, 223, 208, 0.88) 45%,
-    rgba(242, 235, 224, 0.94) 100%
+    rgba(232, 216, 184, 0.92) 0%,
+    rgba(208, 192, 160, 0.88) 42%,
+    rgba(220, 200, 164, 0.94) 72%,
+    rgba(229, 215, 188, 0.94) 100%
   );
   z-index: -2;
   pointer-events: none;
@@ -1839,7 +1841,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784148000");
+  background-image: url("assets/paper-texture.webp?v=1784149500");
   background-size: cover;
 }
 
@@ -3056,7 +3058,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   max-height: none;
   padding: 0;
   border-top: 1px solid var(--line);
-  background: rgba(232, 223, 208, 0.65);
+  background: color-mix(in srgb, var(--wheat) 42%, var(--paper) 58%);
   /* Desktop: soft end snap after last panel. Mobile: none (see 768 media). */
   scroll-snap-align: end;
   scroll-snap-stop: normal;
