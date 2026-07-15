@@ -38,6 +38,50 @@
   --type-cn-track: 0.1em;
   --type-kicker-track: 0.1em;
 
+  /* Reading scrims — darken only where type lives */
+  --read-scrim-top: linear-gradient(
+    to bottom,
+    rgba(6, 4, 3, 0.78) 0%,
+    rgba(10, 7, 5, 0.55) 38%,
+    rgba(12, 8, 6, 0.22) 68%,
+    transparent 100%
+  );
+  --read-scrim-top-light: linear-gradient(
+    to bottom,
+    rgba(245, 236, 220, 0.88) 0%,
+    rgba(242, 230, 210, 0.58) 40%,
+    rgba(250, 242, 228, 0.18) 72%,
+    transparent 100%
+  );
+  --read-scrim-nav: linear-gradient(
+    to bottom,
+    rgba(6, 4, 3, 0.82) 0%,
+    rgba(8, 6, 5, 0.55) 52%,
+    rgba(10, 7, 5, 0.18) 82%,
+    transparent 100%
+  );
+  --read-scrim-nav-light: linear-gradient(
+    to bottom,
+    rgba(250, 244, 232, 0.9) 0%,
+    rgba(245, 236, 220, 0.55) 55%,
+    transparent 100%
+  );
+  /* Menu spotlight: bottom + left column */
+  --read-scrim-menu-copy: linear-gradient(
+      to top,
+      rgba(6, 4, 3, 0.8) 0%,
+      rgba(10, 7, 5, 0.48) 32%,
+      rgba(12, 8, 6, 0.14) 58%,
+      transparent 78%
+    ),
+    linear-gradient(
+      to right,
+      rgba(6, 4, 3, 0.62) 0%,
+      rgba(10, 7, 5, 0.32) 26%,
+      rgba(12, 8, 6, 0.08) 48%,
+      transparent 68%
+    );
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   /* Shared tempo — steam, not bounce */
@@ -255,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784125600");
+  background-image: url("assets/paper-texture.webp?v=1784125800");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -515,7 +559,7 @@ button {
   border: 0;
 }
 
-/* ── Navigation — always transparent (hero chrome everywhere) ── */
+/* ── Navigation — soft top scrim so links read on any photo ── */
 .nav {
   position: fixed;
   top: 0;
@@ -535,6 +579,24 @@ button {
   transition: color 0.35s var(--ease-soft);
 }
 
+/* Fixed fade under chrome — extends slightly below bar, no blur slab */
+.nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--nav-h) + 1.75rem);
+  pointer-events: none;
+  z-index: 0;
+  background: var(--read-scrim-nav);
+}
+
+.nav > * {
+  position: relative;
+  z-index: 1;
+}
+
 .nav-logo {
   display: flex;
   align-items: baseline;
@@ -542,8 +604,9 @@ button {
   z-index: 2;
   color: inherit;
   text-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.35),
-    0 2px 14px rgba(0, 0, 0, 0.4);
+    0 1px 1px rgba(0, 0, 0, 0.55),
+    0 2px 12px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(0, 0, 0, 0.3);
 }
 
 .nav-logo .logo-cn {
@@ -591,11 +654,16 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
   color: #1c1814;
 }
 
-/* Transparent chrome on every panel — links always present (same on hero) */
+/* Chrome on every panel — scrim stays; links always present */
 .nav.is-past-hero {
   background: transparent;
   box-shadow: none;
   color: var(--paper);
+}
+
+body:has(#hero[data-tone="light"]) .nav:not(.is-past-hero)::before,
+body:has(.panel[data-tone="light"]:not(#hero)) .nav::before {
+  background: var(--read-scrim-nav-light);
 }
 
 .nav-links {
@@ -618,9 +686,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
   padding: 0.25rem 0;
   color: inherit;
   opacity: 1;
+  /* Stronger lift over busy hero/menu plates */
   text-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.35),
-    0 2px 12px rgba(0, 0, 0, 0.35);
+    0 1px 1px rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.55),
+    0 0 20px rgba(0, 0, 0, 0.35);
   transition: color 0.3s;
 }
 
@@ -786,11 +856,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
   --tone-rule-soft: rgba(28, 24, 20, 0.4);
 }
 
-/* Soften photo veil when type goes dark on a bright image */
-.menu[data-tone="light"] .menu-wall-veil,
-.visit[data-tone="light"] .visit-wall-veil {
-  background: var(--panel-veil-light);
-}
+/* Light plates: warm paper veil — Menu still stacks reading bands in its own rules */
 
 /* Nav logo on hero when the plate is light */
 /* Light photo under transparent chrome — flip to ink type */
@@ -1220,7 +1286,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   transition: background var(--motion-slow);
 }
 
-/* Top scrim under section head type (same idea as Menu) */
+/* Top reading scrim under section heads */
 .story-wall-veil::before,
 .visit-wall-veil::before {
   content: "";
@@ -1228,27 +1294,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   left: 0;
   right: 0;
   top: 0;
-  height: min(30%, 10.5rem);
+  height: min(38%, 13.5rem);
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(8, 6, 5, 0.58) 0%,
-    rgba(12, 8, 6, 0.34) 42%,
-    rgba(14, 10, 8, 0.1) 72%,
-    transparent 100%
-  );
+  background: var(--read-scrim-top);
   transition: background var(--motion-slow);
 }
 
 .visit[data-tone="light"] .visit-wall-veil::before {
-  background: linear-gradient(
-    to bottom,
-    rgba(250, 242, 228, 0.78) 0%,
-    rgba(244, 230, 208, 0.48) 40%,
-    rgba(250, 242, 228, 0.14) 72%,
-    transparent 100%
-  );
+  background: var(--read-scrim-top-light);
 }
 
 .story-wall-veil::after {
@@ -1614,38 +1668,53 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: var(--panel-veil);
+  /* Base atmosphere + extra bottom/left for dish copy */
+  background:
+    var(--read-scrim-menu-copy),
+    var(--panel-veil);
   transition: background var(--motion-slow);
 }
 
-/* Top scrim — calm strip for menu-head type only; plate stays open below */
+/* Top scrim — head + filters + tools reading band */
 .menu-wall-veil::before {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  height: min(32%, 11.5rem);
+  height: min(42%, 15rem);
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(8, 6, 5, 0.62) 0%,
-    rgba(12, 8, 6, 0.38) 42%,
-    rgba(14, 10, 8, 0.12) 72%,
-    transparent 100%
-  );
+  background: var(--read-scrim-top);
   transition: background var(--motion-slow), opacity var(--motion-slow);
 }
 
+.menu[data-tone="light"] .menu-wall-veil {
+  background:
+    linear-gradient(
+      to top,
+      rgba(245, 232, 210, 0.78) 0%,
+      rgba(240, 224, 198, 0.4) 30%,
+      transparent 58%
+    ),
+    linear-gradient(
+      to right,
+      rgba(245, 232, 210, 0.65) 0%,
+      rgba(240, 224, 198, 0.28) 30%,
+      transparent 58%
+    ),
+    var(--panel-veil-light);
+}
+
 .menu[data-tone="light"] .menu-wall-veil::before {
-  background: linear-gradient(
-    to bottom,
-    rgba(250, 242, 228, 0.78) 0%,
-    rgba(244, 230, 208, 0.48) 40%,
-    rgba(250, 242, 228, 0.14) 72%,
-    transparent 100%
-  );
+  background: var(--read-scrim-top-light);
+}
+
+/* List mode — keep the same reading bands */
+.menu.is-list-view .menu-wall-veil {
+  background:
+    var(--read-scrim-menu-copy),
+    var(--panel-veil);
 }
 
 .menu-wall-veil::after {
@@ -1670,7 +1739,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784125600");
+  background-image: url("assets/paper-texture.webp?v=1784125800");
   background-size: cover;
 }
 
@@ -2394,9 +2463,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu.is-list-view .menu-wall-veil {
-  /* Same open veil as photo mode — no extra blackout for list */
+  /* Keep reading bands; skip slow transition on mode switch */
   transition: none;
-  background: var(--panel-veil);
+  background:
+    var(--read-scrim-menu-copy),
+    var(--panel-veil);
 }
 
 /*
@@ -3553,8 +3624,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     overflow: hidden;
   }
 
-  .menu-wall-veil::before {
-    height: min(36%, 10.5rem);
+  .menu-wall-veil::before,
+  .story-wall-veil::before,
+  .visit-wall-veil::before {
+    height: min(44%, 12.5rem);
+  }
+
+  .nav::before {
+    height: calc(var(--nav-h) + 2.1rem);
   }
 
   .menu-filters {
@@ -3748,14 +3825,42 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     display: none;
   }
 
-  .menu-wall-veil,
   .visit-wall-veil {
     background: var(--panel-veil-mobile);
   }
 
-  .menu[data-tone="light"] .menu-wall-veil,
   .visit[data-tone="light"] .visit-wall-veil {
     background: var(--panel-veil-mobile-light);
+  }
+
+  /* Phone Menu: mobile plate veil + stronger reading bands */
+  .menu-wall-veil {
+    background:
+      var(--read-scrim-menu-copy),
+      var(--panel-veil-mobile);
+  }
+
+  .menu[data-tone="light"] .menu-wall-veil {
+    background:
+      linear-gradient(
+        to top,
+        rgba(245, 232, 210, 0.82) 0%,
+        rgba(240, 224, 198, 0.42) 32%,
+        transparent 60%
+      ),
+      linear-gradient(
+        to right,
+        rgba(245, 232, 210, 0.7) 0%,
+        rgba(240, 224, 198, 0.3) 32%,
+        transparent 60%
+      ),
+      var(--panel-veil-mobile-light);
+  }
+
+  .menu.is-list-view .menu-wall-veil {
+    background:
+      var(--read-scrim-menu-copy),
+      var(--panel-veil-mobile);
   }
 
   /* ── Visit mobile — Origins rhythm: head top, photo mid, caption bottom ── */
