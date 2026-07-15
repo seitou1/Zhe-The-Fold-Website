@@ -326,7 +326,7 @@ body {
   line-height: var(--type-lh-body);
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784149500");
+  background-image: url("assets/paper-texture.webp?v=1784151000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1841,7 +1841,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784149500");
+  background-image: url("assets/paper-texture.webp?v=1784151000");
   background-size: cover;
 }
 
@@ -2052,7 +2052,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border-radius: 0;
   background: transparent;
   color: var(--tone-filter);
-  opacity: 0.68;
+  opacity: 0.78;
   box-shadow: none;
   transition: color var(--motion), opacity var(--motion);
   -webkit-tap-highlight-color: transparent;
@@ -2064,7 +2064,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   position: absolute;
   left: 50%;
   bottom: 0.2rem;
-  width: 1.1rem;
+  width: 1.2rem;
   height: 1px;
   background: var(--tone-filter-line-active);
   opacity: 0;
@@ -2075,9 +2075,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .menu-view-icon {
   display: block;
-  width: 1.05rem;
-  height: 1.05rem;
-  opacity: 0.95;
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 1;
+  /* Keep strokes crisp when scaled */
+  overflow: visible;
 }
 
 .menu-view-btn.is-active,
@@ -2106,7 +2108,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .menu-view-btn:hover:not(.is-active),
   .menu-view-btn:focus:not(.is-active) {
     color: var(--tone-filter);
-    opacity: 0.68;
+    opacity: 0.78;
     background: transparent;
   }
 
