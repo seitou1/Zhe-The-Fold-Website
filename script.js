@@ -1317,11 +1317,14 @@
     return null;
   };
 
-  /** Next service after a closed moment — brand-quiet copy */
+  /** Next service after a closed moment — always include when we open */
   const getNextService = ({ weekday, minutes }) => {
-    const { closedWeekdays, periods } = getHoursConfig();
+    const { closedWeekdays, periods, note } = getHoursConfig();
     if (!periods.length) {
-      return { state: "See hours", meta: "Visit" };
+      return {
+        state: "Hours",
+        meta: note ? String(note) : "see Visit",
+      };
     }
     const dayIdx = WEEKDAYS.indexOf(weekday);
     const safeIdx = dayIdx >= 0 ? dayIdx : 0;
@@ -1339,6 +1342,7 @@
       if (offset === 0) {
         for (const per of dayPeriods) {
           if (minutes < per.start) {
+            // Between services today (e.g. afternoon rest)
             return {
               state: "Resting",
               meta: `opens ${formatTimeEn(per.start)}`,
@@ -1348,24 +1352,32 @@
         continue;
       }
 
+      // Another day — always say which day + open time
       return {
         state: "Resting",
         meta: `opens ${day} ${formatTimeEn(dayPeriods[0].start)}`,
       };
     }
-    return { state: "Resting", meta: "see Visit" };
+    return {
+      state: "Resting",
+      meta: note ? String(note) : "see Visit for hours",
+    };
   };
 
   const updateVisitLive = () => {
     const parts = getSFParts();
     const period = getOpenPeriod(parts.weekday, parts.minutes);
     const open = Boolean(period);
+    // Always pair state + useful time (open→until close; closed→next open)
     const status = open
       ? {
           state: "Open",
           meta: `until ${formatTimeEn(period.end)}`,
         }
       : getNextService(parts);
+    if (!status.meta) {
+      status.meta = open ? "now" : "see Visit";
+    }
     const title = open
       ? `Kitchen open until ${formatTimeEn(period.end)} (SF time)`
       : `Kitchen resting — ${status.meta} (SF time)`;
@@ -1384,7 +1396,8 @@
     });
     $$("[data-zhe-open-meta]").forEach((el) => {
       el.textContent = status.meta;
-      el.hidden = !status.meta;
+      el.hidden = false;
+      el.removeAttribute("hidden");
     });
   };
 
