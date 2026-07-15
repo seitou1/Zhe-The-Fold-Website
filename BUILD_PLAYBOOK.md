@@ -200,7 +200,8 @@ Story and Menu already lived this. Visit only felt finished after we **stopped**
 
 ### 3.2 Brand constraints we kept returning to
 
-1. **Quiet over loud** — hairline CTAs, italic display (Cormorant), light UI (Outfit), CN as mark not wall of Chinese UI  
+1. **Quiet over loud** — hairline CTAs, italic display (Source Serif 4), light UI (Outfit), CN as mark not wall of Chinese UI  
+ 
 2. **Bilingual ceremony, not bilingual density** — one CN title accent per panel; EN owns prose  
 3. **Imperfection is brand** — “uneven pleats,” soft motion, no glassmorphism cards over food  
 4. **Classy conversion** — open badge, Reserve, Directions; not review stars or floating chat  
@@ -210,9 +211,9 @@ Story and Menu already lived this. Visit only felt finished after we **stopped**
 
 | Token | Face | Use |
 |-------|------|-----|
-| `--font-display` | Cormorant Garamond italic | Titles, leads, CTAs |
+| `--font-display` | Source Serif 4 italic | Large titles only |
 | `--font-cn` | Noto Serif SC | Ceremonial marks |
-| `--font-ui` | Outfit | Body, meta, chrome |
+| `--font-ui` | Outfit | Body, leads, nav, filters, chrome |
 
 ### 3.4 Shared panel machinery
 
