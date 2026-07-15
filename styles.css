@@ -255,7 +255,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784125300");
+  background-image: url("assets/paper-texture.webp?v=1784125600");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -468,7 +468,7 @@ button {
   letter-spacing: 0.015em;
 }
 
-/* Panel ceremonial CN under EN title — same ink family as EN, slightly smaller */
+/* Panel ceremonial CN under EN title — same full ink as EN */
 .story-head-title .cn,
 .menu-head-title .cn,
 .visit-head-title .cn {
@@ -477,20 +477,22 @@ button {
   font-weight: 400;
   font-size: var(--type-panel-cn);
   letter-spacing: var(--type-cn-track);
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
   margin-top: 0.15rem;
+  opacity: 1;
   text-shadow: inherit;
 }
 
-/* Dish CN under dish EN — match dish title legibility */
+/* Dish CN under dish EN — same full ink as dish EN */
 .menu-spotlight-cn,
 .menu-list-item .list-cn,
 .menu-rail-item .rail-cn {
   font-family: var(--font-cn);
   font-style: normal;
   font-weight: 400;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
   letter-spacing: var(--type-cn-track);
+  opacity: 1;
   text-shadow: inherit;
 }
 
@@ -556,7 +558,7 @@ button {
   font-size: 1.1rem;
   font-style: italic;
   font-weight: 400;
-  opacity: 0.9;
+  opacity: 1;
   letter-spacing: 0.04em;
 }
 
@@ -566,15 +568,15 @@ button {
   margin-left: 0.35rem;
   margin-right: auto;
   padding: 0.18rem 0.55rem;
-  border: 1px solid rgba(242, 235, 224, 0.28);
+  border: 1px solid rgba(242, 235, 224, 0.34);
   border-radius: 999px;
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
   font-size: 0.68rem;
   letter-spacing: 0.06em;
-  color: rgba(250, 246, 240, 0.88);
-  background: rgba(12, 9, 7, 0.35);
+  color: #faf8f4;
+  background: rgba(12, 9, 7, 0.4);
   text-shadow: none;
   white-space: nowrap;
 }
@@ -584,9 +586,9 @@ button {
 }
 
 body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
-  border-color: rgba(28, 24, 20, 0.18);
-  background: rgba(255, 252, 247, 0.5);
-  color: rgba(28, 24, 20, 0.75);
+  border-color: rgba(28, 24, 20, 0.22);
+  background: rgba(255, 252, 247, 0.55);
+  color: #1c1814;
 }
 
 /* Transparent chrome on every panel — links always present (same on hero) */
@@ -615,10 +617,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
   position: relative;
   padding: 0.25rem 0;
   color: inherit;
+  opacity: 1;
   text-shadow:
     0 1px 1px rgba(0, 0, 0, 0.35),
     0 2px 12px rgba(0, 0, 0, 0.35);
-  transition: color 0.3s, opacity 0.3s;
+  transition: color 0.3s;
 }
 
 .nav-links a::after {
@@ -659,9 +662,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
   margin-right: 0.15rem;
   padding: 0.2rem 0.55rem 0.2rem 0.4rem;
   border-radius: 999px;
-  border: 1px solid rgba(242, 235, 224, 0.32);
-  background: rgba(12, 9, 7, 0.4);
-  color: #f5efe6;
+  border: 1px solid rgba(242, 235, 224, 0.4);
+  background: rgba(12, 9, 7, 0.45);
+  color: #faf8f4;
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
@@ -673,6 +676,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
   text-overflow: ellipsis;
   text-shadow: none;
   pointer-events: none;
+  opacity: 1;
 }
 
 .nav-open-dot {
@@ -718,10 +722,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
 .story,
 .menu,
 .visit {
-  /* Paper type over photos — soft stays readable; muted only for tertiary */
+  /*
+   * Legibility: primary copy + links share one full ink.
+   * soft = same as fg (no accidental dim on CN/desc vs links)
+   * muted = rare tertiary only (legal, inactive chrome hints)
+   */
   --tone-fg: #faf8f4;
-  --tone-fg-soft: rgba(250, 248, 244, 0.94);
-  --tone-fg-muted: rgba(250, 248, 244, 0.88);
+  --tone-fg-soft: #faf8f4;
+  --tone-fg-muted: rgba(250, 248, 244, 0.9);
   --tone-accent: #ebcfa0;
   --tone-accent-soft: #f0dcb4;
   --tone-line: rgba(250, 246, 240, 0.34);
@@ -732,13 +740,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
     0 1px 2px rgba(0, 0, 0, 0.78),
     0 2px 12px rgba(0, 0, 0, 0.55),
     0 8px 28px rgba(0, 0, 0, 0.42);
-  --tone-btn: #faf6f0;
-  --tone-btn-soft: rgba(250, 246, 240, 0.94);
-  --tone-filter: rgba(250, 246, 240, 0.92);
+  --tone-btn: #faf8f4;
+  --tone-btn-soft: #faf8f4;
+  --tone-filter: #faf8f4;
   --tone-filter-active: #fffef9;
   --tone-filter-line-active: rgba(250, 246, 240, 0.96);
   --tone-social-bg: rgba(250, 246, 240, 0.1);
-  --tone-social-fg: rgba(250, 246, 240, 0.96);
+  --tone-social-fg: #faf8f4;
   --tone-rule: linear-gradient(
     90deg,
     rgba(250, 246, 240, 0.98) 0%,
@@ -752,8 +760,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
 .menu[data-tone="light"],
 .visit[data-tone="light"] {
   --tone-fg: #1c1814;
-  --tone-fg-soft: #2a241e;
-  --tone-fg-muted: rgba(28, 24, 20, 0.78);
+  --tone-fg-soft: #1c1814;
+  --tone-fg-muted: rgba(28, 24, 20, 0.88);
   --tone-accent: #8a6340;
   --tone-accent-soft: #a67c52;
   --tone-line: rgba(28, 24, 20, 0.2);
@@ -764,12 +772,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
     0 1px 0 rgba(255, 255, 255, 0.5),
     0 2px 14px rgba(255, 252, 247, 0.4);
   --tone-btn: #1c1814;
-  --tone-btn-soft: rgba(28, 24, 20, 0.78);
-  --tone-filter: rgba(28, 24, 20, 0.62);
+  --tone-btn-soft: #1c1814;
+  --tone-filter: #1c1814;
   --tone-filter-active: #1c1814;
-  --tone-filter-line-active: rgba(28, 24, 20, 0.78);
+  --tone-filter-line-active: rgba(28, 24, 20, 0.88);
   --tone-social-bg: rgba(28, 24, 20, 0.08);
-  --tone-social-fg: rgba(28, 24, 20, 0.88);
+  --tone-social-fg: #1c1814;
   --tone-rule: linear-gradient(
     90deg,
     rgba(28, 24, 20, 0.88) 0%,
@@ -1011,7 +1019,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   margin-bottom: 1.25rem;
   letter-spacing: var(--type-kicker-track);
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
   text-transform: uppercase;
 }
 
@@ -1047,7 +1056,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-style: italic;
   letter-spacing: var(--type-title-track);
   margin-top: 0.5rem;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
   text-shadow: var(--tone-shadow-soft);
 }
 
@@ -1079,8 +1089,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  color: var(--tone-fg-soft);
-  opacity: 0.72;
+  color: var(--tone-fg);
+  opacity: 1;
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
@@ -1371,6 +1381,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   line-height: 1.6;
   letter-spacing: 0.015em;
+  color: var(--tone-fg);
+  opacity: 1;
   color: var(--tone-fg-soft);
   margin: 0;
   max-width: 34rem;
@@ -1658,7 +1670,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784125300");
+  background-image: url("assets/paper-texture.webp?v=1784125600");
   background-size: cover;
 }
 
@@ -1973,7 +1985,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-body);
   line-height: var(--type-body-lh);
   letter-spacing: 0.015em;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
   max-width: 30rem;
   margin-top: 0.4rem;
   font-weight: 400;
@@ -2013,12 +2026,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tone-fg-muted, rgba(242, 235, 224, 0.72));
-  border: 1px solid rgba(242, 235, 224, 0.28);
+  color: var(--tone-fg);
+  border: 1px solid rgba(242, 235, 224, 0.4);
   border-radius: 999px;
   padding: 0.2rem 0.5rem 0.18rem;
   line-height: 1.2;
-  opacity: 0.9;
+  opacity: 1;
 }
 
 .dish-mark--house {
@@ -2028,8 +2041,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu[data-tone="light"] .dish-mark {
-  color: rgba(28, 24, 20, 0.62);
-  border-color: rgba(28, 24, 20, 0.22);
+  color: var(--tone-fg);
+  border-color: rgba(28, 24, 20, 0.28);
 }
 
 .menu[data-tone="light"] .dish-mark--house {
@@ -2139,7 +2152,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   font-size: var(--type-kicker);
   letter-spacing: 0.06em;
-  color: var(--tone-fg-muted);
+  color: var(--tone-fg);
+  opacity: 1;
   text-shadow: var(--tone-shadow-soft);
 }
 
@@ -2350,8 +2364,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   width: 100%;
   margin-top: 0.1rem;
   padding: 0.4rem 0.1rem 0;
-  border-top: 1px solid rgba(242, 235, 224, 0.16);
-  color: rgba(242, 235, 224, 0.72);
+  border-top: 1px solid var(--tone-line);
+  color: var(--tone-fg);
   opacity: 1;
   font-size: 0.84rem;
   text-shadow: var(--tone-shadow-soft);
@@ -2405,9 +2419,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   cursor: pointer;
   transition:
     border-color 0.2s var(--ease-soft),
-    opacity 0.2s var(--ease-soft),
     color 0.2s var(--ease-soft);
-  opacity: 0.9;
+  opacity: 1;
   box-shadow: none;
   text-shadow: var(--tone-shadow-soft);
   -webkit-tap-highlight-color: transparent;
@@ -2468,7 +2481,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: 0.9rem;
   line-height: 1.5;
   letter-spacing: 0.015em;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
   margin-top: 0.1rem;
   max-width: 40rem;
   display: -webkit-box;
@@ -2533,7 +2547,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   padding-top: 0.45rem;
   border-top: 1px solid var(--tone-line);
   color: var(--tone-fg);
-  opacity: 0.78;
+  opacity: 1;
   font-size: 0.88rem;
   text-shadow: var(--tone-shadow);
   transition: color 0.45s var(--ease-soft), border-color 0.45s var(--ease-soft);
@@ -2545,7 +2559,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   font-size: 0.9rem;
   letter-spacing: 0.015em;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
 }
 
 /* Rail labels — CN uses dish CN face; full fg for thumbs under photo */
@@ -2740,7 +2755,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: 0.9rem;
   line-height: 1.5;
   letter-spacing: 0.015em;
-  color: var(--tone-fg-soft);
+  color: var(--tone-fg);
+  opacity: 1;
 }
 
 .visit-access[hidden] {
@@ -2773,17 +2789,18 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .visit-hours .muted {
   margin-top: 0.4rem !important;
   font-size: 0.9rem;
-  color: var(--tone-fg-muted);
+  color: var(--tone-fg);
+  opacity: 1;
 }
 
-/* CTAs — Directions + Reserve lead; Call is quieter */
+/* CTAs — same full ink as body copy (legibility = links) */
 .visit-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 0.85rem 1.65rem;
   width: 100%;
-  text-shadow: none;
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .visit-action {
@@ -2797,7 +2814,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border: none;
   border-radius: 0;
   background: transparent;
-  color: var(--tone-btn-soft);
+  color: var(--tone-fg);
+  opacity: 1;
   box-shadow: none;
   position: relative;
   transition: color 0.3s var(--ease-soft);
@@ -2837,6 +2855,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .visit-action:hover {
   color: var(--tone-fg);
+  opacity: 1;
 }
 
 .visit-action:hover::after {
@@ -2845,7 +2864,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .visit-action:hover .en {
-  opacity: 0.88;
+  opacity: 1;
 }
 
 /* Social — quiet, not a dock */
@@ -2958,7 +2977,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.05rem;
-  opacity: 0.85;
+  opacity: 1;
 }
 
 .footer-tag {
@@ -2968,7 +2987,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   align-items: center;
   gap: 0.15rem;
   margin: 0;
-  opacity: 0.85;
+  opacity: 1;
   justify-content: center;
   text-align: center;
 }
@@ -2980,6 +2999,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   font-size: 0.95rem;
   line-height: 1.45;
+  opacity: 1;
 }
 
 .footer-demo {
@@ -2991,7 +3011,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: 0.8rem;
   line-height: 1.5;
   letter-spacing: 0.015em;
-  opacity: 0.72;
+  opacity: 1;
   text-align: center;
   color: inherit;
 }
@@ -3005,7 +3025,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-style: normal;
   font-weight: 400;
   font-size: 0.78rem;
-  opacity: 0.65;
+  opacity: 1;
   letter-spacing: 0.02em;
   margin: 0;
   text-align: right;
