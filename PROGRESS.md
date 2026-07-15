@@ -78,3 +78,16 @@ Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallb
 ## Demo-complete
 
 **YES — 2026-07-15.** See `PRODUCT.md` §7 and `QA_SCORECARD_DEMO_2026-07-15.md`.
+
+---
+
+## Git / GitHub cadence (locked)
+
+| When | Action |
+|------|--------|
+| End of real work session | `git add` → `commit` → **`push`** |
+| After anything you’d hate to redo | Push soon |
+| Live site | https://seitou1.github.io/Zhe-The-Fold-Website/ |
+| Workspace | `/Users/kenneth/Desktop/Code/Zhe-The-Fold-Website` |
+
+Agent must not end a meaningful session without offering or performing commit+push (auth may require human).

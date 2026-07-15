@@ -1,7 +1,11 @@
 # AGENTS.md — READ THIS FIRST (褶 · Zhe / dumpling)
 
-You are in the **Zhe live project** (`dumpling/`). Process + craft history live here.  
-**Generic blank kit** (any stack): `../next project site/` or copy from there for *new* brands.
+You are in the **Zhe live project** — git repo  
+`/Users/kenneth/Desktop/Code/Zhe-The-Fold-Website`  
+(also mirrored historically under `grok/dumpling/`; **prefer this repo as workspace**).
+
+**Live:** https://seitou1.github.io/Zhe-The-Fold-Website/  
+**Generic blank kit (any stack):** `../next project site/`
 
 ---
 
@@ -23,6 +27,17 @@ You are in the **Zhe live project** (`dumpling/`). Process + craft history live 
 5. **Multi-agent:** discretion — parallel only when lanes are obvious (non-overlapping files).
 
 6. **After changes:** `node scripts/check-launch.mjs` · phone QA if gestures/shell · scorecard at freezes.
+
+7. **Git → GitHub (end of meaningful work — locked habit):**
+   ```bash
+   cd /Users/kenneth/Desktop/Code/Zhe-The-Fold-Website
+   git add .
+   git commit -m "Clear message of what changed"
+   git push
+   ```
+   - At least once per real work session; after anything you’d hate to redo  
+   - Pages rebuilds in ~1–2 min; hard-refresh live URL  
+   - Update `PROGRESS.md` in the same commit when phase/status changes  
 
 ---
 
@@ -69,6 +84,7 @@ Do **not** casually change Zhe's frozen stack. Do **not** assume every future si
 5. Ops content only in `data.js`.  
 6. §16 frozen systems — memo to reopen.  
 7. One session goal; update `PROGRESS.md`.  
+8. **Commit + push** at end of meaningful work (keep Pages in sync).  
 
 ---
 
@@ -82,6 +98,7 @@ Do **not** casually change Zhe's frozen stack. Do **not** assume every future si
 | **Research depth** | Deep for architecture/gestures/a11y/SEO/Shared-Global; light for directed visual nits |
 | **Multi-agent** | **Discretion:** parallel only if ≥2 independent workstreams; else **solo** |
 | **Scorecard** | Light mid-build; full at craft freeze and before live |
+| **Git / GitHub** | End of session (or end of chunk): **commit + push** |
 | **Reserve** | mailto until `booking.url` set — say so (partial conversion) |
 
 ### Multi-agent discretion
