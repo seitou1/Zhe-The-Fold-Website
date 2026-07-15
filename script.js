@@ -2498,10 +2498,9 @@
     }
   });
 
-  /* ── Hero muted loop (simple) ── */
-  (() => {
-    const video = $("#heroImg");
-    if (!video || video.tagName !== "VIDEO") return;
+  /* ── Muted section loops (Hero + Visit) ── */
+  const bindMutedSectionVideo = (video, section) => {
+    if (!video || video.tagName !== "VIDEO" || !section) return;
 
     const reduced =
       window.matchMedia &&
@@ -2522,7 +2521,7 @@
     video.setAttribute("playsinline", "");
     video.setAttribute("webkit-playsinline", "");
 
-    let inView = true;
+    let inView = false;
     const tryPlay = () => {
       if (!inView || reduced) return;
       const p = video.play();
@@ -2567,8 +2566,10 @@
         },
         { threshold: [0, 0.2, 0.5] }
       );
-      const hero = $("#hero");
-      if (hero) io.observe(hero);
+      io.observe(section);
+    } else {
+      inView = true;
+      tryPlay();
     }
 
     document.addEventListener("visibilitychange", () => {
@@ -2580,7 +2581,10 @@
         }
       } else if (inView) tryPlay();
     });
-  })();
+  };
+
+  bindMutedSectionVideo($("#heroImg"), $("#hero"));
+  bindMutedSectionVideo($("#visitVideo"), $("#visit"));
 
   /* ── Active nav link by section ── */
   const sectionIds = ["hero", "story", "menu", "visit"]
@@ -2934,7 +2938,10 @@
 
     const updateVisitTone = async () => {
       const panel = $("#visit");
-      const img = $(".visit-wall-img");
+      const img =
+        $("#visitPoster") ||
+        $(".visit-wall-poster") ||
+        $(".visit-wall-img");
       const photoBox = $(".visit-wall") || panel;
       const ready = await ensureImage(img);
       if (!panel || !ready || !photoBox) return;
@@ -2993,7 +3000,7 @@
     [
       ["#heroPoster, .hero-poster", updateHeroTone],
       [".story-wall-img", updateStoryTone],
-      [".visit-wall-img", updateVisitTone],
+      [".visit-wall-poster, #visitPoster", updateVisitTone],
       ["#wallImgA, #wallImgB, .menu-wall-img", updateMenuTone],
     ].forEach(([sel, fn]) => {
       $$(sel).forEach((img) => {

@@ -1006,8 +1006,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .hero {
   justify-content: stretch;
   padding: 0;
-  /* Never flash page amber behind media */
-  background: #12100e;
+  background: var(--void);
 }
 
 .hero-stage {
@@ -1022,7 +1021,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: #12100e;
+  background: var(--void);
 }
 
 /*
@@ -1051,7 +1050,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 1;
   opacity: 0;
   transition: opacity 1.1s ease;
-  background: #12100e;
+  background: var(--void);
   pointer-events: none;
 }
 .hero-video.is-ready {
@@ -1853,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784162000");
+  background-image: url("assets/paper-texture.webp?v=1784164000");
   background-size: cover;
 }
 
@@ -2742,7 +2741,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 /* ── Visit — storefront is the dish (same stage grammar as Story / Menu) ── */
 .visit {
   isolation: isolate;
-  background: #1a1612;
+  background: var(--void);
   padding: 0;
   color: var(--cream);
 }
@@ -2753,7 +2752,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #12100e;
+  background: var(--void);
 }
 
 .visit-wall-img {
@@ -2768,18 +2767,39 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   object-position: center 36%;
   display: block;
   filter: saturate(1.06) contrast(1.04) brightness(1.08);
-  /* Tighter crop so storefront owns the whole panel (no empty margins) */
+  /* Tighter crop so storefront owns the whole panel */
   transform: scale(1.14);
   transform-origin: center 36%;
-  animation: visitWallDrift 22s ease-in-out infinite alternate;
 }
 
-@keyframes visitWallDrift {
-  from {
-    transform: scale(1.14) translate3d(0, 0, 0);
+/* Poster under video (Hero grammar); loop fades in when ready */
+.visit-wall-poster {
+  z-index: 0;
+}
+
+.visit-wall-video {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+  background: var(--void);
+  pointer-events: none;
+}
+
+.visit-wall-video.is-ready {
+  opacity: 1;
+}
+
+.visit-wall-video.is-ready + .visit-wall-poster {
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visit-wall-video {
+    display: none;
   }
-  to {
-    transform: scale(1.2) translate3d(-0.6%, -0.35%, 0);
+  .visit-wall-poster {
+    opacity: 1 !important;
   }
 }
 
@@ -3279,8 +3299,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     /* Document no longer snaps — the site-scroll root does */
     scroll-snap-type: none;
     overscroll-behavior: none;
-    /* Match photo underpaint — no amber “banners” in notch / home areas */
-    background: #12100e;
+    background: var(--void);
   }
 
   body {
@@ -3294,7 +3313,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     max-height: none;
     overflow: hidden;
     overscroll-behavior: none;
-    background: #12100e;
+    background: var(--void);
     background-image: none;
   }
 
@@ -3317,7 +3336,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     overscroll-behavior-y: contain;
     /* Keep horizontal swipes with JS carousels (not history / rubber-band) */
     overscroll-behavior-x: none;
-    background: #12100e;
+    background: var(--void);
   }
 
   main#top.js-snap-off {
