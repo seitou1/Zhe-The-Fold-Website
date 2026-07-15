@@ -255,7 +255,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784125200");
+  background-image: url("assets/paper-texture.webp?v=1784125300");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1658,7 +1658,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784125200");
+  background-image: url("assets/paper-texture.webp?v=1784125300");
   background-size: cover;
 }
 
