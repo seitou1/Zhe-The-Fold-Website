@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784126800");
+  background-image: url("assets/paper-texture.webp?v=1784127000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -558,16 +558,17 @@ button {
   border: 0;
 }
 
-/* ── Navigation — soft top scrim so links read on any photo ── */
+/* ── Navigation — logo | kitchen status (center) | links ── */
 .nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
+  column-gap: 0.75rem;
   height: var(--nav-h);
   padding: 0 clamp(1.25rem, 4vw, 2.5rem);
   background: transparent;
@@ -602,7 +603,8 @@ button {
   gap: 0.5rem;
   z-index: 2;
   flex-shrink: 0;
-  margin-right: auto;
+  justify-self: start;
+  margin-right: 0;
   color: inherit;
   text-shadow:
     0 1px 1px rgba(0, 0, 0, 0.55),
@@ -642,10 +644,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav::before {
   display: flex;
   gap: clamp(1.25rem, 3.5vw, 2.5rem);
   align-items: center;
+  justify-self: end;
+  justify-content: flex-end;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: none;
+  min-width: 0;
 }
 
 .nav-links a {
@@ -696,74 +701,69 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav::before {
 }
 
 /*
- * Kitchen status — quiet “fold” mark + two-line copy (not a SaaS pill / LED).
- * Open: warm clay pleat · Closed: resting hairline
+ * Kitchen status — dead-center between logo and links.
+ * Soft clay ember (not LED, not // pleats): warm when open, quiet ring when resting.
  */
 .nav-hours {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  max-width: 10.5rem;
-  margin-right: 0.35rem;
+  justify-self: center;
+  grid-column: 2;
+  gap: 0.45rem;
+  max-width: min(11rem, 34vw);
   padding: 0.1rem 0;
   border: none;
   border-radius: 0;
   background: transparent;
   color: inherit;
   pointer-events: none;
-  flex-shrink: 1;
+  flex-shrink: 0;
   min-width: 0;
 }
 
+/* Single soft ember — kitchen lamp, not a status LED */
 .nav-hours-mark {
-  position: relative;
   flex-shrink: 0;
-  width: 0.7rem;
-  height: 1rem;
-  display: grid;
-  place-items: center;
-}
-
-/* Small double-pleat — reads as a fold, not a status LED */
-.nav-hours-pleat {
-  display: block;
-  width: 0.42rem;
-  height: 0.78rem;
-  border-left: 1px solid rgba(250, 248, 244, 0.55);
-  border-right: 1px solid rgba(250, 248, 244, 0.55);
-  transform: skewX(-14deg);
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: rgba(250, 248, 244, 0.28);
+  border: 1px solid rgba(250, 248, 244, 0.35);
+  box-shadow: none;
   transition:
-    border-color 0.4s var(--ease-soft),
-    box-shadow 0.4s var(--ease-soft),
-    opacity 0.4s var(--ease-soft),
-    transform 0.4s var(--ease-soft);
-  opacity: 0.75;
+    background 0.45s var(--ease-soft),
+    border-color 0.45s var(--ease-soft),
+    box-shadow 0.45s var(--ease-soft),
+    opacity 0.45s var(--ease-soft);
+  opacity: 0.85;
 }
 
-.nav-hours.is-open .nav-hours-pleat {
-  border-left-color: var(--wheat);
-  border-right-color: rgba(235, 207, 160, 0.85);
+.nav-hours.is-open .nav-hours-mark {
+  background: var(--wheat);
+  border-color: rgba(235, 207, 160, 0.9);
   opacity: 1;
   box-shadow:
-    -3px 0 10px rgba(235, 207, 160, 0.22),
-    3px 0 10px rgba(235, 207, 160, 0.12);
-  animation: hoursPleatBreath 3.6s var(--ease-soft) infinite;
+    0 0 0 1px rgba(235, 207, 160, 0.2),
+    0 0 10px rgba(235, 207, 160, 0.35);
+  animation: hoursEmber 4.2s var(--ease-soft) infinite;
 }
 
-.nav-hours.is-closed .nav-hours-pleat {
-  border-left-color: rgba(250, 248, 244, 0.38);
-  border-right-color: rgba(250, 248, 244, 0.22);
-  opacity: 0.65;
-  transform: skewX(-8deg) scaleY(0.88);
+.nav-hours.is-closed .nav-hours-mark {
+  background: transparent;
+  border-color: rgba(250, 248, 244, 0.42);
+  opacity: 0.75;
+  box-shadow: none;
   animation: none;
 }
 
 .nav-hours-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.05rem;
+  gap: 0.04rem;
   min-width: 0;
   line-height: 1.15;
+  text-align: left;
 }
 
 .nav-hours-state {
@@ -810,17 +810,22 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav::before {
   letter-spacing: 0.04em;
 }
 
-body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-pleat {
-  border-left-color: rgba(28, 24, 20, 0.35);
-  border-right-color: rgba(28, 24, 20, 0.22);
+body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-mark {
+  background: rgba(28, 24, 20, 0.12);
+  border-color: rgba(28, 24, 20, 0.32);
 }
 
-body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours.is-open .nav-hours-pleat {
-  border-left-color: var(--clay-deep, var(--clay));
-  border-right-color: rgba(138, 99, 64, 0.75);
+body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours.is-open .nav-hours-mark {
+  background: var(--clay-deep, var(--clay));
+  border-color: rgba(138, 99, 64, 0.75);
   box-shadow:
-    -2px 0 8px rgba(166, 124, 82, 0.2),
-    2px 0 8px rgba(166, 124, 82, 0.1);
+    0 0 0 1px rgba(166, 124, 82, 0.18),
+    0 0 10px rgba(166, 124, 82, 0.28);
+}
+
+body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours.is-closed .nav-hours-mark {
+  background: transparent;
+  border-color: rgba(28, 24, 20, 0.38);
 }
 
 body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours.is-open .nav-hours-state {
@@ -834,19 +839,20 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     0 1px 8px rgba(255, 252, 247, 0.3);
 }
 
-@keyframes hoursPleatBreath {
+/* Slow warm breath — steam, not a pulse LED */
+@keyframes hoursEmber {
   0%,
   100% {
-    opacity: 0.88;
+    opacity: 0.92;
     box-shadow:
-      -2px 0 6px rgba(235, 207, 160, 0.12),
-      2px 0 6px rgba(235, 207, 160, 0.06);
+      0 0 0 1px rgba(235, 207, 160, 0.15),
+      0 0 6px rgba(235, 207, 160, 0.22);
   }
   50% {
     opacity: 1;
     box-shadow:
-      -4px 0 12px rgba(235, 207, 160, 0.28),
-      4px 0 12px rgba(235, 207, 160, 0.14);
+      0 0 0 1px rgba(235, 207, 160, 0.28),
+      0 0 12px rgba(235, 207, 160, 0.4);
   }
 }
 
@@ -1815,7 +1821,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784126800");
+  background-image: url("assets/paper-texture.webp?v=1784127000");
   background-size: cover;
 }
 
@@ -3361,6 +3367,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     gap: 0.35rem;
   }
 
+  .nav {
+    column-gap: 0.4rem;
+    padding-left: max(0.65rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.65rem, env(safe-area-inset-right, 0px));
+  }
+
   .nav-logo {
     flex-shrink: 0;
     gap: 0.3rem;
@@ -3376,8 +3388,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .nav-links {
     display: flex !important;
-    flex: 1 1 auto;
+    flex: unset;
     min-width: 0;
+    justify-self: end;
     justify-content: flex-end;
     flex-wrap: nowrap;
     gap: 0.45rem 0.55rem;
@@ -3387,20 +3400,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 
   .nav-hours {
-    max-width: min(6.8rem, 30vw);
-    margin-right: 0.15rem;
-    gap: 0.35rem;
-    flex-shrink: 1;
+    max-width: min(5.8rem, 28vw);
+    gap: 0.32rem;
+    justify-self: center;
   }
 
   .nav-hours-mark {
-    width: 0.55rem;
-    height: 0.85rem;
-  }
-
-  .nav-hours-pleat {
-    width: 0.34rem;
-    height: 0.65rem;
+    width: 0.32rem;
+    height: 0.32rem;
   }
 
   .nav-hours-state {
@@ -4165,7 +4172,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .hero-marks,
   .hero-glow,
   .hero-steam span,
-  .nav-hours.is-open .nav-hours-pleat {
+  .nav-hours.is-open .nav-hours-mark {
     animation: none;
   }
 

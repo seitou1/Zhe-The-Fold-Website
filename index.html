@@ -49,7 +49,7 @@
   <link
     rel="preload"
     as="image"
-    href="assets/hero-dumplings.webp?v=1784126800"
+    href="assets/hero-dumplings.webp?v=1784127000"
     type="image/webp"
     fetchpriority="high"
   />
@@ -71,18 +71,18 @@
   <link
     rel="preload"
     as="style"
-    href="assets/fonts/fonts.css?v=1784126800"
+    href="assets/fonts/fonts.css?v=1784127000"
   />
   <link
     rel="stylesheet"
-    href="assets/fonts/fonts.css?v=1784126800"
+    href="assets/fonts/fonts.css?v=1784127000"
     media="print"
     onload="this.media='all'"
   />
   <noscript>
-    <link rel="stylesheet" href="assets/fonts/fonts.css?v=1784126800" />
+    <link rel="stylesheet" href="assets/fonts/fonts.css?v=1784127000" />
   </noscript>
-  <link rel="stylesheet" href="styles.css?v=1784126800" />
+  <link rel="stylesheet" href="styles.css?v=1784127000" />
 </head>
 <body>
   <a class="skip-link" href="#menu">Skip to menu</a>
@@ -92,22 +92,20 @@
     <span class="scroll-progress-bar" id="scrollProgressBar"></span>
   </div>
 
-  <!-- Logo always; section links fade in after hero -->
+  <!-- Logo left · kitchen status center · links right -->
   <header class="nav" id="nav">
     <a href="#hero" class="nav-logo" aria-label="Zhe home">
       <span class="logo-cn" aria-hidden="true">褶</span>
       <span class="logo-en">Zhe</span>
     </a>
-    <nav class="nav-links" id="navLinks" aria-label="Primary" aria-hidden="false">
-      <span class="nav-hours" data-zhe-open-chip aria-live="polite">
-        <span class="nav-hours-mark" aria-hidden="true">
-          <span class="nav-hours-pleat"></span>
-        </span>
-        <span class="nav-hours-copy">
-          <span class="nav-hours-state" data-zhe-open-state>…</span>
-          <span class="nav-hours-meta" data-zhe-open-meta></span>
-        </span>
+    <span class="nav-hours" data-zhe-open-chip aria-live="polite">
+      <span class="nav-hours-mark" aria-hidden="true"></span>
+      <span class="nav-hours-copy">
+        <span class="nav-hours-state" data-zhe-open-state>…</span>
+        <span class="nav-hours-meta" data-zhe-open-meta></span>
       </span>
+    </span>
+    <nav class="nav-links" id="navLinks" aria-label="Primary" aria-hidden="false">
       <a href="#story" data-zhe-track="click_story" data-zhe-track-meta="nav">Story</a>
       <a href="#menu" data-zhe-track="click_menu" data-zhe-track-meta="nav">Menu</a>
       <a href="#visit" data-zhe-track="click_visit" data-zhe-track-meta="nav">Visit</a>
@@ -129,7 +127,7 @@
         <video
           class="hero-img hero-video"
           id="heroImg"
-          poster="assets/hero-dumplings.webp?v=1784126800"
+          poster="assets/hero-dumplings.webp?v=1784127000"
           width="1280"
           height="704"
           autoplay
@@ -141,12 +139,12 @@
           disableremoteplayback
           aria-label="Handmade dumplings on worn ceramic at Zhe · The Fold"
         >
-          <source src="assets/hero-loop.mp4?v=1784126800" type="video/mp4" />
+          <source src="assets/hero-loop.mp4?v=1784127000" type="video/mp4" />
         </video>
         <img
           class="hero-img hero-poster"
           id="heroPoster"
-          src="assets/hero-dumplings.webp?v=1784126800"
+          src="assets/hero-dumplings.webp?v=1784127000"
           alt=""
           width="1280"
           height="704"
@@ -193,8 +191,8 @@
     <section class="story panel" id="story">
       <div class="story-wall" id="storyWall" aria-hidden="true">
         <!-- eager: first Origins plate is LCP for this panel; lazy left a pale empty frame -->
-        <img class="story-wall-img is-active" id="storyWallA" src="assets/story-village.webp?v=1784126800" alt="" width="1400" height="787" loading="eager" decoding="async" fetchpriority="low" />
-        <img class="story-wall-img is-park-right" id="storyWallB" src="assets/story-village.webp?v=1784126800" alt="" width="1400" height="787" loading="lazy" decoding="async" />
+        <img class="story-wall-img is-active" id="storyWallA" src="assets/story-village.webp?v=1784127000" alt="" width="1400" height="787" loading="eager" decoding="async" fetchpriority="low" />
+        <img class="story-wall-img is-park-right" id="storyWallB" src="assets/story-village.webp?v=1784127000" alt="" width="1400" height="787" loading="lazy" decoding="async" />
         <div class="story-wall-veil"></div>
       </div>
 
@@ -241,8 +239,8 @@
     <!-- Menu: locked panel + dish carousel -->
     <section class="menu panel" id="menu">
       <div class="menu-wall" id="menuWall" aria-hidden="true">
-        <img class="menu-wall-img is-active" id="wallImgA" src="assets/dish-pork.webp?v=1784126800" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
-        <img class="menu-wall-img" id="wallImgB" src="assets/dish-pork.webp?v=1784126800" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <img class="menu-wall-img is-active" id="wallImgA" src="assets/dish-pork.webp?v=1784127000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <img class="menu-wall-img" id="wallImgB" src="assets/dish-pork.webp?v=1784127000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
         <div class="menu-wall-veil"></div>
         <div class="menu-wall-grain"></div>
       </div>
@@ -334,7 +332,7 @@
       <div class="visit-wall" aria-hidden="true">
         <img
           class="visit-wall-img"
-          src="assets/storefront.webp?v=1784126800"
+          src="assets/storefront.webp?v=1784127000"
           alt="Zhe · The Fold storefront at dusk"
           width="1400"
           height="787"
@@ -488,7 +486,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <script type="application/ld+json" id="restaurantJsonLd"></script>
-  <script src="data.js?v=1784126800"></script>
-  <script src="script.js?v=1784126800"></script>
+  <script src="data.js?v=1784127000"></script>
+  <script src="script.js?v=1784127000"></script>
 </body>
 </html>
