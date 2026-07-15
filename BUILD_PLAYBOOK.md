@@ -211,9 +211,11 @@ Story and Menu already lived this. Visit only felt finished after we **stopped**
 
 | Token | Face | Use |
 |-------|------|-----|
-| `--font-display` | Source Serif 4 italic | Large titles only |
-| `--font-cn` | Noto Serif SC | Ceremonial marks |
-| `--font-ui` | Outfit | Body, leads, nav, filters, chrome |
+| `--font-display` | Source Serif 4 italic | Large EN titles / dish names |
+| `--font-cn` | Noto Serif SC (Source Han Serif SC subset) | Chinese titles, marks, dish names — never italic Latin |
+| `--font-ui` | Outfit | Body, leads, nav, filters, kickers, CTAs |
+
+**Roles (locked):** display = big titles · cn = all Chinese · ui = everything readable at small size. EN/CN share panel tone + text-shadow; CN uses `--tone-fg-soft` not washed-out muted.
 
 ### 3.4 Shared panel machinery
 

@@ -6,7 +6,7 @@
 | Last updated | 2026-07-15 |
 | Current phase | **`6 QA` / Demo-complete freeze** |
 | Stack | Static HTML/CSS/`data.js`/`script.js` (frozen) |
-| Preview | `python3 -m http.server 8765` → `http://127.0.0.1:8765/?v=1784124900` |
+| Preview | `python3 -m http.server 8765` → `http://127.0.0.1:8765/?v=1784125200` |
 | Gate | **PASS** (3 fiction warnings expected) |
 | Product bar | **Demo-complete** (`PRODUCT.md`) |
 | Craft scorecard | **PASS** — `QA_SCORECARD_DEMO_2026-07-15.md` |
@@ -33,10 +33,10 @@
 
 | | |
 |--|--|
-| **Goal** | Nav chrome → Outfit; titles → Source Serif 4 (Option B) |
-| **Did** | Nav links/demo/hours chip Outfit; display face Source Serif 4 self-hosted; removed Cormorant; ASSET_V `1784124900`; gate PASS |
+| **Goal** | Unified copy styling EN/CN + legibility on photo backgrounds |
+| **Did** | Type role system (display/cn/ui); Story/Visit leads→Outfit; kickers/CTAs→Outfit; CN rebuilt Noto Serif SC subset + 500 weight; brighter CN tone; Story/Visit top scrims; ASSET_V `1784125200` |
 | **Residual** | Physical phone once before prospect share |
-| **Next** | Human visual OK; further type only if needed |
+| **Next** | Human visual OK |
 
 ---
 
@@ -62,7 +62,7 @@
 ## Frozen systems
 
 Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallback, placeholder→noindex, **demoMode until real client**.  
-**Type (2026-07-15):** display = Source Serif 4 (large titles); ui = Outfit (body, leads, nav, filters, chrome).
+**Type (2026-07-15):** display = Source Serif 4 · cn = Noto Serif SC (site subset) · ui = Outfit. EN/CN share tone+shadow roles.
 
 ---
 
@@ -73,6 +73,7 @@ Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallb
 | Physical device not used for this type pass | Low for internal; do before prospect URL |
 | Production incomplete | Expected |
 | Mailto Reserve | Demo-correct |
+| CN font is site-glyph subset only — rebuild if new Chinese copy chars are added | Low (document in ASSETS) |
 
 ---
 

@@ -13,13 +13,30 @@
   --charcoal: #2e2924;
   --line: rgba(28, 24, 20, 0.12);
 
-  /* Type system — roles (A chrome + B display face)
-     display = large EN titles (Source Serif 4 italic)
-     cn      = Chinese accents (Noto Serif SC)
-     ui      = body, leads, nav, filters, tools, meta chrome (Outfit) */
-  --font-cn: "Noto Serif SC", "Songti SC", serif;
-  --font-display: "Source Serif 4", "Noto Serif SC", "Iowan Old Style", "Palatino Linotype", serif;
-  --font-ui: "Outfit", system-ui, sans-serif;
+  /*
+   * Type system — three roles only (keep EN/CN contrast treatment aligned)
+   *   display  Source Serif 4 italic  → large EN titles, dish names, prices
+   *   cn       Noto Serif SC (Source Han Serif) → Chinese titles/marks/dish
+   *   ui       Outfit normal          → leads, body, nav, filters, kickers
+   */
+  --font-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --font-display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-ui: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Shared scale */
+  --type-panel-en: clamp(1.55rem, 3.2vw, 2.15rem);
+  --type-panel-cn: clamp(0.95rem, 1.7vw, 1.12rem);
+  --type-dish-en: clamp(1.65rem, 3.6vw, 2.4rem);
+  --type-dish-cn: clamp(1rem, 1.85vw, 1.2rem);
+  --type-lead: clamp(0.98rem, 1.35vw, 1.08rem);
+  --type-body: clamp(0.95rem, 1.5vw, 1.08rem);
+  --type-kicker: 0.78rem;
+  --type-chrome: 0.88rem;
+  --type-lead-lh: 1.45;
+  --type-body-lh: 1.55;
+  --type-title-track: 0.02em;
+  --type-cn-track: 0.1em;
+  --type-kicker-track: 0.1em;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
@@ -231,14 +248,14 @@ main#top {
 
 body {
   font-family: var(--font-ui);
-  font-weight: 300;
+  font-weight: 400;
   font-style: normal;
   font-size: 1.05rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784124900");
+  background-image: url("assets/paper-texture.webp?v=1784125200");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -392,45 +409,89 @@ button {
   backface-visibility: hidden;
 }
 
-/* ── Typography helpers ── */
-/* Chinese accent line */
+/* ── Typography helpers (roles) ── */
+/*
+ * Chinese marks (sitewide):
+ *   ✓ Brand 褶 (hero + logo)
+ *   ✓ One ceremonial mark under each panel EN title (由来 / 菜单 / 造访)
+ *   ✓ Dish Chinese names (spotlight, list, rail)
+ *   ✗ No dual-language echoes on eyebrows, leads, or body copy
+ *
+ * EN/CN share tone tokens + text-shadow from the panel; CN is never
+ * forced through italic Latin display.
+ */
+
+/* Chinese — serif mark / dish (never italic) */
 .cn {
   font-family: var(--font-cn);
   font-weight: 400;
   font-style: normal;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--type-cn-track);
+  -webkit-font-smoothing: antialiased;
 }
 
-/*
- * One Chinese mark rule (sitewide):
- *   ✓ Brand 褶 (hero title + logo)
- *   ✓ One ceremonial mark under each panel EN title (由来 / 菜单 / 造访)
- *   ✓ Dish Chinese names on Menu (spotlight + list)
- *   ✗ No dual-language echoes on eyebrows, leads, or body copy
- */
-
-/* English display line — large titles only; overrides put leads on UI */
+/* English display default — large titles; leads override to UI */
 .en {
   font-family: var(--font-display);
   font-weight: 400;
   font-style: italic;
-  letter-spacing: 0.03em;
+  letter-spacing: var(--type-title-track);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Readable prose / chrome — Outfit (not thin display italic) */
+/* Readable prose + chrome — Outfit (UI role) */
 .menu-spotlight-desc,
 .menu-head-lead .en,
+.story-head-lead .en,
+.visit-head-lead .en,
 .story-spotlight .en,
+.hero-tagline .en,
+.hero-eyebrow .en,
+.hero-scroll,
 .visit-address,
 .visit-hours p,
+.visit-access,
+.visit-kicker,
+.visit-action .en,
+.story-label,
+.menu-carousel-hint,
 .menu-note,
 .menu-list-item .list-desc,
 .menu-note .en,
+.footer-tag .en,
+.footer-copy,
+.footer-demo,
 .toast {
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
+}
+
+/* Panel ceremonial CN under EN title — same ink family as EN, slightly smaller */
+.story-head-title .cn,
+.menu-head-title .cn,
+.visit-head-title .cn {
+  font-family: var(--font-cn);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-panel-cn);
+  letter-spacing: var(--type-cn-track);
+  color: var(--tone-fg-soft);
+  margin-top: 0.15rem;
+  text-shadow: inherit;
+}
+
+/* Dish CN under dish EN — match dish title legibility */
+.menu-spotlight-cn,
+.menu-list-item .list-cn,
+.menu-rail-item .rail-cn {
+  font-family: var(--font-cn);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--tone-fg-soft);
+  letter-spacing: var(--type-cn-track);
+  text-shadow: inherit;
 }
 
 .muted {
@@ -657,10 +718,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
 .story,
 .menu,
 .visit {
-  /* Brighter paper type over photos — soft/muted were reading dull */
-  --tone-fg: #faf6f0;
-  --tone-fg-soft: rgba(250, 246, 240, 0.96);
-  --tone-fg-muted: rgba(250, 246, 240, 0.82);
+  /* Paper type over photos — soft stays readable; muted only for tertiary */
+  --tone-fg: #faf8f4;
+  --tone-fg-soft: rgba(250, 248, 244, 0.94);
+  --tone-fg-muted: rgba(250, 248, 244, 0.88);
   --tone-accent: #ebcfa0;
   --tone-accent-soft: #f0dcb4;
   --tone-line: rgba(250, 246, 240, 0.34);
@@ -691,8 +752,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
 .menu[data-tone="light"],
 .visit[data-tone="light"] {
   --tone-fg: #1c1814;
-  --tone-fg-soft: #2e2924;
-  --tone-fg-muted: rgba(28, 24, 20, 0.62);
+  --tone-fg-soft: #2a241e;
+  --tone-fg-muted: rgba(28, 24, 20, 0.78);
   --tone-accent: #8a6340;
   --tone-accent-soft: #a67c52;
   --tone-line: rgba(28, 24, 20, 0.2);
@@ -944,15 +1005,22 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.9rem;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: var(--type-kicker);
+  font-weight: 400;
   margin-bottom: 1.25rem;
-  opacity: 0.85;
-  letter-spacing: 0.15em;
+  letter-spacing: var(--type-kicker-track);
+  color: var(--tone-fg-soft);
+  text-transform: uppercase;
 }
 
 .hero-eyebrow .en {
-  font-size: 1.05rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 0.82rem;
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
 }
 
 .hero-title {
@@ -963,10 +1031,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: block;
   font-family: var(--font-cn);
   font-size: clamp(5rem, 18vw, 9rem);
-  font-weight: 400;
+  font-weight: 500;
+  font-style: normal;
   line-height: 0.9;
-  letter-spacing: 0.05em;
-  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.04em;
+  color: var(--tone-fg);
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .hero-title .title-en {
@@ -975,9 +1045,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: clamp(1.45rem, 3.5vw, 2.05rem);
   font-weight: 400;
   font-style: italic;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--type-title-track);
   margin-top: 0.5rem;
-  opacity: 0.9;
+  color: var(--tone-fg-soft);
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .hero-tagline {
@@ -989,9 +1060,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .hero-tagline .en {
-  font-size: 1.25rem;
-  letter-spacing: 0.03em;
-  opacity: 1;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  line-height: var(--type-body-lh);
+  letter-spacing: 0.015em;
+  color: var(--tone-fg);
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .hero-scroll {
@@ -1003,12 +1079,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  color: var(--tone-fg);
-  opacity: 0.55;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
+  color: var(--tone-fg-soft);
+  opacity: 0.72;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-kicker);
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .scroll-line {
@@ -1131,6 +1210,37 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   transition: background var(--motion-slow);
 }
 
+/* Top scrim under section head type (same idea as Menu) */
+.story-wall-veil::before,
+.visit-wall-veil::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: min(30%, 10.5rem);
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 6, 5, 0.58) 0%,
+    rgba(12, 8, 6, 0.34) 42%,
+    rgba(14, 10, 8, 0.1) 72%,
+    transparent 100%
+  );
+  transition: background var(--motion-slow);
+}
+
+.visit[data-tone="light"] .visit-wall-veil::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 242, 228, 0.78) 0%,
+    rgba(244, 230, 208, 0.48) 40%,
+    rgba(250, 242, 228, 0.14) 72%,
+    transparent 100%
+  );
+}
+
 .story-wall-veil::after {
   content: "";
   position: absolute;
@@ -1193,22 +1303,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .story-head-title .en {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+  font-size: var(--type-panel-en);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--type-title-track);
   line-height: 1.1;
   color: var(--tone-fg);
 }
 
-/* Ceremonial Chinese mark — one per panel, under English title */
-.story-head-title .cn {
-  font-family: var(--font-cn);
-  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  color: var(--tone-fg-muted);
-  margin-top: 0.15rem;
-}
+/* Panel CN mark uses shared .story-head-title .cn / .menu-head-title .cn rule */
 
 .story-head-lead {
   display: flex;
@@ -1219,13 +1321,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .story-head-lead .en {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.12rem;
-  line-height: 1.5;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-lead);
+  line-height: var(--type-lead-lh);
+  letter-spacing: 0.015em;
   color: var(--tone-fg);
-  opacity: 1;
+  text-shadow: var(--tone-shadow-soft);
 }
 
 /* One chapter at a time — Menu spotlight grammar */
@@ -1251,21 +1354,23 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .story-label {
   display: block;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-kicker);
   color: var(--tone-accent);
-  letter-spacing: 0.05em;
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
   margin: 0;
 }
 
 .story-spotlight .en {
   font-family: var(--font-ui);
   font-style: normal;
-  font-weight: 350;
+  font-weight: 400;
   font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-  line-height: 1.65;
-  letter-spacing: 0.01em;
+  line-height: 1.6;
+  letter-spacing: 0.015em;
   color: var(--tone-fg-soft);
   margin: 0;
   max-width: 34rem;
@@ -1553,7 +1658,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784124900");
+  background-image: url("assets/paper-texture.webp?v=1784125200");
   background-size: cover;
 }
 
@@ -1614,20 +1719,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .menu-head-title .en {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+  font-size: var(--type-panel-en);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--type-title-track);
   color: var(--tone-fg);
 }
 
-.menu-head-title .cn {
-  font-family: var(--font-cn);
-  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  color: var(--tone-fg-muted);
-  margin-top: 0.15rem;
-}
+/* .menu-head-title .cn — shared panel CN mark rule */
 
 .menu-head-lead {
   grid-area: lead;
@@ -1642,11 +1740,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
-  font-size: clamp(0.98rem, 1.35vw, 1.08rem);
-  line-height: 1.45;
+  font-size: var(--type-lead);
+  line-height: var(--type-lead-lh);
   letter-spacing: 0.015em;
   color: var(--tone-fg);
-  opacity: 1;
   text-shadow: var(--tone-shadow-soft);
 }
 
@@ -1846,46 +1943,40 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
-  font-size: 0.78rem;
+  font-size: var(--type-kicker);
   color: var(--tone-accent);
-  letter-spacing: 0.1em;
+  letter-spacing: var(--type-kicker-track);
   text-transform: uppercase;
   margin-bottom: 0.15rem;
-  opacity: 1;
 }
 
 .menu-spotlight-en {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.65rem, 3.6vw, 2.4rem);
+  font-size: var(--type-dish-en);
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--type-title-track);
   line-height: 1.15;
   color: var(--tone-fg);
   margin: 0;
 }
 
 .menu-spotlight-cn {
-  font-family: var(--font-cn);
-  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  line-height: 1.3;
-  color: var(--tone-fg-muted);
-  opacity: 1;
+  font-size: var(--type-dish-cn);
+  line-height: 1.35;
+  /* family/color from shared dish CN rule */
 }
 
 .menu-spotlight-desc {
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
-  line-height: 1.6;
-  letter-spacing: 0.01em;
+  font-size: var(--type-body);
+  line-height: var(--type-body-lh);
+  letter-spacing: 0.015em;
   color: var(--tone-fg-soft);
-  opacity: 1;
   max-width: 30rem;
   margin-top: 0.4rem;
-  font-weight: 350;
+  font-weight: 400;
 }
 
 /* Spotlight is hidden in list view — no expand rules needed here */
@@ -1900,9 +1991,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .menu-spotlight-price {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-style: normal;
+  font-size: 1.65rem;
   color: var(--tone-accent-soft);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   font-weight: 500;
 }
 
@@ -2042,11 +2134,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: none;
   margin: 0.15rem 0 0;
   text-align: center;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: rgba(242, 235, 224, 0.45);
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-kicker);
+  letter-spacing: 0.06em;
+  color: var(--tone-fg-muted);
+  text-shadow: var(--tone-shadow-soft);
 }
 
 /* Hide “swipe for more” when everything already fits */
@@ -2139,23 +2233,21 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-rail-item .rail-cn {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
   padding: 0.4rem 0.1rem 0.05rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--tone-fg);
   text-align: left;
+  /* family/color from shared dish CN rule */
 }
 
 .menu-rail-item .rail-price {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.85rem;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.82rem;
   color: var(--tone-accent);
   padding: 0 0.1rem 0.15rem;
   text-align: left;
@@ -2336,7 +2428,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-style: italic;
   font-size: clamp(1.08rem, 1.65vw, 1.22rem);
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--type-title-track);
   line-height: 1.28;
   color: var(--tone-fg);
   min-width: 0;
@@ -2345,30 +2437,26 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .menu-list-item .list-cn {
   grid-area: cn;
-  font-family: var(--font-cn);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  font-size: 0.88rem;
   line-height: 1.35;
-  color: var(--tone-fg-muted);
-  opacity: 0.92;
   min-width: 0;
+  /* family/color from shared dish CN rule */
 }
 
 .menu-list-item .list-price {
   grid-area: price;
   font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1.08rem, 1.65vw, 1.22rem);
-  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(1.05rem, 1.55vw, 1.18rem);
+  font-weight: 500;
   color: var(--tone-accent);
   justify-self: end;
   align-self: start;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   min-width: 2.75rem;
   text-align: right;
   padding-top: 0.06rem;
-  opacity: 0.95;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2376,12 +2464,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   grid-area: desc;
   font-family: var(--font-ui);
   font-style: normal;
-  font-weight: 300;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
   color: var(--tone-fg-soft);
-  opacity: 0.86;
   margin-top: 0.1rem;
   max-width: 40rem;
   display: -webkit-box;
@@ -2455,12 +2542,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .menu-note .en {
   font-family: var(--font-ui);
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.9rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
+  color: var(--tone-fg-soft);
 }
 
-/* Rail labels a bit clearer over the wall */
+/* Rail labels — CN uses dish CN face; full fg for thumbs under photo */
 .menu-rail-item .rail-cn {
   color: var(--tone-fg);
 }
@@ -2568,21 +2656,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .visit-head-title .en {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+  font-size: var(--type-panel-en);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--type-title-track);
   line-height: 1.1;
   color: var(--tone-fg);
 }
 
-.visit-head-title .cn {
-  font-family: var(--font-cn);
-  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  color: var(--tone-fg-muted);
-  margin-top: 0.15rem;
-}
+/* .visit-head-title .cn — shared panel CN mark rule */
 
 .visit-head-lead {
   display: flex;
@@ -2594,13 +2675,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .visit-head-lead .en {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.12rem;
-  line-height: 1.5;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-lead);
+  line-height: var(--type-lead-lh);
+  letter-spacing: 0.015em;
   color: var(--tone-fg);
-  opacity: 1;
+  text-shadow: var(--tone-shadow-soft);
 }
 
 /* Invitation card — where / when / how (caption, not a form) */
@@ -2629,32 +2711,36 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .visit-kicker {
   margin: 0 0 0.4rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.92rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-kicker);
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
   color: var(--tone-accent);
 }
 
 .visit-address {
   margin: 0;
   font-family: var(--font-ui);
-  font-weight: 350;
-  font-size: clamp(1.02rem, 1.5vw, 1.12rem);
-  line-height: 1.55;
-  letter-spacing: 0.01em;
-  color: var(--tone-fg-soft);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-body);
+  line-height: var(--type-body-lh);
+  letter-spacing: 0.015em;
+  color: var(--tone-fg);
 }
 
 .visit-access {
   display: block;
   margin: 0.4rem 0 0;
   font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  letter-spacing: 0.01em;
-  color: var(--tone-fg-muted);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  color: var(--tone-fg-soft);
 }
 
 .visit-access[hidden] {
@@ -2668,11 +2754,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .visit-hours p {
   margin: 0;
   font-family: var(--font-ui);
-  font-weight: 350;
-  font-size: clamp(1.02rem, 1.5vw, 1.12rem);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-body);
   line-height: 1.5;
-  letter-spacing: 0.01em;
-  color: var(--tone-fg-soft);
+  letter-spacing: 0.015em;
+  color: var(--tone-fg);
 }
 
 .visit-hours p + p {
@@ -2730,10 +2817,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .visit-action .en {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.12rem;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
   font-weight: 400;
   color: inherit;
 }
@@ -2863,13 +2950,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-family: var(--font-cn);
   font-size: 1.65rem;
   font-weight: 500;
+  font-style: normal;
+  color: inherit;
 }
 
 .footer-brand .logo-en {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.05rem;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .footer-tag {
@@ -2879,28 +2968,30 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   align-items: center;
   gap: 0.15rem;
   margin: 0;
-  opacity: 0.7;
+  opacity: 0.85;
   justify-content: center;
   text-align: center;
 }
 
 .footer-tag .en {
-  font-family: var(--font-display);
-  font-style: italic;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  letter-spacing: 0.02em;
   font-weight: 400;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
 }
 
 .footer-demo {
   margin: 0.35rem 0 0;
   max-width: 28rem;
   font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 0.78rem;
-  line-height: 1.45;
-  letter-spacing: 0.01em;
-  opacity: 0.55;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  opacity: 0.72;
   text-align: center;
   color: inherit;
 }
@@ -2912,9 +3003,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .footer-copy {
   font-family: var(--font-ui);
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.78rem;
-  opacity: 0.45;
+  opacity: 0.65;
   letter-spacing: 0.02em;
   margin: 0;
   text-align: right;

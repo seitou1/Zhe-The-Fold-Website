@@ -11,6 +11,9 @@
 assets/
   _orig/           # masters (local only; optional to deploy)
   fonts/           # self-hosted woff2 + fonts.css
+                   # CN: noto-serif-sc-*.woff2 is a *site glyph subset*
+                   # If new Chinese characters are added in copy, re-subset from
+                   # Noto Serif SC (Source Han Serif SC) and bump ASSET_V
   dish-*.webp      # full plate
   dish-*-thumb.webp
   story-*.webp
