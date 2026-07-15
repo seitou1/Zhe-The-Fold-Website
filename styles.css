@@ -13,10 +13,10 @@
   --charcoal: #2e2924;
   --line: rgba(28, 24, 20, 0.12);
 
-  /* Type system — Menu section is the source of truth
-     display = English titles / leads / CTAs (Cormorant italic)
+  /* Type system — roles (Option A readability)
+     display = large EN titles only (Cormorant italic)
      cn      = Chinese accents (Noto Serif SC)
-     ui      = body prose / meta / chrome (Outfit) */
+     ui      = body, leads, filters, tools, meta chrome (Outfit) */
   --font-cn: "Noto Serif SC", "Songti SC", serif;
   --font-display: "Cormorant Garamond", "Noto Serif SC", serif;
   --font-ui: "Outfit", system-ui, sans-serif;
@@ -238,7 +238,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784056000");
+  background-image: url("assets/paper-texture.webp?v=1784124569");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -409,7 +409,7 @@ button {
  *   ✗ No dual-language echoes on eyebrows, leads, or body copy
  */
 
-/* English editorial line — same as Menu titles / leads */
+/* English display line — large titles only; overrides put leads on UI */
 .en {
   font-family: var(--font-display);
   font-weight: 400;
@@ -417,8 +417,9 @@ button {
   letter-spacing: 0.03em;
 }
 
-/* Body prose — same as Menu dish description (Outfit) */
+/* Readable prose / chrome — Outfit (not thin display italic) */
 .menu-spotlight-desc,
+.menu-head-lead .en,
 .story-spotlight .en,
 .visit-address,
 .visit-hours p,
@@ -428,7 +429,7 @@ button {
 .toast {
   font-family: var(--font-ui);
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.01em;
 }
 
@@ -670,9 +671,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
     0 8px 28px rgba(0, 0, 0, 0.42);
   --tone-btn: #faf6f0;
   --tone-btn-soft: rgba(250, 246, 240, 0.94);
-  --tone-filter: rgba(250, 246, 240, 0.84);
-  --tone-filter-active: #fffaf3;
-  --tone-filter-line-active: rgba(250, 246, 240, 0.92);
+  --tone-filter: rgba(250, 246, 240, 0.92);
+  --tone-filter-active: #fffef9;
+  --tone-filter-line-active: rgba(250, 246, 240, 0.96);
   --tone-social-bg: rgba(250, 246, 240, 0.1);
   --tone-social-fg: rgba(250, 246, 240, 0.96);
   --tone-rule: linear-gradient(
@@ -1498,6 +1499,36 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   transition: background var(--motion-slow);
 }
 
+/* Top scrim — calm strip for menu-head type only; plate stays open below */
+.menu-wall-veil::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: min(32%, 11.5rem);
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 6, 5, 0.62) 0%,
+    rgba(12, 8, 6, 0.38) 42%,
+    rgba(14, 10, 8, 0.12) 72%,
+    transparent 100%
+  );
+  transition: background var(--motion-slow), opacity var(--motion-slow);
+}
+
+.menu[data-tone="light"] .menu-wall-veil::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 242, 228, 0.78) 0%,
+    rgba(244, 230, 208, 0.48) 40%,
+    rgba(250, 242, 228, 0.14) 72%,
+    transparent 100%
+  );
+}
+
 .menu-wall-veil::after {
   content: "";
   position: absolute;
@@ -1520,7 +1551,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784056000");
+  background-image: url("assets/paper-texture.webp?v=1784124569");
   background-size: cover;
 }
 
@@ -1560,7 +1591,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--tone-line);
   color: var(--tone-fg);
-  text-shadow: var(--tone-shadow);
+  /* Stronger lift over busy plate (pairs with top scrim) */
+  text-shadow: var(--tone-shadow-soft);
   transition: color 0.45s var(--ease-soft), text-shadow 0.45s var(--ease-soft),
     border-color 0.45s var(--ease-soft);
 }
@@ -1605,11 +1637,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-head-lead .en {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.12rem;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.98rem, 1.35vw, 1.08rem);
+  line-height: 1.45;
+  letter-spacing: 0.015em;
   color: var(--tone-fg);
   opacity: 1;
+  text-shadow: var(--tone-shadow-soft);
 }
 
 .menu-filters {
@@ -1632,11 +1668,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border-radius: 0;
   /* No border-bottom underline — ::after only on .is-active (avoids sticky touch :hover dual lines) */
   border-bottom: none;
-  /* Editorial chrome — same family as section titles / nav */
-  font-family: var(--font-display);
-  font-style: italic;
+  /* Chrome — Outfit for legibility over photo (not display italic) */
+  font-family: var(--font-ui);
+  font-style: normal;
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   letter-spacing: 0.04em;
   color: var(--tone-filter);
   background: transparent;
@@ -1721,10 +1757,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border: none;
   border-radius: 0;
   border-bottom: none;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
   color: var(--tone-filter);
   background: transparent;
   box-shadow: none;
@@ -1804,11 +1841,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-spotlight-cat {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.78rem;
   color: var(--tone-accent);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin-bottom: 0.15rem;
   opacity: 1;
 }
@@ -3382,12 +3421,19 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 
   .menu-head-lead .en {
-    font-size: 0.95rem;
-    line-height: 1.35;
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .menu-wall-veil::before {
+    height: min(36%, 10.5rem);
   }
 
   .menu-filters {

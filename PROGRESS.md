@@ -6,7 +6,7 @@
 | Last updated | 2026-07-15 |
 | Current phase | **`6 QA` / Demo-complete freeze** |
 | Stack | Static HTML/CSS/`data.js`/`script.js` (frozen) |
-| Preview | `python3 -m http.server 8765` → `http://127.0.0.1:8765/?v=1784056000` |
+| Preview | `python3 -m http.server 8765` → `http://127.0.0.1:8765/?v=1784124569` |
 | Gate | **PASS** (3 fiction warnings expected) |
 | Product bar | **Demo-complete** (`PRODUCT.md`) |
 | Craft scorecard | **PASS** — `QA_SCORECARD_DEMO_2026-07-15.md` |
@@ -33,10 +33,10 @@
 
 | | |
 |--|--|
-| **Goal** | Codify commit/push habit; sync GitHub with local |
-| **Did** | Live on GH Pages; locked end-of-session git push in AGENTS/README/OPS/PROGRESS |
-| **Residual** | Physical phone once before client share |
-| **Next** | Continue feature work; always commit+push at session end |
+| **Goal** | Menu/type readability — Option A (roles + top scrim) |
+| **Did** | Cormorant only for large titles; Outfit for lead/filters/tools/cat; menu-head top scrim; stronger head text-shadow; ASSET_V bump; gate PASS |
+| **Residual** | Physical phone once; optional Option B (Source Serif 4) if titles still feel frail |
+| **Next** | Human visual OK → commit+push; further type only if needed |
 
 ---
 
@@ -61,7 +61,8 @@
 
 ## Frozen systems
 
-Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallback, placeholder→noindex, **demoMode until real client**.
+Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallback, placeholder→noindex, **demoMode until real client**.  
+**Type roles (2026-07-15):** display = large titles; ui = leads/chrome — reopen with memo if swapping faces (Option B).
 
 ---
 
@@ -69,9 +70,10 @@ Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallb
 
 | Debt | Severity |
 |------|----------|
-| Physical device not used in this freeze | Low for internal; do before prospect URL |
+| Physical device not used for this type pass | Low for internal; do before prospect URL |
 | Production incomplete | Expected |
 | Mailto Reserve | Demo-correct |
+| Nav still Cormorant italic at small size | Open if still hard to read after Menu A |
 
 ---
 
