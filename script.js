@@ -125,10 +125,14 @@
           ? `<span class="rail-house" aria-hidden="true">·</span>`
           : "";
       const pos = item.position || "center center";
+      const posM = item.positionMobile || pos;
+      const originM = item.wallOriginMobile || "center center";
       return `<li role="option" class="menu-rail-item${active}${item.popular ? " is-house" : ""}" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(full)}"
         data-position="${esc(pos)}"
+        data-position-mobile="${esc(posM)}"
+        data-origin-mobile="${esc(originM)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -146,10 +150,14 @@
       const popular = item.popular ? "true" : "false";
       const markBits = marksHtml(item);
       const pos = item.position || "center center";
+      const posM = item.positionMobile || pos;
+      const originM = item.wallOriginMobile || "center center";
       return `<li class="menu-list-item${active}" role="option" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(src)}"
         data-position="${esc(pos)}"
+        data-position-mobile="${esc(posM)}"
+        data-origin-mobile="${esc(originM)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -165,17 +173,11 @@
     const first = Z.MENU_ITEMS[0];
     if (first) {
       const src = asset(first.image);
-      const pos = first.position || "center center";
       const a = $("#wallImgA");
       const b = $("#wallImgB");
-      if (a) {
-        a.src = src;
-        a.style.objectPosition = pos;
-      }
-      if (b) {
-        b.src = src;
-        b.style.objectPosition = pos;
-      }
+      if (a) a.src = src;
+      if (b) b.src = src;
+      // Framing applied after menu runtime mounts (frameMenuWall)
       const set = (id, v) => {
         const el = $(id);
         if (el) el.textContent = v;
@@ -186,6 +188,13 @@
       set("#featuredDesc", first.desc);
       set("#featuredPrice", first.price);
       paintFeaturedMarks(first);
+      // Stash seed focal for first selectDish / setWall
+      window.__zheMenuSeed = {
+        image: src,
+        position: first.position || "center center",
+        positionMobile: first.positionMobile || first.position || "center center",
+        originMobile: first.wallOriginMobile || "center center",
+      };
     }
   };
 
@@ -1799,17 +1808,36 @@
     }, 1500);
   };
 
-  const frameMenuWall = (img, position) => {
+  /** Tall phones: square plates fill full height — Y object-position barely crops.
+   *  Use stronger scale + bottom-biased transform-origin to clear the head band. */
+  const menuMobileMq = window.matchMedia("(max-width: 768px)");
+  const isMenuMobile = () => menuMobileMq.matches;
+
+  const frameMenuWall = (img, { position, positionMobile, originMobile } = {}) => {
     if (!img) return;
-    img.style.objectPosition = position || "center center";
+    const mobile = isMenuMobile();
+    const pos =
+      (mobile && positionMobile) || position || "center center";
+    img.style.objectPosition = pos;
+    if (mobile) {
+      const origin = originMobile || "center 70%";
+      img.style.transformOrigin = origin;
+      img.dataset.menuFocal = originMobile ? "low" : "default";
+    } else {
+      img.style.transformOrigin = "center center";
+      img.dataset.menuFocal = "default";
+    }
   };
 
-  const setWall = async (src, position) => {
+  const setWall = async (src, framing = {}) => {
     if (!src || !activeLayer || !idleLayer) return;
-    const pos = position || "center center";
+    const frame =
+      typeof framing === "string"
+        ? { position: framing }
+        : framing || {};
     if (src === currentSrc) {
-      frameMenuWall(activeLayer, pos);
-      frameMenuWall(idleLayer, pos);
+      frameMenuWall(activeLayer, frame);
+      frameMenuWall(idleLayer, frame);
       // Still re-evaluate contrast (layout / resize / first paint)
       // List mode keeps forced dark chrome — don't re-sample luminance thrash
       if (!listViewOn && typeof window.__zheUpdateMenuTone === "function") {
@@ -1822,14 +1850,14 @@
     if (gen !== previewGen) return;
 
     idleLayer.src = src;
-    frameMenuWall(idleLayer, pos);
+    frameMenuWall(idleLayer, frame);
     void idleLayer.offsetWidth;
     idleLayer.classList.add("is-active");
     activeLayer.classList.remove("is-active");
     const tmp = activeLayer;
     activeLayer = idleLayer;
     idleLayer = tmp;
-    frameMenuWall(activeLayer, pos);
+    frameMenuWall(activeLayer, frame);
     currentSrc = src;
     if (listViewOn) {
       // Quiet list crossfade: hold dark reading chrome (no light/dark flip mid-list)
@@ -1839,6 +1867,12 @@
       requestAnimationFrame(() => window.__zheUpdateMenuTone());
     }
   };
+
+  const framingFromEl = (el) => ({
+    position: el?.dataset?.position || "center center",
+    positionMobile: el?.dataset?.positionMobile || el?.dataset?.position,
+    originMobile: el?.dataset?.originMobile || "center center",
+  });
 
   const menuRail = $("#menuList");
   let railProgrammatic = false;
@@ -1903,7 +1937,7 @@
     featuredDesc?.closest(".menu-spotlight-copy")?.classList.remove("is-expanded");
 
     // Always update wall; list mode uses a slow CSS crossfade (no Ken Burns)
-    setWall(item.dataset.image, item.dataset.position || "center center");
+    setWall(item.dataset.image, framingFromEl(item));
     // Only scroll the horizontal rail in photo mode — never the page
     if (!listViewOn && scrollRail && menuInView) scrollRailToItem(item);
   };
@@ -2242,10 +2276,7 @@
       const pool = visibleItems();
       const current = pool[index] || pool[0];
       if (current?.dataset.image) {
-        setWall(
-          current.dataset.image,
-          current.dataset.position || "center center"
-        );
+        setWall(current.dataset.image, framingFromEl(current));
       }
       if (category === "all") startAutoRotate();
     }
@@ -2256,6 +2287,30 @@
     else menuListView.setAttribute("hidden", "");
   }
   syncListToggleUi();
+
+  // Apply focal framing for the current dish (seed + mobile/desktop switch)
+  const reframeActiveDish = () => {
+    const pool = visibleItems();
+    const current = pool[index] || pool[0] || railItems[0];
+    if (current?.dataset.image) {
+      setWall(current.dataset.image, framingFromEl(current));
+      return;
+    }
+    const seed = window.__zheMenuSeed;
+    if (seed?.image) {
+      setWall(seed.image, {
+        position: seed.position,
+        positionMobile: seed.positionMobile,
+        originMobile: seed.originMobile,
+      });
+    }
+  };
+  reframeActiveDish();
+  if (typeof menuMobileMq.addEventListener === "function") {
+    menuMobileMq.addEventListener("change", reframeActiveDish);
+  } else if (typeof menuMobileMq.addListener === "function") {
+    menuMobileMq.addListener(reframeActiveDish);
+  }
 
   // Expand description (mobile clamp only — desktop shows full copy)
   const expandTarget = featuredDesc?.closest(".menu-spotlight-copy");

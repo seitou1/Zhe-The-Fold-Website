@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784126400");
+  background-image: url("assets/paper-texture.webp?v=1784126600");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1810,7 +1810,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784126400");
+  background-image: url("assets/paper-texture.webp?v=1784126600");
   background-size: cover;
 }
 
@@ -3429,15 +3429,25 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     transform-origin: center center;
   }
 
+  /*
+   * Phone menu wall: square dish photos fill the full height of a tall
+   * viewport, so vertical object-position barely crops. Scale up and bias
+   * transform-origin downward (set per-dish in JS) to clear the head band.
+   */
   .menu-wall-img,
   .menu-wall-img.is-active,
   .menu.is-list-view .menu-wall-img,
   .menu.is-list-view .menu-wall-img.is-active {
-    /* Match desktop wall scale so List/Photos never reframe the dish */
-    transform: scale(1.12);
+    transform: scale(1.34);
     animation: none;
-    object-position: center 42%;
-    transform-origin: center center;
+    /* Fallback only — JS inline object-position / transform-origin win */
+    object-position: center 70%;
+    transform-origin: center 74%;
+  }
+
+  .menu-wall-img[data-menu-focal="low"],
+  .menu-wall-img.is-active[data-menu-focal="low"] {
+    transform: scale(1.42);
   }
 
   .visit-wall-img {
@@ -3680,10 +3690,22 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     overflow: hidden;
   }
 
-  .menu-wall-veil::before,
   .story-wall-veil::before,
   .visit-wall-veil::before {
     height: min(44%, 12.5rem);
+  }
+
+  /* Menu head is stacked (title + lead + filters) — taller, denser scrim */
+  .menu-wall-veil::before {
+    height: min(52%, 16.5rem);
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 3, 2, 0.88) 0%,
+      rgba(8, 5, 4, 0.68) 32%,
+      rgba(10, 7, 5, 0.38) 58%,
+      rgba(12, 8, 6, 0.12) 78%,
+      transparent 100%
+    );
   }
 
   .nav::before {
@@ -3889,10 +3911,21 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     background: var(--panel-veil-mobile-light);
   }
 
-  /* Phone Menu: mobile plate veil + stronger reading bands */
+  /* Phone Menu: deeper room + stronger bottom-left for dish copy */
   .menu-wall-veil {
     background:
-      var(--read-scrim-menu-copy),
+      linear-gradient(
+        to top,
+        rgba(5, 3, 2, 0.78) 0%,
+        rgba(8, 5, 4, 0.42) 28%,
+        transparent 55%
+      ),
+      linear-gradient(
+        to right,
+        rgba(5, 3, 2, 0.55) 0%,
+        rgba(8, 5, 4, 0.22) 32%,
+        transparent 58%
+      ),
       var(--panel-veil-mobile);
   }
 
@@ -3900,22 +3933,33 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     background:
       linear-gradient(
         to top,
-        rgba(245, 232, 210, 0.82) 0%,
-        rgba(240, 224, 198, 0.42) 32%,
-        transparent 60%
+        rgba(245, 232, 210, 0.88) 0%,
+        rgba(240, 224, 198, 0.5) 32%,
+        transparent 58%
       ),
       linear-gradient(
         to right,
-        rgba(245, 232, 210, 0.7) 0%,
-        rgba(240, 224, 198, 0.3) 32%,
-        transparent 60%
+        rgba(245, 232, 210, 0.75) 0%,
+        rgba(240, 224, 198, 0.35) 32%,
+        transparent 58%
       ),
       var(--panel-veil-mobile-light);
   }
 
   .menu.is-list-view .menu-wall-veil {
     background:
-      var(--read-scrim-menu-copy),
+      linear-gradient(
+        to top,
+        rgba(5, 3, 2, 0.78) 0%,
+        rgba(8, 5, 4, 0.42) 28%,
+        transparent 55%
+      ),
+      linear-gradient(
+        to right,
+        rgba(5, 3, 2, 0.55) 0%,
+        rgba(8, 5, 4, 0.22) 32%,
+        transparent 58%
+      ),
       var(--panel-veil-mobile);
   }
 
