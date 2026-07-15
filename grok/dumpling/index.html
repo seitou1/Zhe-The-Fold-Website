@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Zhe · The Fold | Handmade Dumplings in San Francisco</title>
+  <meta
+    name="description"
+    content="Zhe · The Fold (褶) — handmade Chinese dumplings in San Francisco. Classic, seasonal, and plant folds. Every fold holds the mark of a hand."
+  />
+  <link rel="canonical" href="https://zhethefold.com/" />
+  <meta name="theme-color" content="#f2ebe0" />
+  <!--
+    Launch: set data.js INDEXABLE:true AND change this meta to "index, follow"
+    (script.js also syncs meta from INDEXABLE after load — Google runs JS)
+  -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Zhe · The Fold" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://zhethefold.com/" />
+  <meta property="og:title" content="Zhe · The Fold | Handmade Dumplings in San Francisco" />
+  <meta
+    property="og:description"
+    content="Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand. 褶"
+  />
+  <meta property="og:image" content="https://zhethefold.com/assets/storefront.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1400" />
+  <meta property="og:image:height" content="787" />
+  <meta property="og:image:alt" content="Zhe · The Fold storefront at dusk" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zhe · The Fold | Handmade Dumplings in San Francisco" />
+  <meta
+    name="twitter:description"
+    content="Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand. 褶"
+  />
+  <meta name="twitter:image" content="https://zhethefold.com/assets/storefront.jpg" />
+  <meta name="twitter:image:alt" content="Zhe · The Fold storefront at dusk" />
+
+  <link
+    rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>褶</text></svg>"
+  />
+  <link
+    rel="preload"
+    as="image"
+    href="assets/hero-dumplings.webp?v=1784056000"
+    type="image/webp"
+    fetchpriority="high"
+  />
+  <!-- Self-hosted fonts (no Google runtime). Preload critical faces; CSS non-blocking. -->
+  <link
+    rel="preload"
+    as="font"
+    type="font/woff2"
+    href="assets/fonts/cormorant-garamond-400-italic-latin.woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    as="font"
+    type="font/woff2"
+    href="assets/fonts/outfit-400-latin.woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    as="style"
+    href="assets/fonts/fonts.css?v=1784056000"
+  />
+  <link
+    rel="stylesheet"
+    href="assets/fonts/fonts.css?v=1784056000"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="assets/fonts/fonts.css?v=1784056000" />
+  </noscript>
+  <link rel="stylesheet" href="styles.css?v=1784056000" />
+</head>
+<body>
+  <a class="skip-link" href="#menu">Skip to menu</a>
+  <!-- Grain & atmosphere overlays -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true">
+    <span class="scroll-progress-bar" id="scrollProgressBar"></span>
+  </div>
+
+  <!-- Logo always; section links fade in after hero -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav-logo" aria-label="Zhe home">
+      <span class="logo-cn" aria-hidden="true">褶</span>
+      <span class="logo-en">Zhe</span>
+    </a>
+    <span class="nav-demo" data-zhe-demo-label hidden>Concept · Demo</span>
+    <nav class="nav-links" id="navLinks" aria-label="Primary" aria-hidden="false">
+      <span class="nav-open" data-zhe-open-chip>
+        <span class="nav-open-dot" aria-hidden="true"></span>
+        <span class="nav-open-text" data-zhe-open-status>Checking hours…</span>
+      </span>
+      <a href="#story" data-zhe-track="click_story" data-zhe-track-meta="nav">Story</a>
+      <a href="#menu" data-zhe-track="click_menu" data-zhe-track-meta="nav">Menu</a>
+      <a href="#visit" data-zhe-track="click_visit" data-zhe-track-meta="nav">Visit</a>
+      <a
+        class="nav-reserve"
+        href="mailto:hello@zhethefold.com?subject=Reservation%20%C2%B7%20Zhe"
+        data-zhe-reserve
+        data-zhe-track="click_reserve"
+        data-zhe-track-meta="nav"
+      >Reserve</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero panel" id="hero">
+      <div class="hero-bg">
+        <!-- Poster for LCP; muted loop fades in when ready. reduced-motion keeps still. -->
+        <video
+          class="hero-img hero-video"
+          id="heroImg"
+          poster="assets/hero-dumplings.webp?v=1784056000"
+          width="1280"
+          height="704"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          disablepictureinpicture
+          disableremoteplayback
+          aria-label="Handmade dumplings on worn ceramic at Zhe · The Fold"
+        >
+          <source src="assets/hero-loop.mp4?v=1784056000" type="video/mp4" />
+        </video>
+        <img
+          class="hero-img hero-poster"
+          id="heroPoster"
+          src="assets/hero-dumplings.webp?v=1784056000"
+          alt=""
+          width="1280"
+          height="704"
+          fetchpriority="high"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <div class="hero-ambient" aria-hidden="true">
+          <div class="hero-glow"></div>
+          <div class="hero-steam">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+      <div class="stage hero-stage">
+        <div class="hero-content">
+          <p class="hero-eyebrow reveal" data-delay="0">
+            <span class="en">Handmade Dumplings</span>
+          </p>
+          <h1 class="hero-title reveal" data-delay="1">
+            <span class="title-cn" lang="zh-Hans" aria-hidden="true">褶</span>
+            <span class="title-en">Zhe · The Fold</span>
+          </h1>
+          <div class="hero-bottom reveal" data-delay="2">
+            <p class="hero-tagline">
+              <span class="en">Every fold holds the mark of a hand</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span>↓</span>
+        <div class="scroll-line"></div>
+      </div>
+      <!-- Decorative imperfect circles -->
+      <svg class="hero-marks" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.25"
+          stroke-dasharray="2 4" />
+        <path d="M40,110 Q70,60 110,90 T180,100" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2" />
+      </svg>
+    </section>
+
+    <!-- Story — photo wall + one chapter at a time (same gesture as Menu) -->
+    <section class="story panel" id="story">
+      <div class="story-wall" id="storyWall" aria-hidden="true">
+        <!-- eager: first Origins plate is LCP for this panel; lazy left a pale empty frame -->
+        <img class="story-wall-img is-active" id="storyWallA" src="assets/story-village.webp?v=1784056000" alt="" width="1400" height="787" loading="eager" decoding="async" fetchpriority="low" />
+        <img class="story-wall-img is-park-right" id="storyWallB" src="assets/story-village.webp?v=1784056000" alt="" width="1400" height="787" loading="lazy" decoding="async" />
+        <div class="story-wall-veil"></div>
+      </div>
+
+      <div class="stage story-stage">
+        <header class="story-head reveal">
+          <div class="story-head-title">
+            <h2>
+              <span class="en">Origins</span>
+              <span class="cn" lang="zh-Hans">由来</span>
+            </h2>
+          </div>
+          <p class="story-head-lead">
+            <span class="en">We don’t chase perfection—we honor the quiet beauty of dough that remembers who shaped it.</span>
+          </p>
+        </header>
+
+        <!-- Chapter copy seeded from STORY_CHAPTERS[0] in data.js -->
+        <div class="story-spotlight" id="storySpotlight" aria-live="polite">
+          <span class="story-label" id="storyLabel"></span>
+          <p class="en" id="storyBody"></p>
+        </div>
+
+        <!-- filled from data.js (crawlable + in-sync with carousel) -->
+        <div class="seo-story-chapters" id="seoStoryChapters"></div>
+
+        <div class="story-carousel">
+          <button type="button" class="story-carousel-btn" id="storyPrev" aria-label="Previous chapter">
+            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <path d="M14.5 5.2 8.2 12l6.3 6.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="story-dots" role="tablist" aria-label="Story chapters" id="storyDots">
+            <!-- filled from data.js -->
+          </div>
+          <button type="button" class="story-carousel-btn" id="storyNext" aria-label="Next chapter">
+            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <path d="M9.5 5.2 15.8 12 9.5 18.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu: locked panel + dish carousel -->
+    <section class="menu panel" id="menu">
+      <div class="menu-wall" id="menuWall" aria-hidden="true">
+        <img class="menu-wall-img is-active" id="wallImgA" src="assets/dish-pork.webp?v=1784056000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <img class="menu-wall-img" id="wallImgB" src="assets/dish-pork.webp?v=1784056000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <div class="menu-wall-veil"></div>
+        <div class="menu-wall-grain"></div>
+      </div>
+
+      <div class="stage menu-stage">
+        <header class="menu-head">
+          <div class="menu-head-title">
+            <h2>
+              <span class="en">The Menu</span>
+              <span class="cn" lang="zh-Hans">菜单</span>
+            </h2>
+          </div>
+          <p class="menu-head-lead">
+            <span class="en">Each dumpling is a small story.</span>
+          </p>
+          <div class="menu-filters" role="group" aria-label="Menu categories">
+            <button class="filter-btn is-active" type="button" aria-pressed="true" data-filter="all">
+              All
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="classic">
+              Classic
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="seasonal">
+              Seasonal
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="plant">
+              Plant
+            </button>
+          </div>
+          <div class="menu-tools">
+            <button
+              type="button"
+              class="menu-tool-btn"
+              id="menuViewToggle"
+              aria-pressed="false"
+              aria-label="Show list view"
+              title="Show list view"
+            >
+              List
+            </button>
+          </div>
+        </header>
+
+        <!-- Spotlight copy seeded from MENU_ITEMS[0] in data.js -->
+        <div class="menu-spotlight" id="menuFeatured">
+          <div class="menu-spotlight-copy">
+            <p class="menu-spotlight-cat" id="featuredCat"></p>
+            <h3 class="menu-spotlight-en" id="featuredEn"></h3>
+            <p class="menu-spotlight-cn" id="featuredCn" lang="zh-Hans"></p>
+            <p class="menu-spotlight-desc" id="featuredDesc"></p>
+            <div class="menu-spotlight-meta">
+              <span class="menu-spotlight-price" id="featuredPrice"></span>
+              <span class="menu-spotlight-marks" id="featuredMarks" hidden></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-carousel" id="menuCarousel">
+          <button type="button" class="menu-carousel-btn" id="menuPrev" aria-label="Previous dish">
+            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <path d="M14.5 5.2 8.2 12l6.3 6.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="menu-rail-wrap">
+          <ul class="menu-rail" id="menuList" role="listbox" aria-label="Dishes — swipe or use arrows">
+            <!-- filled from data.js -->
+          </ul>
+          </div>
+          <button type="button" class="menu-carousel-btn" id="menuNext" aria-label="Next dish">
+            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <path d="M9.5 5.2 15.8 12 9.5 18.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+        <p class="menu-carousel-hint" aria-hidden="true">Swipe for more</p>
+
+        <ul class="menu-list-view" id="menuListView" hidden role="listbox" aria-label="Full dish list">
+          <!-- filled from data.js -->
+        </ul>
+
+        <p class="menu-note">
+          <span class="en">Steamed or pan-seared · Share allergies · About eight per order</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Visit — storefront is the dish; type is the caption (Story/Menu grammar) -->
+    <section class="visit panel" id="visit">
+      <div class="visit-wall" aria-hidden="true">
+        <img
+          class="visit-wall-img"
+          src="assets/storefront.webp?v=1784056000"
+          alt="Zhe · The Fold storefront at dusk"
+          width="1400"
+          height="787"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="visit-wall-veil"></div>
+      </div>
+
+      <div class="stage visit-stage">
+        <header class="visit-head reveal">
+          <div class="visit-head-title">
+            <h2>
+              <span class="en">Visit</span>
+              <span class="cn" lang="zh-Hans">造访</span>
+            </h2>
+          </div>
+          <p class="visit-head-lead">
+            <span class="en">A quiet table and a warm fold.</span>
+          </p>
+        </header>
+
+        <!-- Bottom spotlight: where · when · how — not a Yelp card -->
+        <div class="visit-spotlight reveal">
+          <!-- NAP / hours / links from SITE in data.js only -->
+          <div class="visit-facts">
+            <div class="visit-fact">
+              <p class="visit-kicker"><span class="en">Find us</span></p>
+              <p class="visit-address" id="visitAddress"></p>
+              <p class="visit-access" id="visitAccess" hidden></p>
+            </div>
+            <div class="visit-fact">
+              <p class="visit-kicker"><span class="en">Hours</span></p>
+              <div class="visit-hours" id="visitHours"></div>
+            </div>
+          </div>
+
+          <div class="visit-actions">
+            <a
+              class="visit-action visit-action--primary"
+              data-zhe-maps
+              data-zhe-track="click_directions"
+              data-zhe-track-meta="visit"
+              href="#"
+            >
+              <span class="en">Directions</span>
+            </a>
+            <a
+              class="visit-action visit-action--primary"
+              data-zhe-reserve
+              data-zhe-track="click_reserve"
+              data-zhe-track-meta="visit"
+              href="mailto:hello@zhethefold.com?subject=Reservation%20%C2%B7%20Zhe"
+            >
+              <span class="en">Reserve</span>
+            </a>
+            <a
+              class="visit-action"
+              data-zhe-tel
+              data-zhe-track="click_call"
+              data-zhe-track-meta="visit"
+              href="tel:+14155550100"
+            >
+              <span class="en">Call</span>
+            </a>
+          </div>
+
+          <div class="visit-social social">
+            <ul class="social-list">
+              <li>
+                <a
+                  href="#"
+                  class="social-link"
+                  data-zhe-ig
+                  data-zhe-track="click_social"
+                  data-zhe-track-meta="visit"
+                  data-zhe-network="instagram"
+                  aria-label="Instagram"
+                  title="Instagram"
+                >
+                  <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zm0 1.8c-3.15 0-3.52.01-4.76.07-2.17.1-3.17 1.13-3.27 3.27-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.1 2.13 1.1 3.17 3.27 3.27 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c2.16-.1 3.17-1.14 3.27-3.27.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.1-2.16-1.12-3.17-3.27-3.27-1.24-.06-1.61-.07-4.76-.07zm0 3.07a5.13 5.13 0 1 1 0 10.26 5.13 5.13 0 0 1 0-10.26zm0 1.8a3.33 3.33 0 1 0 0 6.66 3.33 3.33 0 0 0 0-6.66zm6.54-2.06a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="social-link"
+                  id="wechatLink"
+                  data-zhe-track="click_social"
+                  data-zhe-track-meta="visit"
+                  data-zhe-network="wechat"
+                  aria-label="WeChat: Zhe The Fold"
+                  title="WeChat"
+                >
+                  <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M9.5 4C5.91 4 3 6.58 3 9.75c0 1.8.94 3.4 2.42 4.45l-.6 1.8 2.1-1.05c.8.22 1.66.35 2.58.35.24 0 .48-.01.72-.03A5.6 5.6 0 0 1 9.8 14.2c-3.12 0-5.65-2.24-5.65-5 0-2.76 2.53-5 5.65-5 .7 0 1.37.1 1.99.28A6.5 6.5 0 0 0 9.5 4zm7.4 4.1c-2.95 0-5.35 2.1-5.35 4.7 0 2.6 2.4 4.7 5.35 4.7.62 0 1.21-.09 1.76-.25l1.62.81-.46-1.4A4.3 4.3 0 0 0 22 12.8c0-2.6-2.4-4.7-5.1-4.7zM8.35 7.55a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7zm3.55 0a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7zM15.4 10.9a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5zm3.15 0a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li hidden>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link"
+                  data-zhe-xhs
+                  data-zhe-track="click_social"
+                  data-zhe-track-meta="visit"
+                  data-zhe-network="xiaohongshu"
+                  aria-label="Xiaohongshu"
+                  title="Xiaohongshu"
+                >
+                  <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                      fill="currentColor"
+                      d="M5.2 6.4h3.05l.55 1.65h1.55L9.2 5.2H6.35L5.2 6.4zm7 0h3.05l.55 1.65h1.55L16.2 5.2h-2.85L12.2 6.4zM4.4 9.1h15.2v1.55H4.4V9.1zm1.2 2.7h2.4l.7 5.8H6.3l-.7-5.8zm4.1 0h2.4l.15 5.8H9.85l-.15-5.8zm4.1 0h2.4l-.15 5.8h-2.1l.15-5.8zm4.1 0h2.4l-.7 5.8h-2.4l.7-5.8zM5.6 18.8h12.8v1.4H5.6v-1.4z"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <footer class="footer">
+    <div class="footer-stage">
+      <div class="footer-brand">
+        <span class="logo-cn" lang="zh-Hans" aria-hidden="true">褶</span>
+        <span class="logo-en">Zhe · The Fold</span>
+      </div>
+      <p class="footer-tag">
+        <span class="en">The imperfect pleats are the point</span>
+      </p>
+      <p class="footer-demo" data-zhe-demo-blurb hidden>
+        Concept house for portfolio — sample address; not a live reservation venue.
+      </p>
+      <p class="footer-copy">© <span id="year"></span> Zhe · The Fold. All rights reserved.</p>
+    </div>
+  </footer>
+
+  </main>
+
+  <!-- WeChat toast text from SITE.social.wechatId -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="application/ld+json" id="restaurantJsonLd"></script>
+  <script src="data.js?v=1784056000"></script>
+  <script src="script.js?v=1784056000"></script>
+</body>
+</html>

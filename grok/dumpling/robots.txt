@@ -1,0 +1,13 @@
+# Zhe · The Fold — https://zhethefold.com/
+#
+# Pre-launch: index.html meta robots is noindex (driven by data.js INDEXABLE).
+# Go-live checklist:
+#   1. Real NAP in data.js SITE
+#   2. INDEXABLE: true in data.js
+#   3. Redeploy (script.js sets meta robots to index, follow)
+#   4. Keep Allow + Sitemap below
+
+User-agent: *
+Allow: /
+
+Sitemap: https://zhethefold.com/sitemap.xml
