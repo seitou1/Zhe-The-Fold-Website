@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784173500");
+  background-image: url("assets/paper-texture.webp?v=1784175000");
   background-size: cover;
 }
 
