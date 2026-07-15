@@ -1765,7 +1765,7 @@
   const featuredPrice = $("#featuredPrice");
   const menuFeatured = $("#menuFeatured");
   const menuSection = $("#menu");
-  const menuViewToggle = $("#menuViewToggle");
+  const menuViewBtns = $$(".menu-view-btn");
   const menuListView = $(".menu-list-view");
 
   let activeLayer = wallA;
@@ -1778,6 +1778,7 @@
   let autoTimer = null;
   let userPausedUntil = 0;
   let listViewOn = Boolean(menuSection?.classList.contains("is-list-view"));
+  let toneBeforeList = null;
   const AUTO_MS = 3800;
   const USER_PAUSE_MS = 9000;
   const preloadCache = new Map();
@@ -1979,12 +1980,42 @@
   };
 
   const syncListToggleUi = () => {
-    if (!menuViewToggle) return;
-    menuViewToggle.setAttribute("aria-pressed", String(listViewOn));
-    const label = listViewOn ? "Show photo view" : "Show list view";
-    menuViewToggle.setAttribute("aria-label", label);
-    menuViewToggle.setAttribute("title", label);
-    menuViewToggle.textContent = listViewOn ? "Photos" : "List";
+    menuViewBtns.forEach((btn) => {
+      const isList = btn.dataset.view === "list";
+      const active = isList ? listViewOn : !listViewOn;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
+  };
+
+  const setListView = (on) => {
+    if (!menuSection) return;
+    const next = Boolean(on);
+    if (next === listViewOn) {
+      syncListToggleUi();
+      return;
+    }
+    listViewOn = next;
+    menuSection.classList.toggle("is-list-view", listViewOn);
+    if (menuListView) {
+      if (listViewOn) menuListView.removeAttribute("hidden");
+      else menuListView.setAttribute("hidden", "");
+    }
+    syncListToggleUi();
+    track("toggle_list_view", { mode: listViewOn ? "list" : "photos" });
+    if (listViewOn) {
+      stopAutoRotate();
+      // Reading mode: force dark chrome — do NOT reframe/reload wall
+      toneBeforeList = menuSection.getAttribute("data-tone");
+      menuSection.setAttribute("data-tone", "dark");
+    } else {
+      if (toneBeforeList) menuSection.setAttribute("data-tone", toneBeforeList);
+      else if (typeof window.__zheUpdateMenuTone === "function") {
+        requestAnimationFrame(() => window.__zheUpdateMenuTone());
+      }
+      toneBeforeList = null;
+      if (category === "all") startAutoRotate();
+    }
   };
 
   /**
@@ -2141,7 +2172,7 @@
     shouldIgnore: (t) => {
       if (
         t.closest?.(
-          "button, a, .nav, .menu-list-view, .filter-btn, .menu-tool-btn, .menu-carousel-btn, input, select, textarea"
+          "button, a, .nav, .menu-list-view, .filter-btn, .menu-view-btn, .menu-carousel-btn, input, select, textarea"
         )
       ) {
         return true;
@@ -2258,32 +2289,11 @@
     });
   }
 
-  // List / photos view toggle
-  let toneBeforeList = null;
-  menuViewToggle?.addEventListener("click", () => {
-    if (!menuSection) return;
-    listViewOn = !menuSection.classList.contains("is-list-view");
-    menuSection.classList.toggle("is-list-view", listViewOn);
-    if (menuListView) {
-      if (listViewOn) menuListView.removeAttribute("hidden");
-      else menuListView.setAttribute("hidden", "");
-    }
-    syncListToggleUi();
-    track("toggle_list_view", { mode: listViewOn ? "list" : "photos" });
-    if (listViewOn) {
-      stopAutoRotate();
-      // Reading mode: force dark chrome — do NOT reframe/reload wall (avoids resize jump)
-      toneBeforeList = menuSection.getAttribute("data-tone");
-      menuSection.setAttribute("data-tone", "dark");
-    } else {
-      // Restore photo-mode tone only — wall src/crop already correct
-      if (toneBeforeList) menuSection.setAttribute("data-tone", toneBeforeList);
-      else if (typeof window.__zheUpdateMenuTone === "function") {
-        requestAnimationFrame(() => window.__zheUpdateMenuTone());
-      }
-      toneBeforeList = null;
-      if (category === "all") startAutoRotate();
-    }
+  // Photo view | List view segment
+  menuViewBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setListView(btn.dataset.view === "list");
+    });
   });
   // Sync list hidden with initial class state
   if (menuListView) {

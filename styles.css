@@ -298,7 +298,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784139000");
+  background-image: url("assets/paper-texture.webp?v=1784141000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -391,7 +391,7 @@ button {
 .filter-btn:focus-visible,
 .menu-rail-item:focus-visible,
 .menu-list-item:focus-visible,
-.menu-tool-btn:focus-visible,
+.menu-view-btn:focus-visible,
 .visit-action:focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 3px;
@@ -400,7 +400,7 @@ button {
 .menu .filter-btn:focus-visible,
 .menu .menu-rail-item:focus-visible,
 .menu .menu-list-item:focus-visible,
-.menu .menu-tool-btn:focus-visible,
+.menu .menu-view-btn:focus-visible,
 .visit .visit-action:focus-visible {
   outline-color: var(--wheat);
 }
@@ -1805,7 +1805,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784139000");
+  background-image: url("assets/paper-texture.webp?v=1784141000");
   background-size: cover;
 }
 
@@ -1968,50 +1968,68 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 }
 
-/* Menu tools — list / photos toggle (lives inside .menu-actions) */
+/*
+ * Menu display segment — Photo view | List view
+ * Always both modes visible (not a flip label). Stronger than filters:
+ * quiet plate + icons + full “view” wording; hairline under active only.
+ */
 .menu-tools {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.15rem 1.1rem;
   justify-content: flex-end;
   align-items: center;
   text-shadow: none;
+  flex-shrink: 0;
 }
 
-.menu-tool-btn {
+.menu-view {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0.12rem 0.2rem 0.14rem;
+  border: 1px solid var(--tone-line);
+  background: rgba(8, 6, 5, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 252, 247, 0.04);
+}
+
+.menu[data-tone="light"] .menu-view {
+  background: rgba(250, 246, 240, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.menu-view-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
-  min-width: 2.75rem;
-  min-height: 2.5rem;
-  padding: 0.35rem 0.25rem 0.45rem;
+  gap: 0.32rem;
+  min-height: 2.55rem;
+  padding: 0.38rem 0.55rem 0.42rem;
   margin: 0;
   border: none;
   border-radius: 0;
-  border-bottom: none;
+  background: transparent;
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
-  font-size: 0.88rem;
-  letter-spacing: 0.04em;
+  font-size: 0.92rem;
+  letter-spacing: 0.03em;
   color: var(--tone-filter);
-  background: transparent;
-  box-shadow: none;
+  opacity: 0.72;
   white-space: nowrap;
-  transition: color var(--motion);
+  box-shadow: none;
+  transition: color var(--motion), opacity var(--motion);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-.menu-tool-btn::after {
+.menu-view-btn::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 0.05rem;
-  width: 100%;
-  max-width: 1.45rem;
+  bottom: 0.12rem;
+  width: calc(100% - 0.7rem);
+  max-width: 3.4rem;
   height: 1px;
   background: var(--tone-filter-line-active);
   opacity: 0;
@@ -2020,32 +2038,56 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   pointer-events: none;
 }
 
+.menu-view-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 0.9rem;
+  height: 0.9rem;
+  opacity: 0.92;
+}
+
+.menu-view-label {
+  line-height: 1.1;
+}
+
+.menu-view-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.45rem 0.1rem;
+  background: var(--tone-line);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.menu-view-btn.is-active,
+.menu-view-btn[aria-pressed="true"] {
+  color: var(--tone-filter-active);
+  opacity: 1;
+}
+
+.menu-view-btn.is-active::after,
+.menu-view-btn[aria-pressed="true"]::after {
+  opacity: 0.95;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .menu-tool-btn:hover {
+  .menu-view-btn:hover {
     color: var(--tone-filter-active);
+    opacity: 0.95;
     background: transparent;
   }
-}
-
-.menu-tool-btn[aria-pressed="true"] {
-  background: transparent;
-  color: var(--tone-filter-active);
-  box-shadow: none;
-}
-
-.menu-tool-btn[aria-pressed="true"]::after {
-  opacity: 0.9;
 }
 
 @media (hover: none), (pointer: coarse) {
-  .menu-tool-btn:hover:not([aria-pressed="true"]),
-  .menu-tool-btn:focus:not([aria-pressed="true"]) {
+  .menu-view-btn:hover:not(.is-active),
+  .menu-view-btn:focus:not(.is-active) {
     color: var(--tone-filter);
+    opacity: 0.72;
     background: transparent;
   }
 
-  .menu-tool-btn:hover:not([aria-pressed="true"])::after,
-  .menu-tool-btn:focus:not([aria-pressed="true"])::after {
+  .menu-view-btn:hover:not(.is-active)::after,
+  .menu-view-btn:focus:not(.is-active)::after {
     opacity: 0;
   }
 }
@@ -3649,18 +3691,30 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     height: calc(var(--nav-h) + 2.1rem);
   }
 
-  .menu-tool-btn {
-    min-width: 2.85rem;
-    min-height: 2.75rem;
-    padding: 0.45rem 0.4rem 0.5rem;
-    font-size: 0.92rem;
-    letter-spacing: 0.04em;
+  .menu-view {
+    padding: 0.08rem 0.12rem 0.1rem;
   }
 
-  .menu-tool-btn::after {
-    width: 1.55rem;
-    max-width: none;
-    bottom: 0.2rem;
+  .menu-view-btn {
+    min-height: 2.65rem;
+    padding: 0.35rem 0.4rem 0.4rem;
+    font-size: 0.88rem;
+    gap: 0.28rem;
+  }
+
+  .menu-view-icon {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .menu-view-btn::after {
+    bottom: 0.15rem;
+    max-width: 2.8rem;
+  }
+
+  /* Tight phones: icons + Photo | List (suffix “view” still in a11y title) */
+  .menu-view-suffix {
+    display: none;
   }
 
   .filter-btn {
@@ -4039,7 +4093,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .story-dot,
   .menu-rail-item,
   .menu-list-item,
-  .menu-tool-btn,
+  .menu-view-btn,
   .visit-action,
   .visit-social-link {
     transition: none;
