@@ -10,7 +10,7 @@ Filled for the live `dumpling/` project.
 | Field | Answer |
 |-------|--------|
 | Working title | 褶 · Zhe · The Fold |
-| One-line promise | Handmade dumplings; every fold holds the mark of a hand |
+| One-line promise | Northern folds in SF; we leave the uneven creases — that is the work |
 | Audience | SF diners seeking a quiet, craft-led house (not loud Yelp chrome) |
 | Tone | Quiet, wabi-sabi, warm, bilingual ceremony |
 | Languages | EN-first prose; CN ceremonial marks |
