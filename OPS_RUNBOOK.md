@@ -75,6 +75,19 @@ Do **in this order**:
 - Prefer: `feat(menu): hydrate rail from data.js`  
 - Avoid: `stuff`, `fix`, `wip` on `main`  
 
+### How often to push (locked habit)
+
+| When | Action |
+|------|--------|
+| End of a real work session | `git add` → `commit` → **`push`** |
+| After anything you’d hate to redo | Push soon (don’t batch days) |
+| Tiny mid-flow typo | Can wait for next real commit |
+| Before risky experiments | Commit first (or a branch) |
+
+After push, GitHub Pages rebuilds in ~1–2 minutes. Hard-refresh the live URL.
+
+**This project:** work in `/Users/kenneth/Desktop/Code/Zhe-The-Fold-Website` (git remote = origin).
+
 ### Conflict rule
 
 Orchestrator resolves frozen systems (`BUILD_PLAYBOOK` §16). Lane redoes local work if needed.

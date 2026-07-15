@@ -45,14 +45,23 @@ node scripts/check-launch.mjs
 
 ## Free hosting (GitHub Pages)
 
-See **`GITHUB_PAGES.md`**. Short version:
+**Live:** https://seitou1.github.io/Zhe-The-Fold-Website/  
+**Repo:** https://github.com/seitou1/Zhe-The-Fold-Website  
 
-1. Create a **public** GitHub repo  
-2. Push **contents of `dumpling/`** to `main` (so `index.html` is at repo root)  
-3. Settings → Pages → Deploy from branch → `main` / `/ (root)`  
-4. Open `https://YOUR_USER.github.io/YOUR_REPO/`  
+See **`GITHUB_PAGES.md`** for setup details. Keep `demoMode: true` and noindex for the concept demo.
 
-Keep `demoMode: true` and noindex for the concept demo.
+### Update GitHub from local (habit)
+
+After every real work session (or any change you’d hate to lose):
+
+```bash
+cd /Users/kenneth/Desktop/Code/Zhe-The-Fold-Website
+git add .
+git commit -m "Short description of what changed"
+git push
+```
+
+Then hard-refresh the live site (~1–2 min after push).
 
 ## Non-negotiable rules
 

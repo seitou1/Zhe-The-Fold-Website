@@ -33,10 +33,10 @@
 
 | | |
 |--|--|
-| **Goal** | Close demo-complete bar |
-| **Did** | Automated journey QA (desk+mobile); scorecard; PRODUCT freeze; concept chrome already live |
-| **Residual** | Physical phone once before client share; no git tag (no repo) |
-| **Next** | Host portfolio URL when ready · or production path with real data |
+| **Goal** | Codify commit/push habit; sync GitHub with local |
+| **Did** | Live on GH Pages; locked end-of-session git push in AGENTS/README/OPS/PROGRESS |
+| **Residual** | Physical phone once before client share |
+| **Next** | Continue feature work; always commit+push at session end |
 
 ---
 
