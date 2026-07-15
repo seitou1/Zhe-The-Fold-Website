@@ -63,6 +63,11 @@ git push
 
 Then hard-refresh the live site (~1–2 min after push).
 
+### Fork vs branch
+
+Daily work: **don’t fork** — use this repo + branches.  
+Client / separate product: see **`OPS_RUNBOOK.md` §3b** (fork vs new repo vs transfer).
+
 ## Non-negotiable rules
 
 1. Research web before non-trivial options  

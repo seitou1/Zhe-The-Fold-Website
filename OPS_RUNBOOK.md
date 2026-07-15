@@ -94,6 +94,95 @@ Orchestrator resolves frozen systems (`BUILD_PLAYBOOK` §16). Lane redoes local 
 
 ---
 
+## 3b. Fork vs branch vs new repo (when to split)
+
+### Quick definitions
+
+| Thing | What it is | Typical use |
+|-------|------------|-------------|
+| **Clone** | Your local copy of a repo | Daily work (you already do this) |
+| **Branch** | Parallel line of history *inside the same repo* | Experiments, features, multi-agent lanes |
+| **Fork** | *Your copy of someone else’s (or a published) repo under another account/org* on GitHub | Client ownership, open-source contribute, independent product line |
+| **New empty repo** | Fresh history, optional copy of files | Clean client delivery with no demo baggage |
+
+**Fork is a GitHub relationship** (upstream ↔ your fork). It is **not** required for normal edits to **your own** `seitou1/Zhe-The-Fold-Website` — use **branches + push to main**.
+
+### Decision table — should we fork?
+
+| Situation | Do this | Why |
+|-----------|---------|-----|
+| Day-to-day Zhe demo improvements | **Branch or commit on this repo** | You own it; fork adds noise |
+| Risky experiment (new nav, redesign) | **`feat/...` branch** on this repo | Easy PR/compare; merge or drop |
+| Multi-agent parallel files | **Branches or worktrees** on this repo | Same project, temporary split |
+| Open-source: contribute to *another* project | **Fork *their* repo** | Standard GH contribute model |
+| **Client wants the site under *their* GitHub** | **Fork *or* transfer *or* new repo** (see below) | Ownership + permissions |
+| Client production vs your portfolio demo | **Keep demo repo; new repo or fork for client** | Don’t mix Sample Street demo with real NAP forever |
+| Someone outside the team customizes without write access | **They fork; open PRs back** | Safe collaboration |
+| Start a totally different product (not Zhe) | **New repo from blank kit** (`next project site`) | Not a fork of Zhe |
+
+### Client handoff options (pick with the client)
+
+| Option | When | Pros | Cons |
+|--------|------|------|------|
+| **A. Transfer repo** to client org | They own 100% of Zhe-derived site | Clean ownership | You lose admin unless added back |
+| **B. Fork under client org** from your demo | They start from your code, separate history of issues | Clear “based on” link | Two remotes to manage if you keep syncing |
+| **C. New repo + copy files** (no fork link) | Clean break; strip demo/docs they don’t need | Simplest mental model | No automatic “Sync fork” |
+| **D. You keep hosting; client never has git** | Retainers / you deploy forever | Easy for them | You’re the bottleneck |
+
+**Recommendation for showcase → real venue:**
+
+1. **Keep** `seitou1/Zhe-The-Fold-Website` as the **portfolio demo** (`demoMode: true`, noindex).  
+2. For a paying client: **C (new repo)** or **B (fork into their org)** with **their** NAP, `demoMode: false`, production `GO_LIVE`.  
+3. Do **not** turn the public demo into the only production copy without a deliberate decision (you lose the clean pitch piece).
+
+### When *not* to fork
+
+- “Just to try a CSS tweak” → **branch**  
+- “Backup” → **push to origin** (you already have remote backup)  
+- “Multi-agent” → **worktrees/branches**, not forks  
+- “New unrelated website” → **blank kit + new repo**, not fork of Zhe  
+
+### How to fork (when you need it)
+
+**On GitHub**
+
+1. Open the source repo (e.g. this one).  
+2. **Fork** (top right) → choose account/org (yours or client’s).  
+3. Clone **the fork**:
+   ```bash
+   git clone https://github.com/CLIENT_OR_YOU/FORK_NAME.git
+   cd FORK_NAME
+   ```
+4. Optional: keep a link to upstream for pulling demo improvements:
+   ```bash
+   git remote add upstream https://github.com/seitou1/Zhe-The-Fold-Website.git
+   git fetch upstream
+   # merge selectively — never blind-merge production NAP with demo
+   ```
+5. Enable **Pages** on the **fork** (Settings → Pages) if they need a live URL.  
+6. Set client data in **their** `data.js`; `demoMode: false` when real.
+
+**Honesty:** Merging upstream demo into a live client repo can reintroduce Sample Street or concept chrome — review every sync.
+
+### How this fits multi-agent
+
+| Parallel work | Prefer |
+|---------------|--------|
+| Same product, same owner | Branches / worktrees |
+| Different owner (client vs portfolio) | Separate repo (fork or new) |
+| Lane agents | Never each on a personal fork of the same app |
+
+### Zhe defaults (this repo)
+
+| Question | Answer |
+|----------|--------|
+| Daily work | **No fork** — push `main` (or short-lived `feat/*`) |
+| Experiment | **Branch** |
+| Client production from this demo | **New repo or client-org fork** + production bar |
+| New non-Zhe site | **`next project site` kit** → new repo |
+
+---
+
 ## 4. Deploy
 
 ```bash

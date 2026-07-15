@@ -99,6 +99,7 @@ Do **not** casually change Zhe's frozen stack. Do **not** assume every future si
 | **Multi-agent** | **Discretion:** parallel only if ≥2 independent workstreams; else **solo** |
 | **Scorecard** | Light mid-build; full at craft freeze and before live |
 | **Git / GitHub** | End of session (or end of chunk): **commit + push** |
+| **Fork** | **Rare** — see `OPS_RUNBOOK` §3b. Daily work = this repo + branches. Client production = new repo or client-org fork; keep this repo as portfolio demo |
 | **Reserve** | mailto until `booking.url` set — say so (partial conversion) |
 
 ### Multi-agent discretion
