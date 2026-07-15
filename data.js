@@ -5,12 +5,12 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784175000",
+  ASSET_V: "1784176500",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────
    * See GO_LIVE.md. script.js will NOT index if NAP still looks like a
-   * placeholder (Sample Street / 555 / 94100), even when INDEXABLE is true.
+   * placeholder (Sample Street / 555 / 10013 demo zip), even when INDEXABLE is true.
    *
    * 1. Real telephone, address, mapsQuery, optional geo
    * 2. booking.url = Resy venue page; social.xiaohongshu when ready
@@ -31,27 +31,27 @@ window.ZHE = {
     url: "https://zhethefold.com/",
     /** Meta + JSON-LD description (one string for SEO + schema) */
     description:
-      "Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand.",
+      "Handmade Chinese dumplings in New York. Every fold holds the mark of a hand.",
     email: "hello@zhethefold.com",
     reserveSubject: "Reservation · Zhe",
     /* ⚠ Placeholders — replace before INDEXABLE true */
-    telephone: "+14155550100",
-    telephoneDisplay: "(415) 555-0100",
+    telephone: "+12125550100",
+    telephoneDisplay: "(212) 555-0100",
     address: {
-      streetAddress: "100 Sample Street, Suite A",
-      addressLocality: "San Francisco",
-      addressRegion: "CA",
-      postalCode: "94100",
+      streetAddress: "200 Sample Street, Floor 1",
+      addressLocality: "New York",
+      addressRegion: "NY",
+      postalCode: "10013",
       addressCountry: "US",
     },
-    mapsQuery: "100 Sample Street San Francisco CA",
-    geo: null, // { latitude: 37.77, longitude: -122.42 }
+    mapsQuery: "200 Sample Street New York NY 10013",
+    geo: null, // { latitude: 40.718, longitude: -73.999 }
     /**
      * Open badge + Visit hours + Restaurant schema.
      * Days: Sun Mon Tue Wed Thu Fri Sat (en-US short from Intl).
      */
     hours: {
-      timeZone: "America/Los_Angeles",
+      timeZone: "America/New_York",
       closedWeekdays: ["Mon"],
       note: "Closed Mondays",
       periods: [
@@ -73,11 +73,11 @@ window.ZHE = {
       wechatId: "褶Zhe · The Fold",
     },
     /** Short access line under address (transit / walk-in — fiction-safe) */
-    access: "Walk-ins welcome · California St",
+    access: "Walk-ins welcome · near Canal St",
     /** Reserve CTA → Resy (or OT/Tock). null url falls back to mailto. */
     booking: {
       provider: "resy", // "resy" | "opentable" | "tock" | "mailto" | "other"
-      url: null, // e.g. "https://resy.com/cities/sf/…/zhe-the-fold"
+      url: null, // e.g. "https://resy.com/cities/ny/…/zhe-the-fold"
       label: "Reserve",
     },
   },
@@ -208,7 +208,7 @@ window.ZHE = {
       label: "Two · City",
       short: "City",
       body:
-        "San Francisco’s fog met her flour. A quiet shop in the city, where the same hands fold for strangers as they once folded for family.",
+        "New York winters met her flour. A quiet shop in the city, where the same hands fold for strangers as they once folded for family.",
       image: "assets/story-city.jpg",
       position: "42% 40%",
     },

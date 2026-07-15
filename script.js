@@ -236,6 +236,7 @@
       /555[-.]?0\d{2}/.test(tel) ||
       /Sample\s+Street/i.test(street) ||
       zip === "94100" ||
+      zip === "10013" ||
       /Sample/i.test(maps) ||
       /55501\d{2}/.test(tel.replace(/\D/g, ""))
     );
@@ -313,7 +314,7 @@
   const getHoursConfig = () => {
     const h = Z.SITE.hours || {};
     return {
-      timeZone: h.timeZone || "America/Los_Angeles",
+      timeZone: h.timeZone || "America/New_York",
       closedWeekdays: h.closedWeekdays || ["Mon"],
       note: h.note || "",
       periods: Array.isArray(h.periods) ? h.periods : [],
@@ -389,7 +390,7 @@
       alternateName: site.alternateName,
       description:
         site.description ||
-        "Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand.",
+        "Handmade Chinese dumplings in New York. Every fold holds the mark of a hand.",
       url: site.url,
       image: [
         `${base}assets/storefront.webp`,
@@ -404,7 +405,7 @@
       acceptsReservations: true,
       sameAs: collectSameAs(),
       address: { "@type": "PostalAddress", ...site.address },
-      areaServed: { "@type": "City", name: "San Francisco" },
+      areaServed: { "@type": "City", name: "New York" },
       openingHoursSpecification: schemaOpeningHours(),
       hasMenu: {
         "@type": "Menu",
@@ -1292,7 +1293,8 @@
   updateNav();
 
   /* ── Kitchen status from SITE.hours (nav — editorial, not a LED pill) ── */
-  const getSFParts = (date = new Date()) => {
+  /** Kitchen clock in SITE.hours.timeZone (NYC Eastern by default). */
+  const getKitchenParts = (date = new Date()) => {
     const { timeZone } = getHoursConfig();
     const fmt = new Intl.DateTimeFormat("en-US", {
       timeZone,
@@ -1376,7 +1378,7 @@
   };
 
   const updateVisitLive = () => {
-    const parts = getSFParts();
+    const parts = getKitchenParts();
     const period = getOpenPeriod(parts.weekday, parts.minutes);
     const open = Boolean(period);
     // Open: state + until. Closed: single "opens …" line (no Resting).
@@ -1387,8 +1389,8 @@
         }
       : getNextService(parts);
     const title = open
-      ? `Kitchen open until ${formatTimeEn(period.end)} (SF time)`
-      : `Kitchen ${status.state} (SF time)`;
+      ? `Kitchen open until ${formatTimeEn(period.end)} (Eastern time)`
+      : `Kitchen ${status.state} (Eastern time)`;
 
     $$("[data-zhe-open-chip]").forEach((chip) => {
       chip.classList.toggle("is-open", open);

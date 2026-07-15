@@ -45,16 +45,17 @@ const isPlaceholder =
   /555[-.]?0\d{2}/.test(telephone) ||
   /Sample\s+Street/i.test(street) ||
   zip === "94100" ||
+  zip === "10013" ||
   /Sample/i.test(mapsQuery);
 
 if (isPlaceholder) {
   if (indexable) {
     errors.push(
-      "INDEXABLE is true while NAP looks like a placeholder (Sample/555/94100). Replace NAP or set INDEXABLE false."
+      "INDEXABLE is true while NAP looks like a placeholder (Sample/555/demo zip). Replace NAP or set INDEXABLE false."
     );
   } else {
     warns.push(
-      "NAP still placeholder (Sample Street / 555 / 94100) — expected pre-launch; blocks real indexing"
+      "NAP still placeholder (Sample Street / 555 / demo zip) — expected pre-launch; blocks real indexing"
     );
   }
 } else {
@@ -93,7 +94,7 @@ if (/https:\/\/resy\.com["']/.test(html) && bookingUrl === "null") {
 
 // Dual NAP: HTML must not hardcode address/phone shells (hydrate from data.js)
 const htmlHasSampleStreet = /Sample\s+Street/i.test(html);
-const htmlHas555Tel = /tel:\+?1?555|tel:\+1415555/i.test(html);
+const htmlHas555Tel = /tel:\+?1?555|tel:\+1(?:415|212)555/i.test(html);
 if (htmlHasSampleStreet) {
   const msg =
     "Sample Street appears in index.html — dual NAP risk; keep #visitAddress empty (data.js only)";
