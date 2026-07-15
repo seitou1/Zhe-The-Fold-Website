@@ -342,7 +342,7 @@
   const hoursDisplayHtml = () => {
     const { periods, note, closedWeekdays } = getHoursConfig();
     if (!periods.length) {
-      return note ? `<p class="muted">${esc(note)}</p>` : "";
+      return note ? `<p class="visit-hours-note">${esc(note)}</p>` : "";
     }
     const days = periods[0].days || [];
     const dayLine =
@@ -351,7 +351,7 @@
         : days.length
           ? `${days[0]}–${days[days.length - 1]}`
           : "";
-    // Two quiet lines — day, then times (avoids orphan wraps on “9:00”)
+    // Quiet caption lines — day, times, closed note (same type as address)
     const timeBits = periods.map(
       (p) => `${formatTimeDisplay(p.open, true)}–${formatTimeDisplay(p.close, true)}`
     );
@@ -363,7 +363,7 @@
         : "");
     return `${dayLine ? `<p class="visit-hours-days">${esc(dayLine)}</p>` : ""}${
       times ? `<p class="visit-hours-times">${esc(times)}</p>` : ""
-    }${closedNote ? `<p class="muted">${esc(closedNote)}</p>` : ""}`;
+    }${closedNote ? `<p class="visit-hours-note">${esc(closedNote)}</p>` : ""}`;
   };
 
   const collectSameAs = () => {
@@ -556,10 +556,10 @@
         el.setAttribute("target", "_blank");
         el.setAttribute("rel", "noopener noreferrer");
         el.hidden = false;
-        el.closest("li")?.removeAttribute("hidden");
+        el.removeAttribute("hidden");
       } else {
         el.hidden = true;
-        el.closest("li")?.setAttribute("hidden", "");
+        el.setAttribute("hidden", "");
       }
     });
     $$("[data-zhe-xhs]").forEach((el) => {
@@ -568,10 +568,10 @@
         el.setAttribute("target", "_blank");
         el.setAttribute("rel", "noopener noreferrer");
         el.hidden = false;
-        el.closest("li")?.removeAttribute("hidden");
+        el.removeAttribute("hidden");
       } else {
         el.hidden = true;
-        el.closest("li")?.setAttribute("hidden", "");
+        el.setAttribute("hidden", "");
       }
     });
     const toast = $("#toast");

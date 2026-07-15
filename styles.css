@@ -298,7 +298,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784137000");
+  background-image: url("assets/paper-texture.webp?v=1784139000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -495,6 +495,7 @@ button {
 .visit-access,
 .visit-kicker,
 .visit-action .en,
+.visit-social-link,
 .story-label,
 .menu-note,
 .menu-list-item .list-desc,
@@ -533,12 +534,6 @@ button {
   letter-spacing: var(--type-cn-track);
   opacity: 1;
   text-shadow: inherit;
-}
-
-.muted {
-  color: var(--ink-soft);
-  opacity: 0.7;
-  font-size: 0.9rem;
 }
 
 /* Crawlable story chapters — available to bots, not painted in the UI */
@@ -906,12 +901,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     0 1px 2px rgba(0, 0, 0, 0.78),
     0 2px 12px rgba(0, 0, 0, 0.55),
     0 8px 28px rgba(0, 0, 0, 0.42);
-  --tone-btn: #faf8f4;
   --tone-filter: #faf8f4;
   --tone-filter-active: #fffef9;
   --tone-filter-line-active: rgba(250, 246, 240, 0.96);
-  --tone-social-bg: rgba(250, 246, 240, 0.1);
-  --tone-social-fg: #faf8f4;
   --tone-rule: linear-gradient(
     90deg,
     rgba(250, 246, 240, 0.98) 0%,
@@ -934,12 +926,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
   --tone-shadow-soft:
     0 1px 0 rgba(255, 255, 255, 0.5),
     0 2px 14px rgba(255, 252, 247, 0.4);
-  --tone-btn: #1c1814;
   --tone-filter: #1c1814;
   --tone-filter-active: #1c1814;
   --tone-filter-line-active: rgba(28, 24, 20, 0.88);
-  --tone-social-bg: rgba(28, 24, 20, 0.08);
-  --tone-social-fg: #1c1814;
   --tone-rule: linear-gradient(
     90deg,
     rgba(28, 24, 20, 0.88) 0%,
@@ -1816,7 +1805,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784137000");
+  background-image: url("assets/paper-texture.webp?v=1784139000");
   background-size: cover;
 }
 
@@ -2405,7 +2394,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   --tone-filter: #faf8f4;
   --tone-filter-active: #fffef9;
   --tone-filter-line-active: rgba(250, 246, 240, 0.96);
-  --tone-btn: #faf8f4;
   --tone-shadow:
     0 1px 2px rgba(0, 0, 0, 0.62),
     0 4px 22px rgba(0, 0, 0, 0.45);
@@ -2780,32 +2768,39 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   text-shadow: var(--tone-shadow-soft);
 }
 
-/* Invitation card — where / when / how (caption, not a form) */
+/*
+ * Visit spotlight — Story/Menu caption grammar:
+ * single reading column, kicker + body, text links (not a form / icon dock).
+ */
 .visit-spotlight {
   flex: 0 0 auto;
   align-self: flex-start;
   width: 100%;
-  max-width: min(34rem, 100%);
+  max-width: min(36rem, 100%);
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 1rem;
   min-width: 0;
+  color: var(--tone-fg);
+  text-shadow: var(--tone-shadow-soft);
 }
 
+/* One column of facts — not a two-up directory card */
 .visit-facts {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
   width: 100%;
-  padding-bottom: 0.15rem;
+  max-width: min(34rem, 100%);
 }
 
 .visit-fact {
   min-width: 0;
 }
 
+/* Same kicker language as story-label / menu-spotlight-cat */
 .visit-kicker {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.35rem;
   font-family: var(--font-ui);
   font-style: normal;
   font-weight: 400;
@@ -2815,7 +2810,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   color: var(--tone-accent);
 }
 
-.visit-address {
+.visit-address,
+.visit-access,
+.visit-hours p {
   margin: 0;
   font-family: var(--font-ui);
   font-style: normal;
@@ -2828,15 +2825,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .visit-access {
   display: block;
-  margin: 0.4rem 0 0;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  letter-spacing: 0.015em;
-  color: var(--tone-fg);
-  opacity: 1;
+  margin-top: 0.35rem;
 }
 
 .visit-access[hidden] {
@@ -2847,157 +2836,129 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   margin: 0;
 }
 
-.visit-hours p {
-  margin: 0;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: var(--type-body);
-  line-height: 1.5;
-  letter-spacing: 0.015em;
-  color: var(--tone-fg);
-}
-
 .visit-hours p + p {
-  margin-top: 0.22rem;
+  margin-top: 0.2rem;
 }
 
-.visit-hours-days {
-  letter-spacing: 0.02em;
+.visit-hours-note {
+  margin-top: 0.35rem !important;
 }
 
-.visit-hours .muted {
-  margin-top: 0.4rem !important;
-  font-size: 0.9rem;
-  color: var(--tone-fg);
-  opacity: 1;
-}
-
-/* CTAs — same full ink as body copy (legibility = links) */
+/* CTAs — filter/tool hairline grammar (full ink, body tracking) */
 .visit-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 0.85rem 1.65rem;
+  gap: 0.15rem 1.35rem;
   width: 100%;
-  text-shadow: var(--tone-shadow-soft);
 }
 
 .visit-action {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.12rem;
   flex: 0 1 auto;
   min-width: 0;
-  padding: 0.08rem 0 0.4rem;
+  padding: 0.35rem 0.1rem 0.4rem;
   border: none;
   border-radius: 0;
   background: transparent;
   color: var(--tone-fg);
-  opacity: 1;
   box-shadow: none;
   position: relative;
   transition: color 0.3s var(--ease-soft);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .visit-action::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: 0;
+  left: 50%;
+  bottom: 0.05rem;
   width: 100%;
+  max-width: 1.65rem;
   height: 1px;
   background: currentColor;
-  opacity: 0.35;
-  transform-origin: left center;
-  transition: transform 0.4s var(--ease-out), opacity 0.3s;
+  opacity: 0.45;
+  transform: translateX(-50%);
+  transition: opacity 0.28s var(--ease-out);
+  pointer-events: none;
 }
 
 .visit-action .en {
   font-family: var(--font-ui);
   font-style: normal;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
+  font-size: var(--type-body);
+  letter-spacing: 0.015em;
   font-weight: 400;
+  line-height: 1.2;
   color: inherit;
 }
 
-.visit-action--primary {
-  color: var(--tone-btn);
-}
-
-.visit-action--primary::after {
-  opacity: 0.8;
-  height: 1.5px;
-  background: var(--tone-rule);
-}
-
-.visit-action:hover {
+.visit-action:hover,
+.visit-action:focus-visible {
   color: var(--tone-fg);
-  opacity: 1;
 }
 
-.visit-action:hover::after {
-  opacity: 1;
-  transform: scaleX(1.05);
+.visit-action:hover::after,
+.visit-action:focus-visible::after {
+  opacity: 0.9;
 }
 
-.visit-action:hover .en {
-  opacity: 1;
-}
-
-/* Social — quiet, not a dock */
+/* Social — text links, same strip as actions (no icon pills) */
 .visit-social {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.15rem 1.15rem;
   width: 100%;
-  padding-top: 0.15rem;
+  padding-top: 0.05rem;
 }
 
-.visit-social .social-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.visit-social-link {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 400;
+  font-size: var(--type-body);
+  letter-spacing: 0.015em;
+  line-height: 1.2;
+  color: var(--tone-fg);
+  text-decoration: none;
+  padding: 0.35rem 0.05rem 0.4rem;
+  position: relative;
+  transition: color 0.3s var(--ease-soft), opacity 0.25s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.visit-social .social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: var(--tone-social-bg);
-  color: var(--tone-social-fg);
-  opacity: 0.92;
-  transition:
-    color 0.25s,
-    background 0.25s,
-    transform 0.3s var(--ease-out),
-    opacity 0.25s;
+.visit-social-link[hidden] {
+  display: none !important;
 }
 
-.visit-social .social-icon {
-  width: 1.05rem;
-  height: 1.05rem;
-  display: block;
+.visit-social-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.05rem;
+  width: 100%;
+  max-width: 1.45rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+  transform: translateX(-50%);
+  transition: opacity 0.28s var(--ease-out);
+  pointer-events: none;
 }
 
-.visit-social .social-link:hover,
-.visit-social .social-link:focus-visible {
+.visit-social-link:hover,
+.visit-social-link:focus-visible {
   color: var(--tone-fg);
   opacity: 1;
-  filter: brightness(1.12);
-  transform: translateY(-1px);
+}
+
+.visit-social-link:hover::after,
+.visit-social-link:focus-visible::after {
+  opacity: 0.85;
 }
 
 
@@ -3950,68 +3911,38 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     line-height: 1.4;
   }
 
-  /* Pin invitation to the bottom — storefront owns the middle */
+  /* Pin caption to the bottom — storefront owns the middle */
   .visit-spotlight {
     flex: 0 0 auto;
     margin-top: auto;
     max-width: none;
     width: 100%;
-    gap: 0.75rem;
+    gap: 0.85rem;
     text-shadow:
       0 1px 1px rgba(0, 0, 0, 0.75),
       0 2px 12px rgba(0, 0, 0, 0.5);
   }
 
-  /* Single column on phone — scannable like a place card, not a form */
   .visit-facts {
-    grid-template-columns: 1fr;
-    gap: 0.85rem;
+    gap: 0.8rem;
+    max-width: none;
   }
 
   .visit-kicker {
-    margin-bottom: 0.25rem;
-    font-size: 0.88rem;
-  }
-
-  .visit-address {
-    font-size: 0.95rem;
-    line-height: 1.45;
+    margin-bottom: 0.28rem;
   }
 
   .visit-access {
-    font-size: 0.8rem;
-    margin-top: 0.28rem;
-    color: rgba(242, 235, 224, 0.78);
-  }
-
-  .visit-hours p {
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-
-  .visit-hours .muted {
-    font-size: 0.8rem;
+    margin-top: 0.3rem;
   }
 
   .visit-actions {
-    gap: 0.5rem 1.2rem;
-  }
-
-  .visit-action {
-    padding: 0.04rem 0 0.28rem;
-  }
-
-  .visit-action .en {
-    font-size: 1.02rem;
+    gap: 0.1rem 1.1rem;
   }
 
   .visit-social {
+    gap: 0.1rem 1rem;
     padding-top: 0;
-  }
-
-  .visit-social .social-link {
-    width: 2.05rem;
-    height: 2.05rem;
   }
 
   /* ── Footer (inside main scrollport — clear the dock) ── */
@@ -4067,16 +3998,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 
   .visit-facts {
-    grid-template-columns: 1fr;
     gap: 0.7rem;
   }
 
   .visit-spotlight {
     gap: 0.7rem;
-  }
-
-  .visit-action .en {
-    font-size: 0.98rem;
   }
 }
 
@@ -4106,7 +4032,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     opacity: 0.7;
   }
 
-  .social-link,
   .menu-wall-img,
   .story-wall-img,
   .story-spotlight,
@@ -4115,7 +4040,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .menu-rail-item,
   .menu-list-item,
   .menu-tool-btn,
-  .visit-action {
+  .visit-action,
+  .visit-social-link {
     transition: none;
   }
 
