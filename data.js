@@ -5,7 +5,7 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784126200",
+  ASSET_V: "1784126400",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────
@@ -92,6 +92,8 @@ window.ZHE = {
       category: "classic",
       catLabel: "Classic",
       image: "assets/dish-pork.jpg",
+      /* Focal: plate lower-center; crop bright window/steam out of menu head */
+      position: "center 68%",
       en: "Pork & Napa Cabbage Fold",
       rail: "Pork & Cabbage",
       cn: "猪肉白菜褶",
@@ -166,6 +168,8 @@ window.ZHE = {
       category: "plant",
       catLabel: "Plant",
       image: "assets/dish-mushroom.jpg",
+      /* Focal: keep plate denser mid-frame; less pale wood/steam in head band */
+      position: "center 62%",
       en: "Mushroom & Greens Fold",
       rail: "Mushroom & Greens",
       cn: "香菇青菜褶",
@@ -179,6 +183,8 @@ window.ZHE = {
       category: "plant",
       catLabel: "Plant",
       image: "assets/dish-tofu.jpg",
+      /* Pale plate — favor lower third so head chrome sits on darker wood */
+      position: "center 58%",
       en: "Tofu & Daikon Fold",
       rail: "Tofu & Daikon",
       cn: "豆腐萝卜褶",

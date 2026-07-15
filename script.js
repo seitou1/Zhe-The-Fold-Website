@@ -124,9 +124,11 @@
         item.popular
           ? `<span class="rail-house" aria-hidden="true">·</span>`
           : "";
+      const pos = item.position || "center center";
       return `<li role="option" class="menu-rail-item${active}${item.popular ? " is-house" : ""}" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(full)}"
+        data-position="${esc(pos)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -143,9 +145,11 @@
       const tags = (item.tags || []).join(",");
       const popular = item.popular ? "true" : "false";
       const markBits = marksHtml(item);
+      const pos = item.position || "center center";
       return `<li class="menu-list-item${active}" role="option" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(src)}"
+        data-position="${esc(pos)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -161,10 +165,17 @@
     const first = Z.MENU_ITEMS[0];
     if (first) {
       const src = asset(first.image);
+      const pos = first.position || "center center";
       const a = $("#wallImgA");
       const b = $("#wallImgB");
-      if (a) a.src = src;
-      if (b) b.src = src;
+      if (a) {
+        a.src = src;
+        a.style.objectPosition = pos;
+      }
+      if (b) {
+        b.src = src;
+        b.style.objectPosition = pos;
+      }
       const set = (id, v) => {
         const el = $(id);
         if (el) el.textContent = v;
@@ -1788,9 +1799,17 @@
     }, 1500);
   };
 
-  const setWall = async (src) => {
+  const frameMenuWall = (img, position) => {
+    if (!img) return;
+    img.style.objectPosition = position || "center center";
+  };
+
+  const setWall = async (src, position) => {
     if (!src || !activeLayer || !idleLayer) return;
+    const pos = position || "center center";
     if (src === currentSrc) {
+      frameMenuWall(activeLayer, pos);
+      frameMenuWall(idleLayer, pos);
       // Still re-evaluate contrast (layout / resize / first paint)
       // List mode keeps forced dark chrome — don't re-sample luminance thrash
       if (!listViewOn && typeof window.__zheUpdateMenuTone === "function") {
@@ -1803,12 +1822,14 @@
     if (gen !== previewGen) return;
 
     idleLayer.src = src;
+    frameMenuWall(idleLayer, pos);
     void idleLayer.offsetWidth;
     idleLayer.classList.add("is-active");
     activeLayer.classList.remove("is-active");
     const tmp = activeLayer;
     activeLayer = idleLayer;
     idleLayer = tmp;
+    frameMenuWall(activeLayer, pos);
     currentSrc = src;
     if (listViewOn) {
       // Quiet list crossfade: hold dark reading chrome (no light/dark flip mid-list)
@@ -1882,7 +1903,7 @@
     featuredDesc?.closest(".menu-spotlight-copy")?.classList.remove("is-expanded");
 
     // Always update wall; list mode uses a slow CSS crossfade (no Ken Burns)
-    setWall(item.dataset.image);
+    setWall(item.dataset.image, item.dataset.position || "center center");
     // Only scroll the horizontal rail in photo mode — never the page
     if (!listViewOn && scrollRail && menuInView) scrollRailToItem(item);
   };
@@ -2220,7 +2241,12 @@
       toneBeforeList = null;
       const pool = visibleItems();
       const current = pool[index] || pool[0];
-      if (current?.dataset.image) setWall(current.dataset.image);
+      if (current?.dataset.image) {
+        setWall(
+          current.dataset.image,
+          current.dataset.position || "center center"
+        );
+      }
       if (category === "all") startAutoRotate();
     }
   });
