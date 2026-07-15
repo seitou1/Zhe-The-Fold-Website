@@ -9,7 +9,7 @@
 
 ```
 assets/
-  _orig/           # masters (local only; optional to deploy)
+  _orig/           # masters (local only; gitignored — not deployed)
   fonts/           # self-hosted woff2 + fonts.css
                    # CN: noto-serif-sc-*.woff2 is a *site glyph subset*
                    # If new Chinese characters are added in copy, re-subset from

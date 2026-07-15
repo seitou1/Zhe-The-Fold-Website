@@ -120,14 +120,11 @@
       const full = asset(item.image);
       const tags = (item.tags || []).join(",");
       const popular = item.popular ? "true" : "false";
-      const house =
-        item.popular
-          ? `<span class="rail-house" aria-hidden="true">·</span>`
-          : "";
       const pos = item.position || "center center";
       const posM = item.positionMobile || pos;
-      const label = `${item.en}${item.price ? ` · ${item.price}` : ""}`;
-      return `<li role="option" class="menu-rail-item${active}${item.popular ? " is-house" : ""}" tabindex="0"
+      /* Short rail name for SR; spotlight carries full name + price visually */
+      const label = `${item.rail || item.en}${item.price ? ` · ${item.price}` : ""}`;
+      return `<li role="option" class="menu-rail-item${active}" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(full)}"
         data-position="${esc(pos)}"
@@ -138,9 +135,6 @@
         data-popular="${popular}" aria-selected="${sel}"
         aria-label="${esc(label)}">
         <img src="${esc(thumb)}" alt="" width="120" height="120" loading="lazy" decoding="async" />
-        <!-- Labels hidden in photo view (thumbs only); kept for DOM/search, not painted -->
-        <span class="rail-cn" aria-hidden="true">${house}${esc(item.rail || item.en)}</span>
-        <span class="rail-price" aria-hidden="true">${esc(item.price)}</span>
       </li>`;
     }).join("");
     list.innerHTML = Z.MENU_ITEMS.map((item, i) => {
@@ -1836,10 +1830,9 @@
     const pos =
       (mobile && positionMobile) || position || "center center";
     img.style.objectPosition = pos;
-    /* Clear any older inline transform hacks from prior builds */
+    /* Guard: never leave transform-based crops (List/Photos must not jump) */
     img.style.removeProperty("transform");
     img.style.removeProperty("transform-origin");
-    img.removeAttribute("data-menu-focal");
   };
 
   const setWall = async (src, framing = {}) => {

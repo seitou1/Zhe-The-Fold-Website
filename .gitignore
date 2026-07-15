@@ -2,3 +2,13 @@
 **/.DS_Store
 *.log
 .playwright-mcp/
+
+# Local masters — not shipped (see ASSETS.md)
+assets/_orig/
+
+# Session screenshots / alignment captures
+.align-*.png
+.final-*.png
+.menu-assess-*.png
+.visit-*.png
+.menu-list-*.png

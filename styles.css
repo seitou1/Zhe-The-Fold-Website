@@ -31,7 +31,6 @@
   --type-lead: clamp(0.98rem, 1.35vw, 1.08rem);
   --type-body: clamp(0.95rem, 1.5vw, 1.08rem);
   --type-kicker: 0.78rem;
-  --type-chrome: 0.88rem;
   --type-lead-lh: 1.45;
   --type-body-lh: 1.55;
   --type-title-track: 0.02em;
@@ -299,7 +298,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784135000");
+  background-image: url("assets/paper-texture.webp?v=1784137000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -526,8 +525,7 @@ button {
 
 /* Dish CN under dish EN — same full ink as dish EN */
 .menu-spotlight-cn,
-.menu-list-item .list-cn,
-.menu-rail-item .rail-cn {
+.menu-list-item .list-cn {
   font-family: var(--font-cn);
   font-style: normal;
   font-weight: 400;
@@ -895,11 +893,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
   /*
    * Legibility: primary copy + links share one full ink.
    * soft = same as fg (no accidental dim on CN/desc vs links)
-   * muted = rare tertiary only (legal, inactive chrome hints)
    */
   --tone-fg: #faf8f4;
   --tone-fg-soft: #faf8f4;
-  --tone-fg-muted: rgba(250, 248, 244, 0.9);
   --tone-accent: #ebcfa0;
   --tone-accent-soft: #f0dcb4;
   --tone-line: rgba(250, 246, 240, 0.34);
@@ -911,7 +907,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     0 2px 12px rgba(0, 0, 0, 0.55),
     0 8px 28px rgba(0, 0, 0, 0.42);
   --tone-btn: #faf8f4;
-  --tone-btn-soft: #faf8f4;
   --tone-filter: #faf8f4;
   --tone-filter-active: #fffef9;
   --tone-filter-line-active: rgba(250, 246, 240, 0.96);
@@ -922,7 +917,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     rgba(250, 246, 240, 0.98) 0%,
     rgba(250, 246, 240, 0.4) 100%
   );
-  --tone-rule-soft: rgba(250, 246, 240, 0.5);
 }
 
 .hero[data-tone="light"],
@@ -931,7 +925,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
 .visit[data-tone="light"] {
   --tone-fg: #1c1814;
   --tone-fg-soft: #1c1814;
-  --tone-fg-muted: rgba(28, 24, 20, 0.88);
   --tone-accent: #8a6340;
   --tone-accent-soft: #a67c52;
   --tone-line: rgba(28, 24, 20, 0.2);
@@ -942,7 +935,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     0 1px 0 rgba(255, 255, 255, 0.5),
     0 2px 14px rgba(255, 252, 247, 0.4);
   --tone-btn: #1c1814;
-  --tone-btn-soft: #1c1814;
   --tone-filter: #1c1814;
   --tone-filter-active: #1c1814;
   --tone-filter-line-active: rgba(28, 24, 20, 0.88);
@@ -953,7 +945,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-meta {
     rgba(28, 24, 20, 0.88) 0%,
     rgba(28, 24, 20, 0.28) 100%
   );
-  --tone-rule-soft: rgba(28, 24, 20, 0.4);
 }
 
 /* Light plates: warm paper veil (Menu sets its own stacked reading bands) */
@@ -1825,7 +1816,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784135000");
+  background-image: url("assets/paper-texture.webp?v=1784137000");
   background-size: cover;
 }
 
@@ -2193,17 +2184,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border-color: rgba(154, 86, 68, 0.35);
 }
 
-.menu-rail-item.is-house .rail-cn {
-  opacity: 1;
-}
-
-.menu-rail-item .rail-house {
-  display: inline-block;
-  margin-right: 0.2rem;
-  color: var(--tone-accent, var(--wheat));
-  opacity: 0.85;
-}
-
 .menu-list-item .list-marks {
   display: flex;
   flex-wrap: wrap;
@@ -2369,13 +2349,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   box-shadow: none;
 }
 
-/* Photo view: hide rail text — spotlight already has name + price */
-.menu-rail-item .rail-cn,
-.menu-rail-item .rail-price {
-  display: none;
-}
-
-/* Short hairline under active dish — same grammar as filters / dock */
+/* Short hairline under active dish — same grammar as filters */
 .menu-rail-item::after {
   content: "";
   display: block;
@@ -2426,14 +2400,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   /* Same full ink as photo mode — no softer “list language” */
   --tone-fg: #faf8f4;
   --tone-fg-soft: #faf8f4;
-  --tone-fg-muted: rgba(250, 248, 244, 0.9);
   --tone-accent: #ebcfa0;
   --tone-line: rgba(250, 246, 240, 0.34);
   --tone-filter: #faf8f4;
   --tone-filter-active: #fffef9;
   --tone-filter-line-active: rgba(250, 246, 240, 0.96);
   --tone-btn: #faf8f4;
-  --tone-btn-soft: #faf8f4;
   --tone-shadow:
     0 1px 2px rgba(0, 0, 0, 0.62),
     0 4px 22px rgba(0, 0, 0, 0.45);
