@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784126600");
+  background-image: url("assets/paper-texture.webp?v=1784126800");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1715,23 +1715,28 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Default; per-dish focal points set in JS from data.js position */
+  /* Default; per-dish object-position may be set in JS — never change scale/origin mid-view */
   object-position: center 52%;
   opacity: 0;
   /* Gentle grade — avoid blowing out pale plates (tofu, etc.) */
   filter: saturate(1.06) contrast(1.04) brightness(1.06);
-  /* Opacity-only transitions so photo ↔ list never rescales the wall */
-  transition: opacity var(--motion-slow), filter var(--motion-slow);
+  /*
+   * Opacity-only transitions. Scale + origin stay locked for photo AND list
+   * so List/Photos never resizes the plate (mobile was jumping hard).
+   */
+  transition: opacity var(--motion-slow);
   will-change: opacity;
-  /* Same crop for photo + list (no Ken Burns — mode switch was jumping size) */
-  transform: scale(1.12);
-  transform-origin: center center;
+  transform: scale(var(--menu-wall-scale, 1.12));
+  transform-origin: var(--menu-wall-origin, center center);
+  animation: none;
 }
 
 .menu-wall-img.is-active {
   opacity: 1;
   z-index: 1;
-  transform: scale(1.12);
+  /* Same transform as idle layer — only opacity differs */
+  transform: scale(var(--menu-wall-scale, 1.12));
+  transform-origin: var(--menu-wall-origin, center center);
   animation: none;
 }
 
@@ -1810,7 +1815,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784126600");
+  background-image: url("assets/paper-texture.webp?v=1784126800");
   background-size: cover;
 }
 
@@ -2516,21 +2521,23 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 /*
- * List backdrop: same scale/crop as photo mode — only opacity + grade change.
- * ~1.1s ease on dissolve; transform stays locked so the plate doesn’t “zoom”.
+ * List backdrop: SAME geometry as photo mode (scale/origin/filter locked).
+ * Only opacity crossfade may differ in timing — never reframe the plate.
  */
 .menu.is-list-view .menu-wall-img {
-  transition: opacity 1.15s cubic-bezier(0.4, 0, 0.2, 1), filter 0.55s ease;
+  transition: opacity 1.15s cubic-bezier(0.4, 0, 0.2, 1);
   animation: none;
-  transform: scale(1.12);
+  /* Explicit: inherit same vars — do not override scale */
+  transform: scale(var(--menu-wall-scale, 1.12));
+  transform-origin: var(--menu-wall-origin, center center);
+  filter: saturate(1.06) contrast(1.04) brightness(1.06);
   will-change: opacity;
-  /* Same plate grade as photo mode — only a hair softer for list reading */
-  filter: saturate(1.04) contrast(1.03) brightness(1.02);
 }
 
 .menu.is-list-view .menu-wall-img.is-active {
   animation: none;
-  transform: scale(1.12);
+  transform: scale(var(--menu-wall-scale, 1.12));
+  transform-origin: var(--menu-wall-origin, center center);
 }
 
 .menu.is-list-view .menu-wall-veil {
@@ -3430,24 +3437,23 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 
   /*
-   * Phone menu wall: square dish photos fill the full height of a tall
-   * viewport, so vertical object-position barely crops. Scale up and bias
-   * transform-origin downward (set per-dish in JS) to clear the head band.
+   * Phone menu wall: ONE locked geometry for photo + list.
+   * Square plates fill tall viewports — scale + bottom-biased origin clear
+   * the head band without changing when List/Photos toggles.
    */
+  .menu {
+    --menu-wall-scale: 1.36;
+    --menu-wall-origin: center 76%;
+  }
+
   .menu-wall-img,
   .menu-wall-img.is-active,
   .menu.is-list-view .menu-wall-img,
   .menu.is-list-view .menu-wall-img.is-active {
-    transform: scale(1.34);
+    transform: scale(var(--menu-wall-scale, 1.36));
+    transform-origin: var(--menu-wall-origin, center 76%);
     animation: none;
-    /* Fallback only — JS inline object-position / transform-origin win */
-    object-position: center 70%;
-    transform-origin: center 74%;
-  }
-
-  .menu-wall-img[data-menu-focal="low"],
-  .menu-wall-img.is-active[data-menu-focal="low"] {
-    transform: scale(1.42);
+    /* object-position may still be set per dish in JS; scale/origin never flip */
   }
 
   .visit-wall-img {

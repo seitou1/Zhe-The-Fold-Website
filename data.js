@@ -5,7 +5,7 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784126600",
+  ASSET_V: "1784126800",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────
@@ -92,10 +92,9 @@ window.ZHE = {
       category: "classic",
       catLabel: "Classic",
       image: "assets/dish-pork.jpg",
-      /* Desktop cover crop; mobile uses positionMobile + wall scale (square fills height) */
+      /* object-position only — wall scale/origin locked in CSS (no List jump) */
       position: "center 68%",
       positionMobile: "center 72%",
-      wallOriginMobile: "center 80%",
       en: "Pork & Napa Cabbage Fold",
       rail: "Pork & Cabbage",
       cn: "猪肉白菜褶",
@@ -172,7 +171,6 @@ window.ZHE = {
       image: "assets/dish-mushroom.jpg",
       position: "center 62%",
       positionMobile: "center 70%",
-      wallOriginMobile: "center 78%",
       en: "Mushroom & Greens Fold",
       rail: "Mushroom & Greens",
       cn: "香菇青菜褶",
@@ -188,7 +186,6 @@ window.ZHE = {
       image: "assets/dish-tofu.jpg",
       position: "center 58%",
       positionMobile: "center 65%",
-      wallOriginMobile: "center 72%",
       en: "Tofu & Daikon Fold",
       rail: "Tofu & Daikon",
       cn: "豆腐萝卜褶",

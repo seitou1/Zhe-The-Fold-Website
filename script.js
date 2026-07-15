@@ -126,13 +126,11 @@
           : "";
       const pos = item.position || "center center";
       const posM = item.positionMobile || pos;
-      const originM = item.wallOriginMobile || "center center";
       return `<li role="option" class="menu-rail-item${active}${item.popular ? " is-house" : ""}" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(full)}"
         data-position="${esc(pos)}"
         data-position-mobile="${esc(posM)}"
-        data-origin-mobile="${esc(originM)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -151,13 +149,11 @@
       const markBits = marksHtml(item);
       const pos = item.position || "center center";
       const posM = item.positionMobile || pos;
-      const originM = item.wallOriginMobile || "center center";
       return `<li class="menu-list-item${active}" role="option" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(src)}"
         data-position="${esc(pos)}"
         data-position-mobile="${esc(posM)}"
-        data-origin-mobile="${esc(originM)}"
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
@@ -192,8 +188,8 @@
       window.__zheMenuSeed = {
         image: src,
         position: first.position || "center center",
-        positionMobile: first.positionMobile || first.position || "center center",
-        originMobile: first.wallOriginMobile || "center center",
+        positionMobile:
+          first.positionMobile || first.position || "center center",
       };
     }
   };
@@ -1808,25 +1804,23 @@
     }, 1500);
   };
 
-  /** Tall phones: square plates fill full height — Y object-position barely crops.
-   *  Use stronger scale + bottom-biased transform-origin to clear the head band. */
+  /**
+   * Wall geometry (scale / origin) is CSS-only and identical in photo + list.
+   * JS only sets object-position per dish — never transform, or List/Photos jumps.
+   */
   const menuMobileMq = window.matchMedia("(max-width: 768px)");
   const isMenuMobile = () => menuMobileMq.matches;
 
-  const frameMenuWall = (img, { position, positionMobile, originMobile } = {}) => {
+  const frameMenuWall = (img, { position, positionMobile } = {}) => {
     if (!img) return;
     const mobile = isMenuMobile();
     const pos =
       (mobile && positionMobile) || position || "center center";
     img.style.objectPosition = pos;
-    if (mobile) {
-      const origin = originMobile || "center 70%";
-      img.style.transformOrigin = origin;
-      img.dataset.menuFocal = originMobile ? "low" : "default";
-    } else {
-      img.style.transformOrigin = "center center";
-      img.dataset.menuFocal = "default";
-    }
+    /* Clear any older inline transform hacks from prior builds */
+    img.style.removeProperty("transform");
+    img.style.removeProperty("transform-origin");
+    img.removeAttribute("data-menu-focal");
   };
 
   const setWall = async (src, framing = {}) => {
@@ -1838,7 +1832,6 @@
     if (src === currentSrc) {
       frameMenuWall(activeLayer, frame);
       frameMenuWall(idleLayer, frame);
-      // Still re-evaluate contrast (layout / resize / first paint)
       // List mode keeps forced dark chrome — don't re-sample luminance thrash
       if (!listViewOn && typeof window.__zheUpdateMenuTone === "function") {
         window.__zheUpdateMenuTone();
@@ -1849,15 +1842,16 @@
     await preload(src);
     if (gen !== previewGen) return;
 
+    /* Frame BOTH layers to the same crop BEFORE crossfade — no size flip */
     idleLayer.src = src;
     frameMenuWall(idleLayer, frame);
+    frameMenuWall(activeLayer, frame);
     void idleLayer.offsetWidth;
     idleLayer.classList.add("is-active");
     activeLayer.classList.remove("is-active");
     const tmp = activeLayer;
     activeLayer = idleLayer;
     idleLayer = tmp;
-    frameMenuWall(activeLayer, frame);
     currentSrc = src;
     if (listViewOn) {
       // Quiet list crossfade: hold dark reading chrome (no light/dark flip mid-list)
@@ -1870,8 +1864,8 @@
 
   const framingFromEl = (el) => ({
     position: el?.dataset?.position || "center center",
-    positionMobile: el?.dataset?.positionMobile || el?.dataset?.position,
-    originMobile: el?.dataset?.originMobile || "center center",
+    positionMobile:
+      el?.dataset?.positionMobile || el?.dataset?.position || "center center",
   });
 
   const menuRail = $("#menuList");
@@ -2266,18 +2260,16 @@
     track("toggle_list_view", { mode: listViewOn ? "list" : "photos" });
     if (listViewOn) {
       stopAutoRotate();
-      // Reading mode: force dark chrome over the deepened room (nav/dock stay light type)
+      // Reading mode: force dark chrome — do NOT reframe/reload wall (avoids resize jump)
       toneBeforeList = menuSection.getAttribute("data-tone");
       menuSection.setAttribute("data-tone", "dark");
     } else {
-      // Restore photo-mode tone sampling for the selected dish
+      // Restore photo-mode tone only — wall src/crop already correct
       if (toneBeforeList) menuSection.setAttribute("data-tone", toneBeforeList);
-      toneBeforeList = null;
-      const pool = visibleItems();
-      const current = pool[index] || pool[0];
-      if (current?.dataset.image) {
-        setWall(current.dataset.image, framingFromEl(current));
+      else if (typeof window.__zheUpdateMenuTone === "function") {
+        requestAnimationFrame(() => window.__zheUpdateMenuTone());
       }
+      toneBeforeList = null;
       if (category === "all") startAutoRotate();
     }
   });
@@ -2301,11 +2293,11 @@
       setWall(seed.image, {
         position: seed.position,
         positionMobile: seed.positionMobile,
-        originMobile: seed.originMobile,
       });
     }
   };
   reframeActiveDish();
+  /* Breakpoint change only — never on List/Photos toggle */
   if (typeof menuMobileMq.addEventListener === "function") {
     menuMobileMq.addEventListener("change", reframeActiveDish);
   } else if (typeof menuMobileMq.addListener === "function") {
