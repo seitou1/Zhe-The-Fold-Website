@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784128300");
+  background-image: url("assets/paper-texture.webp?v=1784128500");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -498,7 +498,6 @@ button {
 .visit-kicker,
 .visit-action .en,
 .story-label,
-.menu-carousel-hint,
 .menu-note,
 .menu-list-item .list-desc,
 .menu-note .en,
@@ -1827,7 +1826,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784128300");
+  background-image: url("assets/paper-texture.webp?v=1784128500");
   background-size: cover;
 }
 
@@ -2239,23 +2238,24 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   padding: 0.15rem 0.42rem;
 }
 
-/* Dish carousel — thumbs + chevrons; width follows visible item count */
+/* Dish carousel — thumbs only + chevrons (labels live in spotlight) */
 .menu-carousel {
-  --menu-thumb-w: 7.25rem;
-  --menu-thumb-h: 4.5rem;
-  --menu-rail-pad-y: 0.3rem;
-  --menu-rail-gap: 0.55rem;
+  --menu-thumb-w: 6.5rem;
+  --menu-thumb-h: 4.25rem;
+  --menu-rail-pad-y: 0.2rem;
+  --menu-rail-gap: 0.5rem;
   --menu-chev-size: 2.35rem;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   column-gap: 0.2rem;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   margin-inline: auto;
+  margin-top: 0.15rem;
 }
 
 .menu-carousel-btn {
@@ -2265,10 +2265,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   min-width: var(--menu-chev-size);
   height: var(--menu-chev-size);
   min-height: var(--menu-chev-size);
-  /* Vertically center on the thumbnail, not the whole label+price cell */
-  margin-top: calc(
-    var(--menu-rail-pad-y) + (var(--menu-thumb-h) - var(--menu-chev-size)) / 2
-  );
+  margin-top: 0; /* thumbs-only rail — center with align-items on carousel */
 }
 
 .menu-carousel-btn[hidden] {
@@ -2308,25 +2305,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   cursor: grab;
 }
 
-.menu-carousel-hint {
-  display: none;
-  margin: 0.15rem 0 0;
-  text-align: center;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: var(--type-kicker);
-  letter-spacing: 0.06em;
-  color: var(--tone-fg);
-  opacity: 1;
-  text-shadow: var(--tone-shadow-soft);
-}
-
-/* Hide “swipe for more” when everything already fits */
-.menu-carousel.is-compact + .menu-carousel-hint {
-  display: none !important;
-}
-
 .menu-rail-wrap {
   flex: 1 1 auto;
   min-width: 0;
@@ -2355,7 +2333,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: calc(50% - (var(--menu-thumb-w) / 2));
-  padding: var(--menu-rail-pad-y) 0.35rem calc(var(--menu-rail-pad-y) + 0.15rem);
+  padding: var(--menu-rail-pad-y) 0.25rem calc(var(--menu-rail-pad-y) + 0.35rem);
   width: max-content;
   max-width: 100%;
   box-sizing: border-box;
@@ -2377,14 +2355,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .menu-rail-item {
   flex: 0 0 auto;
-  width: 7.25rem;
+  width: var(--menu-thumb-w);
   scroll-snap-align: center;
   border: none;
   border-radius: 0;
   overflow: visible;
   background: transparent;
   cursor: pointer;
-  padding: 0 0 0.35rem;
+  /* Photo view: thumb only — no name/price stack under the plate */
+  padding: 0 0 0.4rem;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -2393,7 +2372,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   opacity: 0.52;
   touch-action: manipulation;
   box-shadow: none;
-  text-shadow: var(--tone-shadow-soft);
+  text-shadow: none;
 }
 
 .menu-rail-item.is-hidden {
@@ -2411,25 +2390,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   box-shadow: none;
 }
 
-.menu-rail-item .rail-cn {
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-  padding: 0.4rem 0.1rem 0.05rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  /* family/color from shared dish CN rule */
-}
-
+/* Photo view: hide rail text — spotlight already has name + price */
+.menu-rail-item .rail-cn,
 .menu-rail-item .rail-price {
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.82rem;
-  color: var(--tone-accent);
-  padding: 0 0.1rem 0.15rem;
-  text-align: left;
+  display: none;
 }
 
 /* Short hairline under active dish — same grammar as filters / dock */
@@ -2438,7 +2402,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: block;
   width: 1.35rem;
   height: 1px;
-  margin: 0.15rem 0.1rem 0;
+  margin: 0.3rem auto 0;
   background: currentColor;
   opacity: 0;
   transition: opacity var(--motion), width var(--motion), background var(--motion);
@@ -2521,18 +2485,17 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 /* List mode: the list is the menu — free vertical space from spotlight + rail */
 .menu.is-list-view .menu-spotlight,
-.menu.is-list-view .menu-carousel,
-.menu.is-list-view .menu-carousel-hint {
+.menu.is-list-view .menu-carousel {
   display: none;
 }
 
-/* Practical footer — same voice as the rest of the panel */
+/* Ops note only when reading the full list */
 .menu.is-list-view .menu-note {
   display: flex;
   max-width: min(36rem, 100%);
   width: 100%;
-  margin-top: 0.1rem;
-  padding: 0.4rem 0.1rem 0;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.1rem 0;
   border-top: 1px solid var(--tone-line);
   color: var(--tone-fg);
   opacity: 1;
@@ -2705,19 +2668,21 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-rail-item.is-active::after {
-  opacity: 0.75;
-  width: 2rem;
+  opacity: 0.85;
+  width: 1.65rem;
   height: 1.5px;
   background: var(--tone-accent);
 }
 
+/* Ops note: list view only — photo view stays plate + thumbs */
 .menu-note {
+  display: none;
   flex-shrink: 0;
-  display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   gap: 0.15rem 1rem;
-  padding-top: 0.45rem;
+  padding-top: 0.55rem;
+  margin-top: 0.35rem;
   border-top: 1px solid var(--tone-line);
   color: var(--tone-fg);
   opacity: 1;
@@ -2733,16 +2698,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: 0.9rem;
   letter-spacing: 0.015em;
   color: var(--tone-fg);
-  opacity: 1;
-}
-
-/* Rail labels — CN uses dish CN face; full fg for thumbs under photo */
-.menu-rail-item .rail-cn {
-  color: var(--tone-fg);
-}
-
-.menu-rail-item .rail-price {
-  color: var(--tone-accent);
+  opacity: 0.9;
 }
 
 /* ── Visit — storefront is the dish (same stage grammar as Story / Menu) ── */
@@ -3888,14 +3844,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     column-gap: 0.1rem;
   }
 
-  .menu-carousel-hint {
-    display: block;
-  }
-
-  .menu-carousel.is-compact + .menu-carousel-hint {
-    display: none !important;
-  }
-
   .menu-rail-wrap {
     margin: 0;
     padding: 0;
@@ -3913,7 +3861,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-rail {
     gap: var(--menu-rail-gap);
-    padding: var(--menu-rail-pad-y) 0.2rem calc(var(--menu-rail-pad-y) + 0.1rem);
+    padding: var(--menu-rail-pad-y) 0.2rem calc(var(--menu-rail-pad-y) + 0.25rem);
   }
 
   .menu-rail-item {
@@ -3922,10 +3870,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-rail-item img {
     height: var(--menu-thumb-h);
-  }
-
-  .menu-rail-item .rail-cn {
-    font-size: 0.64rem;
   }
 
   .menu-list-item {
@@ -3963,11 +3907,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-list-item.is-active .list-desc {
     -webkit-line-clamp: 3;
-  }
-
-  /* Photo mode: note is low-priority under the rail — drop on phone */
-  .menu:not(.is-list-view) .menu-note {
-    display: none;
   }
 
   .visit-wall-veil {

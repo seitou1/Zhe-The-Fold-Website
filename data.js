@@ -5,7 +5,7 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784128300",
+  ASSET_V: "1784128500",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────

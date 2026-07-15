@@ -126,6 +126,7 @@
           : "";
       const pos = item.position || "center center";
       const posM = item.positionMobile || pos;
+      const label = `${item.en}${item.price ? ` · ${item.price}` : ""}`;
       return `<li role="option" class="menu-rail-item${active}${item.popular ? " is-house" : ""}" tabindex="0"
         data-id="${esc(item.id)}"
         data-category="${esc(item.category)}" data-image="${esc(full)}"
@@ -134,10 +135,12 @@
         data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
         data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
         data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
-        data-popular="${popular}" aria-selected="${sel}">
-        <img src="${esc(thumb)}" alt="${esc(item.en)} dumpling" width="120" height="120" loading="lazy" decoding="async" />
-        <span class="rail-cn">${house}${esc(item.rail || item.en)}</span>
-        <span class="rail-price">${esc(item.price)}</span>
+        data-popular="${popular}" aria-selected="${sel}"
+        aria-label="${esc(label)}">
+        <img src="${esc(thumb)}" alt="" width="120" height="120" loading="lazy" decoding="async" />
+        <!-- Labels hidden in photo view (thumbs only); kept for DOM/search, not painted -->
+        <span class="rail-cn" aria-hidden="true">${house}${esc(item.rail || item.en)}</span>
+        <span class="rail-price" aria-hidden="true">${esc(item.price)}</span>
       </li>`;
     }).join("");
     list.innerHTML = Z.MENU_ITEMS.map((item, i) => {
