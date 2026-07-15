@@ -15,57 +15,49 @@
 
   /*
    * Type system
-   * Families (3 only):
-   *   display  Source Serif 4 italic  → EN titles, dish names, prices
-   *   cn       Noto Serif SC          → Chinese titles / dish
-   *   ui       Outfit                 → everything else
+   * Families (3): display · cn · ui
    *
-   * Size ladder — use these tokens only (no one-off rem sizes):
-   *   hero-cn / hero-en   ceremonial hero wordmark
-   *   panel-en / panel-cn section H2
-   *   dish-en / dish-cn   menu spotlight dish
-   *   list-en / list-cn / list-price  list-view row
-   *   prose               long reading (story chapter)
-   *   lead                section leads + hero tagline
-   *   body                address, hours, CTAs, social, footer tag
-   *   ui                  nav, filters, hours chip, skip, toast base
-   *   ui-sm               kickers, nav meta, ops notes, footer legal
-   *   micro               dish marks only
-   *   price               spotlight price
-   *   logo-cn / logo-en   nav brand
-   *   brand-cn            footer 褶
+   * Size ladder — fewer steps, clearer gaps (best practice):
+   *   micro → ui-sm → ui → body → title-sm → panel → dish → hero
+   * Reading (leads, story, visit, CTAs, list desc) = body only (floor 1rem).
+   * List dish row = title-sm (not a parallel mid-band).
    */
   --font-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
   --font-display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", serif;
   --font-ui: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --type-hero-cn: clamp(4.25rem, 14vw, 7rem);
-  --type-hero-en: clamp(1.35rem, 2.8vw, 1.85rem);
+  --type-hero-en: clamp(1.4rem, 2.8vw, 1.9rem);
   --type-panel-en: clamp(1.55rem, 3.2vw, 2.15rem);
   --type-panel-cn: clamp(0.95rem, 1.7vw, 1.12rem);
   --type-dish-en: clamp(1.65rem, 3.6vw, 2.4rem);
   --type-dish-cn: clamp(1rem, 1.85vw, 1.2rem);
-  --type-list-en: clamp(1.08rem, 1.65vw, 1.22rem);
-  --type-list-cn: 0.88rem;
-  --type-list-price: clamp(1.05rem, 1.55vw, 1.18rem);
-  --type-prose: clamp(1.05rem, 1.75vw, 1.2rem);
-  --type-lead: clamp(0.98rem, 1.35vw, 1.1rem);
-  --type-body: clamp(0.95rem, 1.4vw, 1.05rem);
+  --type-title-sm: clamp(1.2rem, 1.9vw, 1.4rem);
+  --type-body: clamp(1rem, 1.35vw, 1.125rem);
   --type-ui: 0.9rem;
   --type-ui-sm: 0.78rem;
-  --type-micro: 0.68rem;
-  --type-price: clamp(1.4rem, 2.2vw, 1.65rem);
+  --type-micro: 0.7rem;
+  --type-price: clamp(1.45rem, 2.2vw, 1.7rem);
   --type-logo-cn: 1.35rem;
   --type-logo-en: 1.05rem;
   --type-brand-cn: 1.65rem;
 
-  /* Aliases — prefer the ladder names above in new rules */
+  /* Aliases — same step, different call sites */
+  --type-lead: var(--type-body);
+  --type-prose: var(--type-body);
+  --type-list-en: var(--type-title-sm);
+  --type-list-cn: var(--type-panel-cn);
+  --type-list-price: var(--type-title-sm);
   --type-kicker: var(--type-ui-sm);
   --nav-ui-size: var(--type-ui);
 
-  --type-lead-lh: 1.45;
-  --type-body-lh: 1.55;
-  --type-prose-lh: 1.6;
+  /* Rhythm */
+  --type-lh-tight: 1.15;
+  --type-lh-ui: 1.25;
+  --type-lh-body: 1.55;
+  --type-lead-lh: var(--type-lh-body);
+  --type-body-lh: var(--type-lh-body);
+  --type-prose-lh: var(--type-lh-body);
   --type-title-track: 0.02em;
   --type-cn-track: 0.1em;
   --type-kicker-track: 0.1em;
@@ -330,10 +322,10 @@ body {
   font-style: normal;
   font-size: var(--type-body);
   letter-spacing: var(--type-body-track);
-  line-height: 1.65;
+  line-height: var(--type-lh-body);
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784146000");
+  background-image: url("assets/paper-texture.webp?v=1784148000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -861,7 +853,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav::before {
 
 /* Reserve sits with Story/Menu/Visit — same rest/hover/active grammar */
 .nav-links a.nav-reserve {
-  letter-spacing: 0.04em;
+  letter-spacing: var(--type-ui-track);
 }
 
 body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-hours-mark {
@@ -1205,7 +1197,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-ui-sm);
   font-weight: 400;
   margin: 0 0 0.85rem;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--type-kicker-track);
   color: var(--tone-fg);
   opacity: 0.92;
   text-transform: uppercase;
@@ -1231,7 +1223,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 500;
   font-style: normal;
   line-height: 0.88;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--type-title-track);
   color: var(--tone-fg);
   text-shadow: var(--tone-shadow-soft);
 }
@@ -1472,7 +1464,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-panel-en);
   font-weight: 400;
   letter-spacing: var(--type-title-track);
-  line-height: 1.1;
+  line-height: var(--type-lh-tight);
   color: var(--tone-fg);
 }
 
@@ -1847,7 +1839,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784146000");
+  background-image: url("assets/paper-texture.webp?v=1784148000");
   background-size: cover;
 }
 
@@ -2179,14 +2171,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-dish-en);
   font-weight: 400;
   letter-spacing: var(--type-title-track);
-  line-height: 1.15;
+  line-height: var(--type-lh-tight);
   color: var(--tone-fg);
   margin: 0;
 }
 
 .menu-spotlight-cn {
   font-size: var(--type-dish-cn);
-  line-height: 1.35;
+  line-height: var(--type-lh-ui);
   /* family/color from shared dish CN rule */
 }
 
@@ -2235,20 +2227,20 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-style: normal;
   font-weight: 400;
   font-size: var(--type-micro);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--type-kicker-track);
   text-transform: uppercase;
   color: var(--tone-fg);
   border: 1px solid rgba(242, 235, 224, 0.4);
   border-radius: 999px;
   padding: 0.2rem 0.5rem 0.18rem;
-  line-height: 1.2;
+  line-height: var(--type-lh-ui);
   opacity: 1;
 }
 
 .dish-mark--house {
   color: var(--tone-accent-soft, var(--wheat));
   border-color: rgba(212, 184, 150, 0.45);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--type-kicker-track);
 }
 
 .menu[data-tone="light"] .dish-mark {
@@ -2608,7 +2600,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-list-en);
   font-weight: 400;
   letter-spacing: var(--type-title-track);
-  line-height: 1.28;
+  line-height: var(--type-lh-ui);
   color: var(--tone-fg);
   min-width: 0;
   white-space: normal;
@@ -2617,7 +2609,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .menu-list-item .list-cn {
   grid-area: cn;
   font-size: var(--type-list-cn);
-  line-height: 1.35;
+  line-height: var(--type-lh-ui);
   min-width: 0;
   /* family/color from shared dish CN rule */
 }
@@ -2631,7 +2623,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   color: var(--tone-accent);
   justify-self: end;
   align-self: start;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--type-title-track);
   white-space: nowrap;
   min-width: 2.75rem;
   text-align: right;
@@ -2833,7 +2825,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-panel-en);
   font-weight: 400;
   letter-spacing: var(--type-title-track);
-  line-height: 1.1;
+  line-height: var(--type-lh-tight);
   color: var(--tone-fg);
 }
 
@@ -2983,7 +2975,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-body);
   letter-spacing: var(--type-body-track);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: var(--type-lh-ui);
   color: inherit;
 }
 
@@ -3013,7 +3005,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   font-size: var(--type-body);
   letter-spacing: var(--type-body-track);
-  line-height: 1.2;
+  line-height: var(--type-lh-ui);
   color: var(--tone-fg);
   text-decoration: none;
   padding: 0.35rem 0.05rem 0.4rem;
@@ -3117,10 +3109,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 .footer-tag .en {
   font-family: var(--font-ui);
   font-style: normal;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--type-body-track);
   font-weight: 400;
   font-size: var(--type-body);
-  line-height: var(--type-lead-lh);
+  line-height: var(--type-lh-body);
   opacity: 1;
 }
 
@@ -3235,27 +3227,22 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     --panel-h: 100%;
     --shell-h: 100dvh;
 
-    /* Phone type scale — same roles, tighter steps (no one-off rem elsewhere) */
+    /* Phone ladder — same steps; aliases (lead/prose/list-*) follow */
     --type-hero-cn: clamp(3.1rem, 18vw, 4.5rem);
     --type-hero-en: clamp(1.15rem, 4.2vw, 1.35rem);
     --type-panel-en: clamp(1.45rem, 6vw, 1.85rem);
-    --type-panel-cn: 0.88rem;
+    --type-panel-cn: 0.9rem;
     --type-dish-en: clamp(1.4rem, 6.5vw, 1.85rem);
-    --type-dish-cn: 0.88rem;
-    --type-list-en: 1.08rem;
-    --type-list-cn: 0.84rem;
-    --type-list-price: 1.08rem;
-    --type-prose: 0.95rem;
-    --type-lead: 0.98rem;
-    --type-body: 0.95rem;
+    --type-dish-cn: 0.9rem;
+    --type-title-sm: 1.15rem;
+    --type-body: 1rem;
     --type-ui: 0.88rem;
     --type-ui-sm: 0.78rem;
-    --type-micro: 0.68rem;
+    --type-micro: 0.7rem;
     --type-price: 1.35rem;
     --type-logo-cn: 1.2rem;
     --type-logo-en: 0.92rem;
     --type-brand-cn: 1.45rem;
-    --nav-ui-size: var(--type-ui);
   }
 
   html {
@@ -4021,13 +4008,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 }
 
-/* Very small phones — only scale tokens + layout, not one-off rem sizes */
+/* Very small phones — only scale tokens + layout */
 @media (max-width: 380px) {
   :root {
     --type-hero-cn: clamp(2.85rem, 18vw, 4rem);
-    --type-prose: 0.92rem;
-    --type-ui: 0.82rem;
-    --type-ui-sm: 0.74rem;
+    --type-ui: 0.84rem;
+    --type-ui-sm: 0.76rem;
+    --type-body: 1rem;
+    --type-title-sm: 1.1rem;
   }
 
   .menu-rail-item {
