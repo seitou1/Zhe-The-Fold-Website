@@ -2315,20 +2315,24 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
  * Legibility comes from a deeper veil + steady type, not a new surface.
  */
 .menu.is-list-view {
-  --tone-fg: #faf6f0;
-  --tone-fg-soft: rgba(250, 246, 240, 0.95);
-  --tone-fg-muted: rgba(250, 246, 240, 0.78);
+  /* Same full ink as photo mode — no softer “list language” */
+  --tone-fg: #faf8f4;
+  --tone-fg-soft: #faf8f4;
+  --tone-fg-muted: rgba(250, 248, 244, 0.9);
   --tone-accent: #ebcfa0;
-  --tone-line: rgba(250, 246, 240, 0.28);
-  --tone-filter: rgba(250, 246, 240, 0.84);
-  --tone-filter-active: #fffaf3;
-  --tone-filter-line-active: rgba(250, 246, 240, 0.92);
+  --tone-line: rgba(250, 246, 240, 0.34);
+  --tone-filter: #faf8f4;
+  --tone-filter-active: #fffef9;
+  --tone-filter-line-active: rgba(250, 246, 240, 0.96);
+  --tone-btn: #faf8f4;
+  --tone-btn-soft: #faf8f4;
   --tone-shadow:
     0 1px 2px rgba(0, 0, 0, 0.62),
     0 4px 22px rgba(0, 0, 0, 0.45);
   --tone-shadow-soft:
-    0 1px 2px rgba(0, 0, 0, 0.72),
-    0 2px 14px rgba(0, 0, 0, 0.42);
+    0 1px 2px rgba(0, 0, 0, 0.78),
+    0 2px 12px rgba(0, 0, 0, 0.55),
+    0 8px 28px rgba(0, 0, 0, 0.42);
 }
 
 .menu.is-list-view .menu-list-view {
@@ -2521,7 +2525,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-list-item.is-active .list-desc {
-  opacity: 0.92;
+  opacity: 1;
   -webkit-line-clamp: 2;
 }
 
