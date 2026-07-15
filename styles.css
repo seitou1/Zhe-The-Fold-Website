@@ -332,7 +332,7 @@ body {
   line-height: var(--type-lh-body);
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784158000");
+  background-image: url("assets/paper-texture.webp?v=1784160000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1859,7 +1859,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784158000");
+  background-image: url("assets/paper-texture.webp?v=1784160000");
   background-size: cover;
 }
 
@@ -3244,6 +3244,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     /*
      * Phone nav is one row again (logo + hours | links).
      * Shell model: body fixed frame; main scrolls. No bottom dock.
+     * Photo walls paint edge-to-edge (under status bar / home indicator);
+     * only type/chrome use safe-area padding — not the media.
      */
     --nav-h: calc(3.2rem + env(safe-area-inset-top, 0px));
     --dock-h: env(safe-area-inset-bottom, 0px);
@@ -3252,7 +3254,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     --stage-pad-x: max(0.9rem, calc(env(safe-area-inset-left, 0px) + 0.85rem));
     --stage-pad-b: calc(var(--dock-h) + 0.75rem);
     --panel-h: 100%;
+    /* Prefer large viewport so panels don’t leave amber bands under iOS chrome */
     --shell-h: 100dvh;
+    --shell-h: 100lvh;
 
     /* Phone ladder — same steps; aliases (lead/prose/list-*) follow */
     --type-hero-cn: clamp(3.1rem, 18vw, 4.5rem);
@@ -3274,27 +3278,36 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   html {
     height: 100%;
+    height: -webkit-fill-available;
     overflow: hidden;
     scroll-behavior: auto;
     /* Document no longer snaps — the site-scroll root does */
     scroll-snap-type: none;
     overscroll-behavior: none;
+    /* Match photo underpaint — no amber “banners” in notch / home areas */
+    background: #12100e;
   }
 
   body {
     position: fixed;
     inset: 0;
     width: 100%;
-    height: var(--shell-h, 100dvh);
-    max-height: var(--shell-h, 100dvh);
+    /* Fill the physical screen (lvh / fill-available), not only the short toolbar viewport */
+    height: var(--shell-h, 100lvh);
+    min-height: 100%;
+    min-height: -webkit-fill-available;
+    max-height: none;
     overflow: hidden;
     overscroll-behavior: none;
+    background: #12100e;
+    background-image: none;
   }
 
   /*
-   * Scrollport fills the shell. Dock is position:absolute on body,
-   * overlaying the bottom — stages pad for it. When the URL bar moves,
-   * --shell-h updates and main + panels + dock resize as one unit.
+   * Scrollport fills the shell. Photo panels paint edge-to-edge under
+   * status bar + home indicator (viewport-fit=cover). Type still clears
+   * chrome via --stage-pad-* / safe-area. When the URL bar moves,
+   * --shell-h updates from visualViewport (see script.js).
    */
   main#top {
     position: absolute;
@@ -3309,6 +3322,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     overscroll-behavior-y: contain;
     /* Keep horizontal swipes with JS carousels (not history / rubber-band) */
     overscroll-behavior-x: none;
+    background: #12100e;
   }
 
   main#top.js-snap-off {

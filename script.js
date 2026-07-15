@@ -1173,7 +1173,12 @@
     return best;
   };
 
-  /** Mobile shell height = visual viewport (body + main + panels resize together). */
+  /**
+   * Mobile shell height — prefer the *larger* of visual viewport and
+   * layout/inner height so photo panels stay edge-to-edge under iOS
+   * chrome (status bar / home indicator / collapsing URL bar).
+   * Short vv-only sizing left amber “banners” above/below the media.
+   */
   let lastShellH = 0;
   let scrollActive = false;
   let scrollSettleTimer = 0;
@@ -1187,7 +1192,13 @@
       return;
     }
     const vv = window.visualViewport;
-    const h = Math.round((vv && vv.height) || window.innerHeight || 0);
+    const vvH = (vv && vv.height) || 0;
+    const layoutH =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      0;
+    /* Use the larger measure so we never undersize into letterbox bands */
+    const h = Math.round(Math.max(vvH, layoutH));
     if (h < 80) return;
     if (Math.abs(h - lastShellH) < 1) return;
     lastShellH = h;
