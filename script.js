@@ -1267,7 +1267,7 @@
   updateProgress();
   updateNav();
 
-  /* ── Open/closed status from SITE.hours (nav / hero / mobile sheet only) ── */
+  /* ── Kitchen status from SITE.hours (nav — editorial, not a LED pill) ── */
   const getSFParts = (date = new Date()) => {
     const { timeZone } = getHoursConfig();
     const fmt = new Intl.DateTimeFormat("en-US", {
@@ -1286,21 +1286,27 @@
     };
   };
 
-  const isOpenNow = (weekday, minutes) => {
+  /** Active period if open now, else null */
+  const getOpenPeriod = (weekday, minutes) => {
     const { closedWeekdays, periods } = getHoursConfig();
-    if (closedWeekdays.includes(weekday)) return false;
-    return periods.some((p) => {
-      if (!(p.days || []).includes(weekday)) return false;
+    if (closedWeekdays.includes(weekday)) return null;
+    for (const p of periods) {
+      if (!(p.days || []).includes(weekday)) continue;
       const start = parseHM(p.open);
       const end = parseHM(p.close);
-      return minutes >= start && minutes < end;
-    });
+      if (minutes >= start && minutes < end) {
+        return { start, end };
+      }
+    }
+    return null;
   };
 
-  /** Next open label from a closed state */
-  const getNextOpen = ({ weekday, minutes }) => {
+  /** Next service after a closed moment — brand-quiet copy */
+  const getNextService = ({ weekday, minutes }) => {
     const { closedWeekdays, periods } = getHoursConfig();
-    if (!periods.length) return "Closed · See hours";
+    if (!periods.length) {
+      return { state: "See hours", meta: "Visit" };
+    }
     const dayIdx = WEEKDAYS.indexOf(weekday);
     const safeIdx = dayIdx >= 0 ? dayIdx : 0;
 
@@ -1317,38 +1323,52 @@
       if (offset === 0) {
         for (const per of dayPeriods) {
           if (minutes < per.start) {
-            const timeEn = formatTimeEn(per.start);
-            return `Closed · Opens ${timeEn}`;
+            return {
+              state: "Resting",
+              meta: `opens ${formatTimeEn(per.start)}`,
+            };
           }
         }
         continue;
       }
 
-      const timeEn = formatTimeEn(dayPeriods[0].start);
-      if (weekday === closedWeekdays[0] || closedWeekdays.includes(weekday)) {
-        return `Closed · Opens ${day} ${timeEn}`;
-      }
-      return `Closed · Opens ${day} ${timeEn}`;
+      return {
+        state: "Resting",
+        meta: `opens ${day} ${formatTimeEn(dayPeriods[0].start)}`,
+      };
     }
-    return "Closed · See hours";
+    return { state: "Resting", meta: "see Visit" };
   };
 
   const updateVisitLive = () => {
     const parts = getSFParts();
-    const open = isOpenNow(parts.weekday, parts.minutes);
-    // Full label everywhere — nav chip ellipsizes on narrow screens via CSS
-    const label = open ? "Open now · SF time" : getNextOpen(parts);
+    const period = getOpenPeriod(parts.weekday, parts.minutes);
+    const open = Boolean(period);
+    const status = open
+      ? {
+          state: "Open",
+          meta: `until ${formatTimeEn(period.end)}`,
+        }
+      : getNextService(parts);
+    const title = open
+      ? `Kitchen open until ${formatTimeEn(period.end)} (SF time)`
+      : `Kitchen resting — ${status.meta} (SF time)`;
 
     $$("[data-zhe-open-chip]").forEach((chip) => {
       chip.classList.toggle("is-open", open);
       chip.classList.toggle("is-closed", !open);
       chip.hidden = false;
       chip.removeAttribute("hidden");
-      chip.setAttribute("title", label);
+      chip.setAttribute("title", title);
+      chip.setAttribute("aria-label", title);
     });
 
-    $$("[data-zhe-open-status]").forEach((el) => {
-      el.textContent = label;
+    $$("[data-zhe-open-state]").forEach((el) => {
+      el.textContent = status.state;
+    });
+    $$("[data-zhe-open-meta]").forEach((el) => {
+      el.textContent = status.meta;
+      el.hidden = !status.meta;
     });
   };
 
