@@ -1320,13 +1320,16 @@
     return null;
   };
 
-  /** Next service after a closed moment — always include when we open */
+  /**
+   * Next service after a closed moment.
+   * One useful line only — no “Resting” label (felt busy in the nav).
+   */
   const getNextService = ({ weekday, minutes }) => {
     const { closedWeekdays, periods, note } = getHoursConfig();
     if (!periods.length) {
       return {
-        state: "Hours",
-        meta: note ? String(note) : "see Visit",
+        state: note ? String(note) : "see Visit",
+        meta: "",
       };
     }
     const dayIdx = WEEKDAYS.indexOf(weekday);
@@ -1345,25 +1348,25 @@
       if (offset === 0) {
         for (const per of dayPeriods) {
           if (minutes < per.start) {
-            // Between services today (e.g. afternoon rest)
+            // Later today — just the open time
             return {
-              state: "Resting",
-              meta: `opens ${formatTimeEn(per.start)}`,
+              state: `opens ${formatTimeEn(per.start)}`,
+              meta: "",
             };
           }
         }
         continue;
       }
 
-      // Another day — always say which day + open time
+      // Another day — day + open time
       return {
-        state: "Resting",
-        meta: `opens ${day} ${formatTimeEn(dayPeriods[0].start)}`,
+        state: `opens ${day} ${formatTimeEn(dayPeriods[0].start)}`,
+        meta: "",
       };
     }
     return {
-      state: "Resting",
-      meta: note ? String(note) : "see Visit for hours",
+      state: note ? String(note) : "see Visit",
+      meta: "",
     };
   };
 
@@ -1371,19 +1374,16 @@
     const parts = getSFParts();
     const period = getOpenPeriod(parts.weekday, parts.minutes);
     const open = Boolean(period);
-    // Always pair state + useful time (open→until close; closed→next open)
+    // Open: state + until. Closed: single "opens …" line (no Resting).
     const status = open
       ? {
           state: "Open",
           meta: `until ${formatTimeEn(period.end)}`,
         }
       : getNextService(parts);
-    if (!status.meta) {
-      status.meta = open ? "now" : "see Visit";
-    }
     const title = open
       ? `Kitchen open until ${formatTimeEn(period.end)} (SF time)`
-      : `Kitchen resting — ${status.meta} (SF time)`;
+      : `Kitchen ${status.state} (SF time)`;
 
     $$("[data-zhe-open-chip]").forEach((chip) => {
       chip.classList.toggle("is-open", open);
@@ -1396,11 +1396,14 @@
 
     $$("[data-zhe-open-state]").forEach((el) => {
       el.textContent = status.state;
+      el.hidden = !status.state;
     });
     $$("[data-zhe-open-meta]").forEach((el) => {
-      el.textContent = status.meta;
-      el.hidden = false;
-      el.removeAttribute("hidden");
+      const meta = (status.meta || "").trim();
+      el.textContent = meta;
+      el.hidden = !meta;
+      if (!meta) el.setAttribute("hidden", "");
+      else el.removeAttribute("hidden");
     });
   };
 
