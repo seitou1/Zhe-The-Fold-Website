@@ -451,25 +451,10 @@
     el.textContent = JSON.stringify(payload);
   };
 
-  /** Portfolio concept chrome — off when SITE.demoMode is false (real client). */
-  const renderDemoChrome = () => {
-    const site = Z.SITE || {};
-    const on = Boolean(site.demoMode);
-    $$("[data-zhe-demo-label]").forEach((el) => {
-      el.hidden = !on;
-      if (on && site.demoLabel) el.textContent = site.demoLabel;
-    });
-    $$("[data-zhe-demo-blurb]").forEach((el) => {
-      el.hidden = !on;
-      if (on && site.demoBlurb) el.textContent = site.demoBlurb;
-    });
-  };
-
   const renderVisitDom = () => {
     const site = Z.SITE;
     const social = site.social || {};
     const booking = site.booking || {};
-    renderDemoChrome();
     const addr = $("#visitAddress");
     if (addr) {
       const a = site.address;
@@ -616,7 +601,6 @@
 
   applyIndexable();
   applySiteMeta();
-  renderDemoChrome();
   renderMenuDom();
   renderStoryDom();
   renderVisitDom();

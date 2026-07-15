@@ -10,7 +10,7 @@
 | Gate | **PASS** (3 fiction warnings expected) |
 | Product bar | **Demo-complete** (`PRODUCT.md`) |
 | Craft scorecard | **PASS** — `QA_SCORECARD_DEMO_2026-07-15.md` |
-| Live posture | Concept demo · `demoMode: true` · noindex |
+| Live posture | Fiction NAP · noindex (no concept chip) |
 
 ---
 
@@ -54,14 +54,14 @@
 |------|--------|
 | Real NAP | Client |
 | booking.url | Client |
-| demoMode false + INDEXABLE | After real data |
+| INDEXABLE + real NAP | After real data |
 | Host + rollback table | Ops |
 
 ---
 
 ## Frozen systems
 
-Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallback, placeholder→noindex, **demoMode until real client**.  
+Stack, SSOT, no dock, Visit caption, touch carousels, mobile shell, mailto fallback, placeholder→noindex. No concept/demo nav chip.
 **Type (2026-07-15):** display = Source Serif 4 · cn = Noto Serif SC (site subset) · ui = Outfit. EN/CN share tone+shadow roles.
 
 ---

@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784125800");
+  background-image: url("assets/paper-texture.webp?v=1784126000");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -504,7 +504,6 @@ button {
 .menu-note .en,
 .footer-tag .en,
 .footer-copy,
-.footer-demo,
 .toast {
   font-family: var(--font-ui);
   font-style: normal;
@@ -602,6 +601,8 @@ button {
   align-items: baseline;
   gap: 0.5rem;
   z-index: 2;
+  flex-shrink: 0;
+  margin-right: auto;
   color: inherit;
   text-shadow:
     0 1px 1px rgba(0, 0, 0, 0.55),
@@ -623,35 +624,6 @@ button {
   font-weight: 400;
   opacity: 1;
   letter-spacing: 0.04em;
-}
-
-/* Portfolio concept chip — driven by SITE.demoMode */
-.nav-demo {
-  flex-shrink: 0;
-  margin-left: 0.35rem;
-  margin-right: auto;
-  padding: 0.18rem 0.55rem;
-  border: 1px solid rgba(242, 235, 224, 0.34);
-  border-radius: 999px;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  color: #faf8f4;
-  background: rgba(12, 9, 7, 0.4);
-  text-shadow: none;
-  white-space: nowrap;
-}
-
-.nav-demo[hidden] {
-  display: none !important;
-}
-
-body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-demo {
-  border-color: rgba(28, 24, 20, 0.22);
-  background: rgba(255, 252, 247, 0.55);
-  color: #1c1814;
 }
 
 /* Chrome on every panel — scrim stays; links always present */
@@ -1742,7 +1714,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784125800");
+  background-image: url("assets/paper-texture.webp?v=1784126000");
   background-size: cover;
 }
 
@@ -3080,24 +3052,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   opacity: 1;
 }
 
-.footer-demo {
-  margin: 0.35rem 0 0;
-  max-width: 28rem;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  letter-spacing: 0.015em;
-  opacity: 1;
-  text-align: center;
-  color: inherit;
-}
-
-.footer-demo[hidden] {
-  display: none !important;
-}
-
 .footer-copy {
   font-family: var(--font-ui);
   font-style: normal;
@@ -3325,10 +3279,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .nav-logo .logo-en {
     font-size: 0.95rem;
-  }
-
-  .nav-demo {
-    display: none; /* phone: rely on footer blurb — keep nav compact */
   }
 
   .nav-links {

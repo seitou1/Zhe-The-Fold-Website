@@ -5,7 +5,7 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784125800",
+  ASSET_V: "1784126000",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────
@@ -29,20 +29,12 @@ window.ZHE = {
     name: "Zhe · The Fold",
     alternateName: ["褶", "Zhe The Fold"],
     url: "https://zhethefold.com/",
-    /**
-     * Portfolio / concept demo (not a live booking venue).
-     * Set false for a real client; hide chrome via renderDemoChrome().
-     */
-    demoMode: true,
-    demoLabel: "Concept · Demo",
-    demoBlurb:
-      "Concept house for portfolio — sample address; not a live reservation venue.",
     /** Meta + JSON-LD description (one string for SEO + schema) */
     description:
-      "Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand. Concept demo.",
+      "Handmade Chinese dumplings in San Francisco. Every fold holds the mark of a hand.",
     email: "hello@zhethefold.com",
-    reserveSubject: "Reservation · Zhe (concept demo)",
-    /* ⚠ Placeholders — replace before INDEXABLE true / demoMode false */
+    reserveSubject: "Reservation · Zhe",
+    /* ⚠ Placeholders — replace before INDEXABLE true */
     telephone: "+14155550100",
     telephoneDisplay: "(415) 555-0100",
     address: {
