@@ -856,7 +856,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav .nav-open {
   --tone-rule-soft: rgba(28, 24, 20, 0.4);
 }
 
-/* Light plates: warm paper veil — Menu still stacks reading bands in its own rules */
+/* Light plates: warm paper veil (Menu sets its own stacked reading bands) */
+.visit[data-tone="light"] .visit-wall-veil {
+  background: var(--panel-veil-light);
+}
 
 /* Nav logo on hero when the plate is light */
 /* Light photo under transparent chrome — flip to ink type */
