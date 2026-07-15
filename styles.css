@@ -299,7 +299,7 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background: var(--paper);
-  background-image: url("assets/paper-texture.webp?v=1784132000");
+  background-image: url("assets/paper-texture.webp?v=1784133500");
   background-size: cover;
   background-attachment: fixed;
   background-blend-mode: soft-light;
@@ -1825,7 +1825,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784132000");
+  background-image: url("assets/paper-texture.webp?v=1784133500");
   background-size: cover;
 }
 
@@ -3636,45 +3636,50 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   /*
    * Menu head — phone layout:
-   *   [ Title ………… List ]
-   *   [ All · Classic · …   ]
-   * display:contents on .menu-actions so children join this grid.
+   *   [ Title / 菜单              ]
+   *   [ All · Classic · …  | List ]
+   * List sits with the filter chrome, not floating beside the title.
    */
   .menu-head {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "title tools"
-      "filters filters";
-    gap: 0.25rem 0.75rem;
-    align-items: end;
-    padding-bottom: 0.45rem;
+      "title"
+      "actions";
+    gap: 0.15rem 0;
+    align-items: start;
+    padding-bottom: 0.4rem;
     flex-shrink: 0;
     width: 100%;
   }
 
   .menu-actions {
-    display: contents;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem 0.65rem;
+    width: 100%;
+    min-width: 0;
   }
 
   .menu-tools {
-    grid-area: tools;
+    flex-shrink: 0;
     justify-content: flex-end;
-    align-self: end;
     margin: 0;
     padding: 0;
   }
 
   .menu-filters {
-    grid-area: filters;
+    flex: 1 1 auto;
     justify-content: flex-start;
     align-items: center;
-    gap: 0.15rem 0.85rem;
+    gap: 0.15rem 0.75rem;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     min-width: 0;
-    width: 100%;
   }
 
   .menu-filters::-webkit-scrollbar {
@@ -3694,7 +3699,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     height: min(44%, 12.5rem);
   }
 
-  /* Menu head is stacked (title + lead + filters) — taller, denser scrim */
+  /* Menu head is stacked (title + filters/tools) — taller, denser scrim */
   .menu-wall-veil::before {
     height: min(52%, 16.5rem);
     background: linear-gradient(
