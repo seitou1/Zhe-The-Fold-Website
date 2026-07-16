@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784187600");
+  background-image: url("assets/paper-texture.webp?v=1784189000");
   background-size: cover;
 }
 
@@ -2637,14 +2637,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.35rem 1rem 0.25rem 0.15rem;
-  /* Soft hold on the left under type — no slab */
-  background: linear-gradient(
-    90deg,
-    rgba(8, 5, 4, 0.36) 0%,
-    rgba(8, 5, 4, 0.22) 42%,
-    rgba(8, 5, 4, 0.08) 72%,
-    transparent 100%
-  );
+  /* No side band — type-shadow holds the list over open plate */
+  background: transparent;
   border-radius: 0;
 }
 
@@ -2945,23 +2939,63 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   line-height: 1.45;
 }
 
-/* Desktop: light left hold for ledger; plate opens right */
+/*
+ * Menu plate: open photo, not a mud field.
+ * Type lives on text-shadow; only a whisper at head + floor.
+ */
 .menu-wall-veil {
   background:
     linear-gradient(
-      to right,
-      rgba(8, 5, 4, 0.3) 0%,
-      rgba(8, 5, 4, 0.12) 28%,
-      transparent 48%,
-      transparent 100%
+      to bottom,
+      rgba(6, 4, 3, 0.22) 0%,
+      rgba(8, 5, 4, 0.06) 12%,
+      transparent 28%
     ),
-    var(--panel-veil);
+    linear-gradient(
+      to top,
+      rgba(8, 5, 4, 0.14) 0%,
+      transparent 16%
+    );
+}
+
+.menu-wall-veil::before {
+  /* Kill the dense shared top scrim — head uses stage text-shadow */
+  height: min(22%, 7.5rem);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 3, 2, 0.28) 0%,
+    rgba(8, 5, 4, 0.1) 55%,
+    transparent 100%
+  );
+}
+
+.menu-wall-veil::after {
+  opacity: 0.08;
+}
+
+.menu-wall-grain {
+  opacity: 0.03;
 }
 
 /* Wide: nudge plate into the open right half beside the list */
 @media (min-width: 901px) {
   .menu {
     --menu-wall-origin: 62% center;
+  }
+
+  .menu-list-item {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.72),
+      0 2px 14px rgba(0, 0, 0, 0.48),
+      0 0 1px rgba(0, 0, 0, 0.85);
+  }
+
+  .menu-head,
+  .menu-list-group-label,
+  .menu-note {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.7),
+      0 2px 12px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -3025,9 +3059,20 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     padding-right: 0.15rem;
   }
 
-  /* Rely on shared panel-veil-mobile — no extra bottom mud */
+  /* Phone: same open-plate idea — no shared mobile mud stack */
   .menu-wall-veil {
-    background: var(--panel-veil-mobile, var(--panel-veil));
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(6, 4, 3, 0.28) 0%,
+        rgba(8, 5, 4, 0.08) 14%,
+        transparent 32%
+      ),
+      linear-gradient(
+        to top,
+        rgba(8, 5, 4, 0.16) 0%,
+        transparent 18%
+      );
   }
 
   .menu-list-item {
