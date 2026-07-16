@@ -5,7 +5,7 @@
  * Bump ASSET_V when shipping new images or cache-busted assets.
  */
 window.ZHE = {
-  ASSET_V: "1784184000",
+  ASSET_V: "1784185200",
 
   /**
    * ── LAUNCH SWITCH ─────────────────────────────────────────────────
@@ -86,6 +86,11 @@ window.ZHE = {
    * Prefer paths without extension quirks — asset() rewrites .jpg → .webp + ?v=
    * tags: dietary marks on spotlight · popular: house mark
    */
+  /**
+   * Menu ledger shows rail (or en) + cn + price.
+   * Meta is only House / Shellfish — not protein restating the title.
+   * Category lives in group headers + filters, not on each row.
+   */
   MENU_ITEMS: [
     {
       id: "pork",
@@ -95,10 +100,10 @@ window.ZHE = {
       /* object-position only — wall scale/origin locked in CSS (no List jump) */
       position: "center 68%",
       positionMobile: "center 72%",
-      en: "Pork & Napa Cabbage Fold",
+      en: "Pork & Napa Cabbage",
       rail: "Pork & Cabbage",
       cn: "猪肉白菜褶",
-      desc: "The house classic—soft pork, sweet cabbage, a fold as familiar as home.",
+      desc: "Soft pork, sweet napa—the house classic, familiar as home.",
       price: "$14",
       popular: true,
       tags: ["pork"],
@@ -108,10 +113,10 @@ window.ZHE = {
       category: "classic",
       catLabel: "Classic",
       image: "assets/dish-beef.jpg",
-      en: "Beef & Scallion Fold",
+      en: "Beef & Scallion",
       rail: "Beef & Scallion",
       cn: "牛肉大葱褶",
-      desc: "Northern heartiness in a thin skin: beef, bright scallion, a quiet depth of soy.",
+      desc: "Northern heartiness in a thin skin—bright scallion, quiet soy.",
       price: "$16",
       tags: ["beef"],
     },
@@ -120,10 +125,10 @@ window.ZHE = {
       category: "classic",
       catLabel: "Classic",
       image: "assets/dish-shrimp.jpg",
-      en: "Shrimp & Chive Fold",
+      en: "Shrimp & Chive",
       rail: "Shrimp & Chive",
       cn: "虾仁韭菜褶",
-      desc: "Sweet shrimp and fragrant chive, sealed with a few honest, uneven creases.",
+      desc: "Sweet shrimp and fragrant chive, sealed with uneven creases.",
       price: "$18",
       popular: true,
       tags: ["shellfish"],
@@ -133,10 +138,10 @@ window.ZHE = {
       category: "seasonal",
       catLabel: "Seasonal",
       image: "assets/dish-bamboo.jpg",
-      en: "Bamboo Shoot & Pork Fold",
+      en: "Bamboo Shoot & Pork",
       rail: "Bamboo & Pork",
       cn: "春笋鲜肉褶",
-      desc: "Crisp spring bamboo meeting slow-cooked pork—season held lightly in the dough.",
+      desc: "Crisp spring bamboo meeting slow-cooked pork.",
       price: "$17",
       tags: ["pork", "seasonal"],
     },
@@ -145,10 +150,10 @@ window.ZHE = {
       category: "seasonal",
       catLabel: "Seasonal",
       image: "assets/dish-crab.jpg",
-      en: "Crab Roe Little Fold",
+      en: "Crab Roe",
       rail: "Crab Roe",
       cn: "蟹粉小笼褶",
-      desc: "Delicate crab roe and broth that warms the palm before it warms the table.",
+      desc: "Delicate crab roe and broth that warms the palm first.",
       price: "$22",
       tags: ["shellfish", "seasonal"],
     },
@@ -157,10 +162,10 @@ window.ZHE = {
       category: "seasonal",
       catLabel: "Seasonal",
       image: "assets/dish-chestnut.jpg",
-      en: "Chestnut & Chicken Fold",
+      en: "Chestnut & Chicken",
       rail: "Chestnut & Chicken",
       cn: "栗子鸡肉褶",
-      desc: "Autumn chestnuts and tender chicken—earth and steam in one soft bite.",
+      desc: "Autumn chestnuts and tender chicken—earth and steam.",
       price: "$16",
       tags: ["poultry", "seasonal"],
     },
@@ -171,7 +176,7 @@ window.ZHE = {
       image: "assets/dish-mushroom.jpg",
       position: "center 62%",
       positionMobile: "center 70%",
-      en: "Mushroom & Greens Fold",
+      en: "Mushroom & Greens",
       rail: "Mushroom & Greens",
       cn: "香菇青菜褶",
       desc: "Wood-ear depth and garden greens, folded without hurry.",
@@ -186,10 +191,10 @@ window.ZHE = {
       image: "assets/dish-tofu.jpg",
       position: "center 58%",
       positionMobile: "center 65%",
-      en: "Tofu & Daikon Fold",
+      en: "Tofu & Daikon",
       rail: "Tofu & Daikon",
       cn: "豆腐萝卜褶",
-      desc: "Silken tofu and mild daikon—clean, quiet, and wholly itself.",
+      desc: "Silken tofu and mild daikon—clean and quiet.",
       price: "$12",
       tags: ["plant"],
     },

@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784184000");
+  background-image: url("assets/paper-texture.webp?v=1784185200");
   background-size: cover;
 }
 
@@ -2724,26 +2724,25 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   letter-spacing: var(--type-kicker-track);
   text-transform: uppercase;
   color: var(--tone-accent);
-  opacity: 0.95;
-  padding: 0.15rem 0.1rem 0.35rem;
-  border-bottom: 1px solid rgba(250, 246, 240, 0.12);
+  opacity: 0.88;
+  padding: 0.35rem 0.1rem 0.28rem;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.1);
 }
 
-/* Row — compact by default; expands when active */
+/* Row — en · price / cn; optional House·Shellfish meta; desc when active */
 .menu-list-item {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     "en price"
-    "cn price"
-    "proteins proteins";
+    "cn price";
   column-gap: 0.85rem;
-  row-gap: 0.12rem;
+  row-gap: 0.06rem;
   align-items: baseline;
-  padding: 0.62rem 0.2rem 0.62rem 0.35rem;
+  padding: 0.55rem 0.2rem 0.55rem 0.25rem;
   margin: 0;
   border: none;
-  border-bottom: 1px solid rgba(242, 235, 224, 0.12);
+  border-bottom: 1px solid rgba(242, 235, 224, 0.1);
   border-radius: 0;
   background: transparent;
   cursor: pointer;
@@ -2754,19 +2753,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   touch-action: manipulation;
 }
 
-.menu-list-item.is-hidden {
-  display: none !important;
+.menu-list-item.has-meta {
+  grid-template-areas:
+    "en price"
+    "cn price"
+    "meta meta";
 }
 
-.menu-list-item .list-cat {
-  display: none;
-  grid-area: cat;
-  font-family: var(--font-ui);
-  font-size: var(--type-ui-sm);
-  letter-spacing: var(--type-kicker-track);
-  text-transform: uppercase;
-  color: var(--tone-accent);
-  margin: 0 0 0.1rem;
+.menu-list-item.is-hidden {
+  display: none !important;
 }
 
 .menu-list-item .list-en {
@@ -2801,17 +2796,19 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-list-cn);
   line-height: var(--type-lh-ui);
   min-width: 0;
-  opacity: 0.95;
+  opacity: 0.78;
 }
 
-.menu-list-item .list-proteins {
-  grid-area: proteins;
+.menu-list-item .list-meta {
+  grid-area: meta;
   font-family: var(--font-ui);
   font-size: var(--type-ui-sm);
-  letter-spacing: 0.04em;
-  color: var(--tone-fg);
-  opacity: 0.78;
-  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tone-accent);
+  opacity: 0.72;
+  line-height: 1.3;
+  margin-top: 0.08rem;
 }
 
 .menu-list-item .list-desc {
@@ -2822,22 +2819,20 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   line-height: var(--type-lh-body);
   letter-spacing: var(--type-body-track);
   color: var(--tone-fg);
-  opacity: 0.92;
-  margin: 0.2rem 0 0;
-  max-width: 36rem;
+  opacity: 0.9;
+  margin: 0.22rem 0 0;
+  max-width: 32rem;
 }
 
-/* Expanded active row — full menu detail */
+/* Active — name, price, cn, optional meta, then one-line desc */
 .menu-list-item.is-active {
   grid-template-areas:
-    "cat cat"
     "en price"
     "cn price"
-    "proteins proteins"
     "desc desc";
-  padding-top: 0.75rem;
-  padding-bottom: 0.8rem;
-  border-bottom-color: rgba(201, 184, 150, 0.35);
+  padding-top: 0.65rem;
+  padding-bottom: 0.7rem;
+  border-bottom-color: rgba(201, 184, 150, 0.32);
   box-shadow: inset 2px 0 0 var(--tone-accent);
   background: linear-gradient(
     90deg,
@@ -2846,8 +2841,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   );
 }
 
-.menu-list-item.is-active .list-cat {
-  display: block;
+.menu-list-item.is-active.has-meta {
+  grid-template-areas:
+    "en price"
+    "cn price"
+    "meta meta"
+    "desc desc";
 }
 
 .menu-list-item.is-active .list-desc {
@@ -2858,8 +2857,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   color: var(--tone-fg);
 }
 
-.menu-list-item.is-active .list-proteins {
-  opacity: 0.9;
+.menu-list-item.is-active .list-cn {
+  opacity: 0.88;
+}
+
+.menu-list-item.is-active .list-meta {
+  opacity: 0.85;
 }
 
 .menu-list-item:hover:not(.is-active),
@@ -2988,13 +2991,19 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
   .menu-list-item.is-active {
     grid-template-areas:
-      "cat cat"
       "en price"
       "cn price"
-      "proteins proteins"
       "desc desc";
     padding-top: 0.65rem;
     padding-bottom: 0.7rem;
+  }
+
+  .menu-list-item.is-active.has-meta {
+    grid-template-areas:
+      "en price"
+      "cn price"
+      "meta meta"
+      "desc desc";
   }
 
   .menu-list-item .list-en {
@@ -3012,8 +3021,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     -webkit-line-clamp: unset;
   }
 
-  .menu-list-item .list-proteins {
-    font-size: 0.72rem;
+  .menu-list-item .list-meta {
+    font-size: 0.68rem;
   }
 
   .menu-note {

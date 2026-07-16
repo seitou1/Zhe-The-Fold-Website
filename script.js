@@ -108,16 +108,19 @@
     el.hidden = !html;
   };
 
-  /** Protein / house line for ledger rows — always scannable */
-  const proteinLine = (item) => {
+  /**
+   * Ledger meta — only what the name/group don't already say.
+   * House mark + shellfish allergen. Skip pork/beef/plant/seasonal restatement.
+   */
+  const listMetaLine = (item) => {
     const bits = [];
-    if (item.popular) bits.push("house");
-    (item.tags || []).forEach((t) => {
-      const label = TAG_LABELS[t] || t;
-      if (label && !bits.includes(label.toLowerCase())) bits.push(label.toLowerCase());
-    });
+    if (item.popular) bits.push("House");
+    if ((item.tags || []).includes("shellfish")) bits.push("Shellfish");
     return bits.join(" · ");
   };
+
+  /** Short ledger title — rail if set, else full en */
+  const listTitle = (item) => (item.rail || item.en || "").trim();
 
   const dishRowHtml = (item, { active = false } = {}) => {
     const src = asset(item.image);
@@ -125,9 +128,10 @@
     const popular = item.popular ? "true" : "false";
     const pos = item.position || "center center";
     const posM = item.positionMobile || pos;
-    const proteins = proteinLine(item);
-    const label = `${item.en}${item.price ? ` · ${item.price}` : ""}`;
-    return `<li class="menu-list-item${active ? " is-active" : ""}" role="option" tabindex="${active ? "0" : "-1"}"
+    const title = listTitle(item);
+    const meta = listMetaLine(item);
+    const label = `${title}${item.price ? ` · ${item.price}` : ""}`;
+    return `<li class="menu-list-item${active ? " is-active" : ""}${meta ? " has-meta" : ""}" role="option" tabindex="${active ? "0" : "-1"}"
       data-id="${esc(item.id)}"
       data-category="${esc(item.category)}" data-image="${esc(src)}"
       data-position="${esc(pos)}"
@@ -137,11 +141,10 @@
       data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
       data-popular="${popular}" aria-selected="${active ? "true" : "false"}"
       aria-label="${esc(label)}">
-      <span class="list-cat">${esc(item.catLabel || "")}</span>
-      <span class="list-en">${esc(item.en)}</span>
+      <span class="list-en">${esc(title)}</span>
       <span class="list-price">${esc(item.price)}</span>
       <span class="list-cn" lang="zh-Hans">${esc(item.cn)}</span>
-      ${proteins ? `<span class="list-proteins">${esc(proteins)}</span>` : ""}
+      ${meta ? `<span class="list-meta">${esc(meta)}</span>` : ""}
       <span class="list-desc">${esc(item.desc)}</span>
     </li>`;
   };
