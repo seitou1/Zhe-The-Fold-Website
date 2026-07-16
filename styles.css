@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784179000");
+  background-image: url("assets/paper-texture.webp?v=1784181000");
   background-size: cover;
 }
 
@@ -2555,135 +2555,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     var(--panel-veil);
 }
 
-/*
- * Row: name ········ $price
- *       中文
- *       desc
- */
-.menu-list-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    "en price"
-    "cn price"
-    "desc desc";
-  column-gap: 1.35rem;
-  row-gap: 0.12rem;
-  align-items: baseline;
-  /* Fixed left pad — active rail mark must not shove text */
-  padding: 0.7rem 0.15rem 0.74rem 0.5rem;
-  border: none;
-  border-bottom: 1px solid rgba(242, 235, 224, 0.14);
-  border-radius: 0;
-  background: transparent;
-  cursor: pointer;
-  transition:
-    border-color 0.2s var(--ease-soft),
-    color 0.2s var(--ease-soft);
-  opacity: 1;
-  box-shadow: none;
-  text-shadow: var(--tone-shadow-soft);
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-.menu-list-item:last-child {
-  border-bottom-color: transparent;
-}
-
-.menu-list-item.is-hidden {
-  display: none;
-}
-
-.menu-list-item .list-en {
-  grid-area: en;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: var(--type-list-en);
-  font-weight: 400;
-  letter-spacing: var(--type-title-track);
-  line-height: var(--type-lh-ui);
-  color: var(--tone-fg);
-  min-width: 0;
-  white-space: normal;
-}
-
-.menu-list-item .list-cn {
-  grid-area: cn;
-  font-size: var(--type-list-cn);
-  line-height: var(--type-lh-ui);
-  min-width: 0;
-  /* family/color from shared dish CN rule */
-}
-
-.menu-list-item .list-price {
-  grid-area: price;
-  font-family: var(--font-display);
-  font-style: normal;
-  font-size: var(--type-list-price);
-  font-weight: 500;
-  color: var(--tone-accent);
-  justify-self: end;
-  align-self: start;
-  letter-spacing: var(--type-title-track);
-  white-space: nowrap;
-  min-width: 2.75rem;
-  text-align: right;
-  padding-top: 0.06rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.menu-list-item .list-desc {
-  grid-area: desc;
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: var(--type-body);
-  line-height: var(--type-body-lh);
-  letter-spacing: var(--type-body-track);
-  color: var(--tone-fg);
-  opacity: 1;
-  margin-top: 0.1rem;
-  max-width: 40rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.menu-list-item:hover,
-.menu-list-item:focus-visible {
-  opacity: 1;
-  border-bottom-color: rgba(242, 235, 224, 0.28);
-  background: transparent;
-}
-
-.menu-list-item:focus-visible {
-  outline: 2px solid var(--wheat);
-  outline-offset: 3px;
-}
-
-.menu-list-item.is-active {
-  opacity: 1;
-  border-bottom-color: rgba(201, 184, 150, 0.42);
-  background: transparent;
-  /* Quiet clay rail — padding already reserved */
-  box-shadow: inset 1.5px 0 0 var(--tone-accent);
-}
-
-.menu-list-item.is-active .list-en {
-  color: var(--tone-fg);
-}
-
-.menu-list-item.is-active .list-price {
-  color: var(--tone-accent);
-  opacity: 1;
-}
-
-.menu-list-item.is-active .list-desc {
-  opacity: 1;
-  -webkit-line-clamp: 2;
-}
+/* Legacy list-row rules removed — see Menu ledger hybrid block */
 
 .menu-rail-item.is-active {
   opacity: 1;
@@ -3034,48 +2906,133 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 @media (max-width: 900px) {
+  /*
+   * Phone / narrow: plate owns the top; ledger docks below (~55%).
+   * Stage is a column: head → flexible air (plate) → ledger.
+   */
+  .menu-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .menu-head {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem 0;
+    flex-shrink: 0;
+    width: 100%;
+    padding-bottom: 0.4rem;
+  }
+
+  .menu-filters {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.1rem 0.85rem;
+    width: 100%;
+  }
+
+  .menu-filters::-webkit-scrollbar {
+    display: none;
+  }
+
   .menu-ledger {
     width: 100%;
     margin-left: 0;
     margin-top: auto;
-    max-height: 58%;
-    padding: 0.85rem 0.35rem 0.35rem;
+    flex: 0 0 auto;
+    height: 55%;
+    max-height: 55%;
+    min-height: 12rem;
+    padding: 0.75rem 0.2rem 0.25rem;
     background: linear-gradient(
       to top,
-      rgba(8, 5, 4, 0.92) 0%,
-      rgba(8, 5, 4, 0.78) 55%,
-      rgba(8, 5, 4, 0.35) 88%,
-      transparent 100%
+      rgba(8, 5, 4, 0.94) 0%,
+      rgba(8, 5, 4, 0.88) 42%,
+      rgba(8, 5, 4, 0.55) 78%,
+      rgba(8, 5, 4, 0.2) 100%
     );
+  }
+
+  .menu-list-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding-right: 0.15rem;
   }
 
   .menu-wall-veil {
     background:
       linear-gradient(
         to top,
-        rgba(8, 5, 4, 0.75) 0%,
-        rgba(8, 5, 4, 0.25) 42%,
-        transparent 68%
+        rgba(8, 5, 4, 0.82) 0%,
+        rgba(8, 5, 4, 0.35) 38%,
+        transparent 62%
       ),
       var(--panel-veil-mobile, var(--panel-veil));
   }
 
-  .menu-head {
-    gap: 0.35rem 0.75rem;
+  .menu-list-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "en price"
+      "cn price"
+      "proteins proteins";
+    column-gap: 0.65rem;
+    row-gap: 0.1rem;
+    padding: 0.55rem 0.1rem 0.55rem 0.25rem;
+  }
+
+  .menu-list-item.is-active {
+    grid-template-areas:
+      "cat cat"
+      "en price"
+      "cn price"
+      "proteins proteins"
+      "desc desc";
+    padding-top: 0.65rem;
+    padding-bottom: 0.7rem;
   }
 
   .menu-list-item .list-en {
-    font-size: clamp(1.05rem, 4.2vw, 1.2rem);
+    font-size: clamp(1.05rem, 4.2vw, 1.18rem);
+  }
+
+  .menu-list-item .list-desc {
+    display: none;
+    -webkit-line-clamp: unset;
+    max-width: none;
+  }
+
+  .menu-list-item.is-active .list-desc {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  .menu-list-item .list-proteins {
+    font-size: 0.72rem;
+  }
+
+  .menu-note {
+    padding: 0.4rem 0.1rem 0.15rem;
+    font-size: 0.72rem;
   }
 }
 
 @media (max-width: 768px) {
-  .menu-stage {
-    gap: 0.4rem;
-  }
-
   .menu-ledger {
-    max-height: 58%;
+    height: 56%;
+    max-height: 56%;
   }
 }
 
@@ -4002,80 +3959,26 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     margin-bottom: 0.1rem;
   }
 
-  /* ── Menu: title + filters, then dish + rail ── */
+  /* ── Menu phone: head + ledger (hybrid); wall full-bleed ── */
   .menu-stage {
     height: 100%;
     min-height: 0;
-    gap: 0.45rem;
+    gap: 0.35rem;
     overflow: hidden;
-    /* pad via --stage-pad-b (clears dock) */
   }
 
-  /* List mode: same panel, list fills under head/filters */
-  .menu.is-list-view .menu-stage {
-    gap: 0.4rem;
-  }
-
-  .menu.is-list-view .menu-list-view {
-    flex: 1 1 auto;
-    min-height: 0;
-    max-width: none;
-    width: 100%;
-    padding: 0.05rem 0 0.2rem;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-  }
-
-  .menu.is-list-view .menu-spotlight {
-    display: none;
-  }
-
-  .menu.is-list-view .menu-note {
-    display: flex;
-    max-width: none;
-    font-size: var(--type-ui-sm);
-    padding: 0.35rem 0.05rem 0;
-  }
-
-  /*
-   * Menu head — phone layout:
-   *   [ Title / 菜单              ]
-   *   [ All · Classic · …  | List ]
-   * List sits with the filter chrome, not floating beside the title.
-   */
   .menu-head {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "title"
-      "actions";
-    gap: 0.15rem 0;
-    align-items: start;
-    padding-bottom: 0.4rem;
-    flex-shrink: 0;
-    width: 100%;
-  }
-
-  .menu-actions {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.35rem 0.65rem;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .menu-tools {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.15rem;
+    padding-bottom: 0.35rem;
     flex-shrink: 0;
-    justify-content: flex-end;
-    margin: 0;
-    padding: 0;
+    width: 100%;
   }
 
   .menu-filters {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     justify-content: flex-start;
     align-items: center;
     gap: 0.15rem 0.75rem;
@@ -4181,72 +4084,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     box-sizing: border-box;
   }
 
-  .menu-carousel {
-    --menu-thumb-w: 5.35rem;
-    --menu-thumb-h: 3.45rem;
-    --menu-rail-pad-y: 0.2rem;
-    --menu-rail-gap: 0.4rem;
-    --menu-chev-size: 2.25rem;
-    flex-shrink: 0;
-    column-gap: 0.1rem;
-  }
-
-  .menu-rail-wrap {
-    margin: 0;
-    padding: 0;
-  }
-
-  .menu-carousel.is-overflowing .menu-rail-wrap {
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      #000 2%,
-      #000 98%,
-      transparent 100%
-    );
-  }
-
-  .menu-rail {
-    gap: var(--menu-rail-gap);
-    padding: var(--menu-rail-pad-y) 0.2rem calc(var(--menu-rail-pad-y) + 0.25rem);
-  }
-
-  .menu-rail-item {
-    width: var(--menu-thumb-w);
-  }
-
-  .menu-rail-item img {
-    height: var(--menu-thumb-h);
-  }
-
-  .menu-list-item {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "en price"
-      "cn price"
-      "desc desc";
-    column-gap: 0.75rem;
-    row-gap: 0.08rem;
-    padding: 0.68rem 0.05rem 0.72rem 0.55rem;
-  }
-
   .menu-list-item .list-en {
     white-space: normal;
   }
 
-  /* Keep Chinese — bilingual scan is part of the brand + real menu use */
   .menu-list-item .list-cn {
     display: block;
     letter-spacing: var(--type-cn-track);
-  }
-
-  .menu-list-item .list-desc {
-    -webkit-line-clamp: 2;
-    max-width: none;
-  }
-
-  .menu-list-item.is-active .list-desc {
-    -webkit-line-clamp: 3;
   }
 
   .visit-wall-veil {
@@ -4257,57 +4101,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     background: var(--panel-veil-mobile-light);
   }
 
-  /* Phone Menu: deeper room + stronger bottom-left for dish copy */
-  .menu-wall-veil {
-    background:
-      linear-gradient(
-        to top,
-        rgba(5, 3, 2, 0.78) 0%,
-        rgba(8, 5, 4, 0.42) 28%,
-        transparent 55%
-      ),
-      linear-gradient(
-        to right,
-        rgba(5, 3, 2, 0.55) 0%,
-        rgba(8, 5, 4, 0.22) 32%,
-        transparent 58%
-      ),
-      var(--panel-veil-mobile);
-  }
-
-  .menu[data-tone="light"] .menu-wall-veil {
-    background:
-      linear-gradient(
-        to top,
-        rgba(245, 232, 210, 0.88) 0%,
-        rgba(240, 224, 198, 0.5) 32%,
-        transparent 58%
-      ),
-      linear-gradient(
-        to right,
-        rgba(245, 232, 210, 0.75) 0%,
-        rgba(240, 224, 198, 0.35) 32%,
-        transparent 58%
-      ),
-      var(--panel-veil-mobile-light);
-  }
-
-  .menu.is-list-view .menu-wall-veil {
-    background:
-      linear-gradient(
-        to top,
-        rgba(5, 3, 2, 0.78) 0%,
-        rgba(8, 5, 4, 0.42) 28%,
-        transparent 55%
-      ),
-      linear-gradient(
-        to right,
-        rgba(5, 3, 2, 0.55) 0%,
-        rgba(8, 5, 4, 0.22) 32%,
-        transparent 58%
-      ),
-      var(--panel-veil-mobile);
-  }
+  /* Phone menu veil: plate on top, ledger scrim from hybrid block */
 
   /* ── Visit mobile — Origins rhythm: head top, photo mid, caption bottom ── */
   .visit {
