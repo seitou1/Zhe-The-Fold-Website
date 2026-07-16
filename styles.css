@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784185200");
+  background-image: url("assets/paper-texture.webp?v=1784186800");
   background-size: cover;
 }
 
@@ -2513,19 +2513,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: none;
 }
 
-/* Ops note only when reading the full list */
-.menu.is-list-view .menu-note {
-  display: flex;
-  max-width: min(36rem, 100%);
-  width: 100%;
-  margin-top: 0.35rem;
-  padding: 0.55rem 0.1rem 0;
-  border-top: 1px solid var(--tone-line);
-  color: var(--tone-fg);
-  opacity: 1;
-  font-size: var(--type-ui-sm);
-  text-shadow: var(--tone-shadow-soft);
-}
+/* Legacy list-mode note — hybrid ledger owns .menu-note colophon */
 
 /*
  * List backdrop: SAME geometry as photo mode (scale/origin/filter locked).
@@ -2570,32 +2558,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   background: var(--tone-accent);
 }
 
-/* Ops note: list view only — photo view stays plate + thumbs */
-.menu-note {
-  display: none;
-  flex-shrink: 0;
-  flex-direction: column;
-  flex-wrap: wrap;
-  gap: 0.15rem 1rem;
-  padding-top: 0.55rem;
-  margin-top: 0.35rem;
-  border-top: 1px solid var(--tone-line);
-  color: var(--tone-fg);
-  opacity: 1;
-  font-size: var(--type-ui-sm);
-  text-shadow: var(--tone-shadow);
-  transition: color 0.45s var(--ease-soft), border-color 0.45s var(--ease-soft);
-}
-
-.menu-note .en {
-  font-family: var(--font-ui);
-  font-style: normal;
-  font-weight: 400;
-  font-size: var(--type-ui-sm);
-  letter-spacing: var(--type-body-track);
-  color: var(--tone-fg);
-  opacity: 0.9;
-}
+/* .menu-note — colophon styles live in the ledger hybrid block below */
 
 
 /* ═══════════════════════════════════════════
@@ -2729,17 +2692,18 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border-bottom: 1px solid rgba(250, 246, 240, 0.1);
 }
 
-/* Row — en · price / cn; optional House·Shellfish meta; desc when active */
+/* Row — name leads, price confirms; leader dots fill the gutter (print menu) */
 .menu-list-item {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     "en price"
     "cn price";
-  column-gap: 0.85rem;
+  column-gap: 0.55rem;
   row-gap: 0.06rem;
   align-items: baseline;
-  padding: 0.55rem 0.2rem 0.55rem 0.25rem;
+  padding: 0.55rem 0.15rem 0.55rem 0.65rem;
   margin: 0;
   border: none;
   border-bottom: 1px solid rgba(242, 235, 224, 0.1);
@@ -2748,7 +2712,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   cursor: pointer;
   color: var(--tone-fg);
   text-shadow: var(--tone-shadow-soft);
-  transition: background 0.2s var(--ease-soft), border-color 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s var(--ease-soft),
+    border-color 0.2s var(--ease-soft);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -2766,6 +2732,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 .menu-list-item .list-en {
   grid-area: en;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-width: 0;
   font-family: var(--font-display);
   font-style: italic;
   font-size: var(--type-list-en);
@@ -2773,22 +2743,37 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   letter-spacing: var(--type-title-track);
   line-height: var(--type-lh-ui);
   color: var(--tone-fg);
-  min-width: 0;
 }
 
+/* Dotted leader toward price — quiet at rest, a bit clearer on hover/active */
+.menu-list-item .list-en::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 0.65rem;
+  height: 0;
+  margin-right: 0.05rem;
+  border-bottom: 1px dotted rgba(242, 235, 224, 0.28);
+  transform: translateY(-0.38em);
+  opacity: 0.55;
+  transition: opacity 0.2s var(--ease-soft), border-color 0.2s var(--ease-soft);
+}
+
+/* Price column — quieter numeral; name owns the row */
 .menu-list-item .list-price {
   grid-area: price;
   font-family: var(--font-display);
   font-style: normal;
-  font-size: var(--type-list-price);
-  font-weight: 500;
+  font-size: calc(var(--type-list-price) * 0.9);
+  font-weight: 400;
   color: var(--tone-accent);
   justify-self: end;
   align-self: start;
-  letter-spacing: var(--type-title-track);
+  letter-spacing: 0.04em;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  padding-top: 0.08rem;
+  padding-top: 0.14rem;
+  opacity: 0.82;
+  transition: opacity 0.2s var(--ease-soft);
 }
 
 .menu-list-item .list-cn {
@@ -2824,7 +2809,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   max-width: 32rem;
 }
 
-/* Active — name, price, cn, optional meta, then one-line desc */
+/*
+ * Active = open pleat: short imperfect crease (not a full-height bar),
+ * soft hold wash, stronger leader + price.
+ */
 .menu-list-item.is-active {
   grid-template-areas:
     "en price"
@@ -2833,12 +2821,35 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   padding-top: 0.65rem;
   padding-bottom: 0.7rem;
   border-bottom-color: rgba(201, 184, 150, 0.32);
-  box-shadow: inset 2px 0 0 var(--tone-accent);
   background: linear-gradient(
     90deg,
-    rgba(235, 207, 160, 0.06) 0%,
-    transparent 55%
+    rgba(235, 207, 160, 0.07) 0%,
+    transparent 52%
   );
+}
+
+/* Fold crease — short, slightly skewed, only on the open row */
+.menu-list-item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0.12rem;
+  top: 50%;
+  width: 1.5px;
+  height: 1.4rem;
+  transform: translateY(-52%) rotate(1.2deg);
+  border-radius: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--wheat) 12%,
+    var(--tone-accent) 50%,
+    var(--wheat) 88%,
+    transparent 100%
+  );
+  box-shadow:
+    1px 0 0 rgba(8, 5, 4, 0.35),
+    0 0 10px rgba(208, 192, 160, 0.28);
+  pointer-events: none;
 }
 
 .menu-list-item.is-active.has-meta {
@@ -2857,6 +2868,16 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   color: var(--tone-fg);
 }
 
+.menu-list-item.is-active .list-en::after {
+  border-bottom-color: rgba(208, 192, 160, 0.42);
+  opacity: 0.85;
+}
+
+.menu-list-item.is-active .list-price {
+  opacity: 0.95;
+  font-weight: 500;
+}
+
 .menu-list-item.is-active .list-cn {
   opacity: 0.88;
 }
@@ -2871,28 +2892,56 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   background: rgba(250, 246, 240, 0.03);
 }
 
+.menu-list-item:hover:not(.is-active) .list-en::after,
+.menu-list-item:focus-visible:not(.is-active) .list-en::after {
+  opacity: 0.75;
+  border-bottom-color: rgba(242, 235, 224, 0.38);
+}
+
+.menu-list-item:hover:not(.is-active) .list-price,
+.menu-list-item:focus-visible:not(.is-active) .list-price {
+  opacity: 0.9;
+}
+
 .menu-list-item:focus-visible {
   outline: 2px solid var(--wheat);
   outline-offset: 2px;
 }
 
+/* Colophon — short rule, not full-bleed chrome */
 .menu-note {
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  gap: 0.15rem;
-  margin: 0;
-  padding: 0.55rem 0.15rem 0.2rem;
-  border-top: 1px solid rgba(250, 246, 240, 0.14);
-  font-size: var(--type-ui-sm);
+  gap: 0;
+  margin: 0.15rem 0 0;
+  padding: 0.7rem 0.15rem 0.25rem 0.65rem;
+  max-width: 22rem;
+  border-top: none;
+  font-size: var(--type-micro);
   color: var(--tone-fg);
-  opacity: 0.85;
+  opacity: 0.72;
   text-shadow: var(--tone-shadow-soft);
+}
+
+.menu-note::before {
+  content: "";
+  display: block;
+  width: 2.6rem;
+  height: 1px;
+  margin: 0 0 0.45rem;
+  background: linear-gradient(
+    90deg,
+    rgba(250, 246, 240, 0.5) 0%,
+    rgba(250, 246, 240, 0.12) 70%,
+    transparent 100%
+  );
 }
 
 .menu-note .en {
   font-family: var(--font-ui);
   letter-spacing: var(--type-body-track);
+  line-height: 1.45;
 }
 
 /* Desktop: light right hold for ledger column; base panel-veil does the rest */
@@ -2977,11 +3026,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "en price"
-      "cn price"
-      "proteins proteins";
-    column-gap: 0.65rem;
-    row-gap: 0.1rem;
-    padding: 0.55rem 0.1rem 0.55rem 0.25rem;
+      "cn price";
+    column-gap: 0.45rem;
+    row-gap: 0.08rem;
+    padding: 0.55rem 0.1rem 0.55rem 0.6rem;
     /* Plate shows through — type holds itself */
     text-shadow:
       0 1px 2px rgba(0, 0, 0, 0.85),
@@ -3010,6 +3058,12 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     font-size: clamp(1.05rem, 4.2vw, 1.18rem);
   }
 
+  .menu-list-item .list-en::after {
+    /* Slightly stronger on phone — plate is busier */
+    border-bottom-color: rgba(242, 235, 224, 0.32);
+    opacity: 0.6;
+  }
+
   .menu-list-item .list-desc {
     display: none;
     -webkit-line-clamp: unset;
@@ -3026,8 +3080,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 
   .menu-note {
-    padding: 0.4rem 0.1rem 0.15rem;
-    font-size: 0.72rem;
+    padding: 0.65rem 0.1rem 0.2rem 0.6rem;
+    max-width: none;
+    font-size: 0.68rem;
+    opacity: 0.7;
   }
 }
 
