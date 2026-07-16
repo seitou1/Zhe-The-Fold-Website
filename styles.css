@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784189000");
+  background-image: url("assets/paper-texture.webp?v=1784190500");
   background-size: cover;
 }
 
@@ -2687,6 +2687,41 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   border-bottom: 1px solid rgba(250, 246, 240, 0.1);
 }
 
+/*
+ * Type-first legibility (no wall dimming):
+ * ink halo + hairline stroke hold glyphs; soft row mat is local only.
+ * Source Serif italic ships 400 only — contrast comes from halo/stroke, not fake bold.
+ */
+.menu {
+  --menu-ink: #faf8f4;
+  --menu-type-halo:
+    0 0 0.6px rgba(0, 0, 0, 0.95),
+    0 1px 1px rgba(0, 0, 0, 0.88),
+    0 1px 3px rgba(0, 0, 0, 0.72),
+    0 3px 12px rgba(0, 0, 0, 0.48),
+    0 8px 28px rgba(0, 0, 0, 0.32);
+  --menu-type-halo-strong:
+    0 0 0.8px rgba(0, 0, 0, 1),
+    0 1px 1px rgba(0, 0, 0, 0.92),
+    0 2px 4px rgba(0, 0, 0, 0.78),
+    0 4px 14px rgba(0, 0, 0, 0.52),
+    0 10px 32px rgba(0, 0, 0, 0.36);
+  --menu-row-mat: linear-gradient(
+    90deg,
+    rgba(6, 4, 3, 0.2) 0%,
+    rgba(6, 4, 3, 0.12) 42%,
+    rgba(6, 4, 3, 0.04) 78%,
+    transparent 100%
+  );
+  --menu-row-mat-active: linear-gradient(
+    90deg,
+    rgba(6, 4, 3, 0.28) 0%,
+    rgba(6, 4, 3, 0.14) 38%,
+    rgba(235, 207, 160, 0.06) 62%,
+    transparent 100%
+  );
+}
+
 /* Row — name leads, price confirms; leader dots fill the gutter (print menu) */
 .menu-list-item {
   position: relative;
@@ -2701,12 +2736,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   padding: 0.55rem 0.15rem 0.55rem 0.65rem;
   margin: 0;
   border: none;
-  border-bottom: 1px solid rgba(242, 235, 224, 0.1);
+  border-bottom: 1px solid rgba(242, 235, 224, 0.12);
   border-radius: 0;
-  background: transparent;
+  /* Local letter mat — row height only, not a plate curtain */
+  background: var(--menu-row-mat);
   cursor: pointer;
-  color: var(--tone-fg);
-  text-shadow: var(--tone-shadow-soft);
+  color: var(--menu-ink);
+  text-shadow: var(--menu-type-halo);
   transition:
     background 0.2s var(--ease-soft),
     border-color 0.2s var(--ease-soft);
@@ -2737,7 +2773,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-weight: 400;
   letter-spacing: var(--type-title-track);
   line-height: var(--type-lh-ui);
-  color: var(--tone-fg);
+  color: var(--menu-ink);
+  /* Hairline edge — holds serif over steam without a scrim */
+  -webkit-text-stroke: 0.28px rgba(0, 0, 0, 0.45);
+  paint-order: stroke fill;
+  text-shadow: var(--menu-type-halo-strong);
 }
 
 /* Dotted leader toward price — quiet at rest, a bit clearer on hover/active */
@@ -2747,19 +2787,20 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   min-width: 0.65rem;
   height: 0;
   margin-right: 0.05rem;
-  border-bottom: 1px dotted rgba(242, 235, 224, 0.28);
+  border-bottom: 1px dotted rgba(250, 248, 244, 0.42);
   transform: translateY(-0.38em);
-  opacity: 0.55;
+  opacity: 0.7;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
   transition: opacity 0.2s var(--ease-soft), border-color 0.2s var(--ease-soft);
 }
 
-/* Price column — quieter numeral; name owns the row */
+/* Price — full opacity, medium weight (roman 500 is loaded) */
 .menu-list-item .list-price {
   grid-area: price;
   font-family: var(--font-display);
   font-style: normal;
-  font-size: calc(var(--type-list-price) * 0.9);
-  font-weight: 400;
+  font-size: calc(var(--type-list-price) * 0.92);
+  font-weight: 500;
   color: var(--tone-accent);
   justify-self: end;
   align-self: start;
@@ -2767,8 +2808,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   padding-top: 0.14rem;
-  opacity: 0.82;
-  transition: opacity 0.2s var(--ease-soft);
+  opacity: 1;
+  -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.35);
+  paint-order: stroke fill;
+  text-shadow: var(--menu-type-halo-strong);
 }
 
 .menu-list-item .list-cn {
@@ -2776,7 +2819,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-list-cn);
   line-height: var(--type-lh-ui);
   min-width: 0;
-  opacity: 0.78;
+  color: var(--menu-ink);
+  opacity: 0.82;
+  text-shadow: var(--menu-type-halo);
 }
 
 .menu-list-item .list-meta {
@@ -2786,9 +2831,10 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--tone-accent);
-  opacity: 0.72;
+  opacity: 0.88;
   line-height: 1.3;
   margin-top: 0.08rem;
+  text-shadow: var(--menu-type-halo);
 }
 
 .menu-list-item .list-desc {
@@ -2798,15 +2844,15 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   font-size: var(--type-body);
   line-height: var(--type-lh-body);
   letter-spacing: var(--type-body-track);
-  color: var(--tone-fg);
-  opacity: 0.9;
+  color: var(--menu-ink);
+  opacity: 0.94;
   margin: 0.22rem 0 0;
   max-width: 32rem;
+  text-shadow: var(--menu-type-halo);
 }
 
 /*
- * Active = open pleat: short imperfect crease (not a full-height bar),
- * soft hold wash, stronger leader + price.
+ * Active = open pleat: short imperfect crease + slightly stronger mat.
  */
 .menu-list-item.is-active {
   grid-template-areas:
@@ -2815,12 +2861,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     "desc desc";
   padding-top: 0.65rem;
   padding-bottom: 0.7rem;
-  border-bottom-color: rgba(201, 184, 150, 0.32);
-  background: linear-gradient(
-    90deg,
-    rgba(235, 207, 160, 0.07) 0%,
-    transparent 52%
-  );
+  border-bottom-color: rgba(201, 184, 150, 0.38);
+  background: var(--menu-row-mat-active);
 }
 
 /* Fold crease — short, slightly skewed, only on the open row */
@@ -2860,47 +2902,63 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 }
 
 .menu-list-item.is-active .list-en {
-  color: var(--tone-fg);
+  color: var(--menu-ink);
+  text-shadow: var(--menu-type-halo-strong);
 }
 
 .menu-list-item.is-active .list-en::after {
-  border-bottom-color: rgba(208, 192, 160, 0.42);
-  opacity: 0.85;
+  border-bottom-color: rgba(235, 207, 160, 0.55);
+  opacity: 0.9;
 }
 
 .menu-list-item.is-active .list-price {
-  opacity: 0.95;
+  opacity: 1;
   font-weight: 500;
 }
 
 .menu-list-item.is-active .list-cn {
-  opacity: 0.88;
+  opacity: 0.92;
 }
 
 .menu-list-item.is-active .list-meta {
-  opacity: 0.85;
+  opacity: 0.92;
 }
 
 .menu-list-item:hover:not(.is-active),
 .menu-list-item:focus-visible:not(.is-active) {
-  border-bottom-color: rgba(242, 235, 224, 0.28);
-  background: rgba(250, 246, 240, 0.03);
+  border-bottom-color: rgba(242, 235, 224, 0.3);
+  background: linear-gradient(
+    90deg,
+    rgba(6, 4, 3, 0.24) 0%,
+    rgba(6, 4, 3, 0.14) 45%,
+    rgba(6, 4, 3, 0.05) 78%,
+    transparent 100%
+  );
 }
 
 .menu-list-item:hover:not(.is-active) .list-en::after,
 .menu-list-item:focus-visible:not(.is-active) .list-en::after {
-  opacity: 0.75;
-  border-bottom-color: rgba(242, 235, 224, 0.38);
-}
-
-.menu-list-item:hover:not(.is-active) .list-price,
-.menu-list-item:focus-visible:not(.is-active) .list-price {
-  opacity: 0.9;
+  opacity: 0.85;
+  border-bottom-color: rgba(250, 248, 244, 0.5);
 }
 
 .menu-list-item:focus-visible {
   outline: 2px solid var(--wheat);
   outline-offset: 2px;
+}
+
+.menu-list-group-label {
+  text-shadow: var(--menu-type-halo);
+}
+
+.menu-head {
+  text-shadow: var(--menu-type-halo-strong);
+}
+
+.menu-head .filter-btn {
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.75),
+    0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 /* Colophon — short rule, not full-bleed chrome */
@@ -2914,9 +2972,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   max-width: 22rem;
   border-top: none;
   font-size: var(--type-micro);
-  color: var(--tone-fg);
-  opacity: 0.72;
-  text-shadow: var(--tone-shadow-soft);
+  color: var(--menu-ink, var(--tone-fg));
+  opacity: 0.78;
+  text-shadow: var(--menu-type-halo, var(--tone-shadow-soft));
 }
 
 .menu-note::before {
@@ -2981,21 +3039,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 @media (min-width: 901px) {
   .menu {
     --menu-wall-origin: 62% center;
-  }
-
-  .menu-list-item {
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.72),
-      0 2px 14px rgba(0, 0, 0, 0.48),
-      0 0 1px rgba(0, 0, 0, 0.85);
-  }
-
-  .menu-head,
-  .menu-list-group-label,
-  .menu-note {
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.7),
-      0 2px 12px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -3083,11 +3126,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     column-gap: 0.45rem;
     row-gap: 0.08rem;
     padding: 0.55rem 0.1rem 0.55rem 0.6rem;
-    /* Plate shows through — type holds itself */
-    text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.85),
-      0 2px 14px rgba(0, 0, 0, 0.62),
-      0 0 1px rgba(0, 0, 0, 0.9);
+    /* Halo + row mat already from type-first block */
   }
 
   .menu-list-item.is-active {
@@ -4104,14 +4143,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     height: min(44%, 12.5rem);
   }
 
-  /* Menu head — soft top hold only (title + filters), not a mud curtain */
+  /* Menu head — whisper only; list type-shadow does the rest */
   .menu-wall-veil::before {
-    height: min(38%, 11rem);
+    height: min(26%, 8rem);
     background: linear-gradient(
       to bottom,
-      rgba(5, 3, 2, 0.55) 0%,
-      rgba(8, 5, 4, 0.28) 42%,
-      rgba(10, 7, 5, 0.08) 72%,
+      rgba(5, 3, 2, 0.32) 0%,
+      rgba(8, 5, 4, 0.1) 50%,
       transparent 100%
     );
   }
