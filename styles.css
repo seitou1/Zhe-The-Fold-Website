@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784177000");
+  background-image: url("assets/paper-texture.webp?v=1784179000");
   background-size: cover;
 }
 
@@ -2457,22 +2457,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   outline-offset: 3px;
 }
 
-/* List view — editorial menu card (spotlight + rail hidden; list owns the frame) */
+/* Legacy list shell — display/layout owned by ledger hybrid block below */
 .menu-list-view {
-  display: none;
-  flex-direction: column;
-  gap: 0;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  list-style: none;
-  margin: 0;
-  padding: 0.15rem 0 0.35rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(242, 235, 224, 0.22) transparent;
+  /* kept for cascade safety; hybrid rules supersede */
 }
 
 /*
@@ -2737,6 +2724,361 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   color: var(--tone-fg);
   opacity: 0.9;
 }
+
+
+/* ═══════════════════════════════════════════
+   Menu ledger hybrid — plate behind, list as instrument
+   (Phase 1: no photo/list modes, no bottom rail)
+   ═══════════════════════════════════════════ */
+
+.menu-stage {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  height: 100%;
+  min-height: 0;
+  color: var(--tone-fg);
+  text-shadow: var(--tone-shadow-soft);
+  pointer-events: none; /* wall receives swipes; ledger re-enables */
+}
+
+.menu-stage .menu-head,
+.menu-stage .menu-ledger {
+  pointer-events: auto;
+}
+
+.menu-head {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.55rem 1.25rem;
+  width: 100%;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--tone-line);
+}
+
+.menu-head-title {
+  min-width: 0;
+}
+
+.menu-head-title h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  color: var(--tone-fg);
+}
+
+.menu-head-title .en {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--type-panel-en);
+  font-weight: 400;
+  letter-spacing: var(--type-title-track);
+  line-height: var(--type-lh-tight);
+  color: var(--tone-fg);
+}
+
+.menu-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  justify-content: flex-end;
+  text-shadow: none;
+}
+
+/* Ledger column — floats over plate */
+.menu-ledger {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: min(26.5rem, 100%);
+  max-width: 100%;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  /* Soft reading band over photo */
+  padding: 0.35rem 0.15rem 0.25rem 1.1rem;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(8, 5, 4, 0.42) 12%,
+    rgba(8, 5, 4, 0.72) 38%,
+    rgba(8, 5, 4, 0.82) 100%
+  );
+  border-radius: 0;
+}
+
+.menu-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  list-style: none;
+  margin: 0;
+  padding: 0.1rem 0.2rem 0.35rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(242, 235, 224, 0.22) transparent;
+}
+
+.menu-list-group {
+  list-style: none;
+  margin: 0.65rem 0 0.15rem;
+  padding: 0;
+}
+
+.menu-list-group:first-child {
+  margin-top: 0.15rem;
+}
+
+.menu-list-group.is-hidden,
+.menu-list-group[hidden] {
+  display: none !important;
+}
+
+.menu-list-group-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-sm);
+  font-weight: 400;
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
+  color: var(--tone-accent);
+  opacity: 0.95;
+  padding: 0.15rem 0.1rem 0.35rem;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.12);
+}
+
+/* Row — compact by default; expands when active */
+.menu-list-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "en price"
+    "cn price"
+    "proteins proteins";
+  column-gap: 0.85rem;
+  row-gap: 0.12rem;
+  align-items: baseline;
+  padding: 0.62rem 0.2rem 0.62rem 0.35rem;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid rgba(242, 235, 224, 0.12);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--tone-fg);
+  text-shadow: var(--tone-shadow-soft);
+  transition: background 0.2s var(--ease-soft), border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.menu-list-item.is-hidden {
+  display: none !important;
+}
+
+.menu-list-item .list-cat {
+  display: none;
+  grid-area: cat;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-sm);
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
+  color: var(--tone-accent);
+  margin: 0 0 0.1rem;
+}
+
+.menu-list-item .list-en {
+  grid-area: en;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--type-list-en);
+  font-weight: 400;
+  letter-spacing: var(--type-title-track);
+  line-height: var(--type-lh-ui);
+  color: var(--tone-fg);
+  min-width: 0;
+}
+
+.menu-list-item .list-price {
+  grid-area: price;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: var(--type-list-price);
+  font-weight: 500;
+  color: var(--tone-accent);
+  justify-self: end;
+  align-self: start;
+  letter-spacing: var(--type-title-track);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.08rem;
+}
+
+.menu-list-item .list-cn {
+  grid-area: cn;
+  font-size: var(--type-list-cn);
+  line-height: var(--type-lh-ui);
+  min-width: 0;
+  opacity: 0.95;
+}
+
+.menu-list-item .list-proteins {
+  grid-area: proteins;
+  font-family: var(--font-ui);
+  font-size: var(--type-ui-sm);
+  letter-spacing: 0.04em;
+  color: var(--tone-fg);
+  opacity: 0.78;
+  line-height: 1.35;
+}
+
+.menu-list-item .list-desc {
+  display: none;
+  grid-area: desc;
+  font-family: var(--font-ui);
+  font-size: var(--type-body);
+  line-height: var(--type-lh-body);
+  letter-spacing: var(--type-body-track);
+  color: var(--tone-fg);
+  opacity: 0.92;
+  margin: 0.2rem 0 0;
+  max-width: 36rem;
+}
+
+/* Expanded active row — full menu detail */
+.menu-list-item.is-active {
+  grid-template-areas:
+    "cat cat"
+    "en price"
+    "cn price"
+    "proteins proteins"
+    "desc desc";
+  padding-top: 0.75rem;
+  padding-bottom: 0.8rem;
+  border-bottom-color: rgba(201, 184, 150, 0.35);
+  box-shadow: inset 2px 0 0 var(--tone-accent);
+  background: linear-gradient(
+    90deg,
+    rgba(235, 207, 160, 0.06) 0%,
+    transparent 55%
+  );
+}
+
+.menu-list-item.is-active .list-cat {
+  display: block;
+}
+
+.menu-list-item.is-active .list-desc {
+  display: block;
+}
+
+.menu-list-item.is-active .list-en {
+  color: var(--tone-fg);
+}
+
+.menu-list-item.is-active .list-proteins {
+  opacity: 0.9;
+}
+
+.menu-list-item:hover:not(.is-active),
+.menu-list-item:focus-visible:not(.is-active) {
+  border-bottom-color: rgba(242, 235, 224, 0.28);
+  background: rgba(250, 246, 240, 0.03);
+}
+
+.menu-list-item:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 2px;
+}
+
+.menu-note {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.55rem 0.15rem 0.2rem;
+  border-top: 1px solid rgba(250, 246, 240, 0.14);
+  font-size: var(--type-ui-sm);
+  color: var(--tone-fg);
+  opacity: 0.85;
+  text-shadow: var(--tone-shadow-soft);
+}
+
+.menu-note .en {
+  font-family: var(--font-ui);
+  letter-spacing: var(--type-body-track);
+}
+
+/* Stronger plate scrim under ledger band (desktop) */
+.menu-wall-veil {
+  background:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 42%,
+      rgba(8, 5, 4, 0.35) 62%,
+      rgba(8, 5, 4, 0.72) 100%
+    ),
+    var(--panel-veil);
+}
+
+@media (max-width: 900px) {
+  .menu-ledger {
+    width: 100%;
+    margin-left: 0;
+    margin-top: auto;
+    max-height: 58%;
+    padding: 0.85rem 0.35rem 0.35rem;
+    background: linear-gradient(
+      to top,
+      rgba(8, 5, 4, 0.92) 0%,
+      rgba(8, 5, 4, 0.78) 55%,
+      rgba(8, 5, 4, 0.35) 88%,
+      transparent 100%
+    );
+  }
+
+  .menu-wall-veil {
+    background:
+      linear-gradient(
+        to top,
+        rgba(8, 5, 4, 0.75) 0%,
+        rgba(8, 5, 4, 0.25) 42%,
+        transparent 68%
+      ),
+      var(--panel-veil-mobile, var(--panel-veil));
+  }
+
+  .menu-head {
+    gap: 0.35rem 0.75rem;
+  }
+
+  .menu-list-item .list-en {
+    font-size: clamp(1.05rem, 4.2vw, 1.2rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-stage {
+    gap: 0.4rem;
+  }
+
+  .menu-ledger {
+    max-height: 58%;
+  }
+}
+
 
 /* ── Visit — storefront is the dish (same stage grammar as Story / Menu) ── */
 .visit {

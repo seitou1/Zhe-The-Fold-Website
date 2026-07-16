@@ -51,7 +51,7 @@
   <link
     rel="preload"
     as="image"
-    href="assets/hero-dumplings.webp?v=1784177000"
+    href="assets/hero-dumplings.webp?v=1784179000"
     type="image/webp"
     fetchpriority="high"
   />
@@ -73,18 +73,18 @@
   <link
     rel="preload"
     as="style"
-    href="assets/fonts/fonts.css?v=1784177000"
+    href="assets/fonts/fonts.css?v=1784179000"
   />
   <link
     rel="stylesheet"
-    href="assets/fonts/fonts.css?v=1784177000"
+    href="assets/fonts/fonts.css?v=1784179000"
     media="print"
     onload="this.media='all'"
   />
   <noscript>
-    <link rel="stylesheet" href="assets/fonts/fonts.css?v=1784177000" />
+    <link rel="stylesheet" href="assets/fonts/fonts.css?v=1784179000" />
   </noscript>
-  <link rel="stylesheet" href="styles.css?v=1784177000" />
+  <link rel="stylesheet" href="styles.css?v=1784179000" />
 </head>
 <body>
   <a class="skip-link" href="#menu">Skip to menu</a>
@@ -129,7 +129,7 @@
         <video
           class="hero-img hero-video"
           id="heroImg"
-          poster="assets/hero-dumplings.webp?v=1784177000"
+          poster="assets/hero-dumplings.webp?v=1784179000"
           width="1280"
           height="720"
           autoplay
@@ -141,12 +141,12 @@
           disableremoteplayback
           aria-label="Handmade dumplings on worn ceramic at Zhe · The Fold"
         >
-          <source src="assets/hero-loop.mp4?v=1784177000" type="video/mp4" />
+          <source src="assets/hero-loop.mp4?v=1784179000" type="video/mp4" />
         </video>
         <img
           class="hero-img hero-poster"
           id="heroPoster"
-          src="assets/hero-dumplings.webp?v=1784177000"
+          src="assets/hero-dumplings.webp?v=1784179000"
           alt=""
           width="1280"
           height="704"
@@ -185,8 +185,8 @@
     <section class="story panel" id="story">
       <div class="story-wall" id="storyWall" aria-hidden="true">
         <!-- eager: first Origins plate is LCP for this panel; lazy left a pale empty frame -->
-        <img class="story-wall-img is-active" id="storyWallA" src="assets/story-village.webp?v=1784177000" alt="" width="1400" height="787" loading="eager" decoding="async" fetchpriority="low" />
-        <img class="story-wall-img is-park-right" id="storyWallB" src="assets/story-village.webp?v=1784177000" alt="" width="1400" height="787" loading="lazy" decoding="async" />
+        <img class="story-wall-img is-active" id="storyWallA" src="assets/story-village.webp?v=1784179000" alt="" width="1400" height="787" loading="eager" decoding="async" fetchpriority="low" />
+        <img class="story-wall-img is-park-right" id="storyWallB" src="assets/story-village.webp?v=1784179000" alt="" width="1400" height="787" loading="lazy" decoding="async" />
         <div class="story-wall-veil"></div>
       </div>
 
@@ -230,11 +230,11 @@
       </div>
     </section>
 
-    <!-- Menu: locked panel + dish carousel -->
-    <section class="menu panel" id="menu">
+    <!-- Menu: full-bleed plate + right/bottom ledger (hybrid menu list) -->
+    <section class="menu panel" id="menu" data-tone="dark">
       <div class="menu-wall" id="menuWall" aria-hidden="true">
-        <img class="menu-wall-img is-active" id="wallImgA" src="assets/dish-pork.webp?v=1784177000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
-        <img class="menu-wall-img" id="wallImgB" src="assets/dish-pork.webp?v=1784177000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <img class="menu-wall-img is-active" id="wallImgA" src="assets/dish-pork.webp?v=1784179000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+        <img class="menu-wall-img" id="wallImgB" src="assets/dish-pork.webp?v=1784179000" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
         <div class="menu-wall-veil"></div>
         <div class="menu-wall-grain"></div>
       </div>
@@ -247,96 +247,37 @@
               <span class="cn" lang="zh-Hans">菜单</span>
             </h2>
           </div>
-          <div class="menu-actions">
-            <div class="menu-filters" role="group" aria-label="Menu categories">
-              <button class="filter-btn is-active" type="button" aria-pressed="true" data-filter="all">
-                All
-              </button>
-              <button class="filter-btn" type="button" aria-pressed="false" data-filter="classic">
-                Classic
-              </button>
-              <button class="filter-btn" type="button" aria-pressed="false" data-filter="seasonal">
-                Seasonal
-              </button>
-              <button class="filter-btn" type="button" aria-pressed="false" data-filter="plant">
-                Plant
-              </button>
-            </div>
-            <div class="menu-tools">
-              <div class="menu-view" role="group" aria-label="Menu display">
-                <button
-                  type="button"
-                  class="menu-view-btn is-active"
-                  id="menuViewPhotos"
-                  data-view="photos"
-                  aria-pressed="true"
-                  aria-label="Photo view"
-                  title="Photo view"
-                >
-                  <svg class="menu-view-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <rect x="3.75" y="5.75" width="16.5" height="12.5" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round" />
-                    <path d="M3.75 15.5 8.2 12l3.3 2.4 4.1-4.2 4.65 5.05" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </button>
-                <span class="menu-view-sep" aria-hidden="true"></span>
-                <button
-                  type="button"
-                  class="menu-view-btn"
-                  id="menuViewList"
-                  data-view="list"
-                  aria-pressed="false"
-                  aria-label="List view"
-                  title="List view"
-                >
-                  <svg class="menu-view-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-                    <path d="M5 7.25h14M5 12h14M5 16.75h14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+          <div class="menu-filters" role="group" aria-label="Menu categories">
+            <button class="filter-btn is-active" type="button" aria-pressed="true" data-filter="all">
+              All
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="classic">
+              Classic
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="seasonal">
+              Seasonal
+            </button>
+            <button class="filter-btn" type="button" aria-pressed="false" data-filter="plant">
+              Plant
+            </button>
           </div>
         </header>
 
-        <!-- Spotlight copy seeded from MENU_ITEMS[0] in data.js -->
-        <div class="menu-spotlight" id="menuFeatured">
-          <div class="menu-spotlight-copy">
-            <p class="menu-spotlight-cat" id="featuredCat"></p>
-            <h3 class="menu-spotlight-en" id="featuredEn"></h3>
-            <p class="menu-spotlight-cn" id="featuredCn" lang="zh-Hans"></p>
-            <p class="menu-spotlight-desc" id="featuredDesc"></p>
-            <div class="menu-spotlight-meta">
-              <span class="menu-spotlight-price" id="featuredPrice"></span>
-              <span class="menu-spotlight-marks" id="featuredMarks" hidden></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-carousel" id="menuCarousel">
-          <button type="button" class="menu-carousel-btn" id="menuPrev" aria-label="Previous dish">
-            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-              <path d="M14.5 5.2 8.2 12l6.3 6.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
-          <div class="menu-rail-wrap">
-          <ul class="menu-rail" id="menuList" role="listbox" aria-label="Dishes — swipe or use arrows">
+        <!-- Ledger: scrollable menu; plate lives on the wall behind -->
+        <div class="menu-ledger">
+          <ul
+            class="menu-list-view"
+            id="menuListView"
+            role="listbox"
+            aria-label="Dishes"
+            aria-live="polite"
+          >
             <!-- filled from data.js -->
           </ul>
-          </div>
-          <button type="button" class="menu-carousel-btn" id="menuNext" aria-label="Next dish">
-            <svg class="carousel-chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-              <path d="M9.5 5.2 15.8 12 9.5 18.8" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
+          <p class="menu-note">
+            <span class="en">Steamed or pan-seared · Share allergies · About eight per order</span>
+          </p>
         </div>
-
-        <ul class="menu-list-view" id="menuListView" hidden role="listbox" aria-label="Full dish list">
-          <!-- filled from data.js -->
-        </ul>
-
-        <!-- Ops note lives in list view only — photo view stays plate-first -->
-        <p class="menu-note">
-          <span class="en">Steamed or pan-seared · Share allergies · About eight per order</span>
-        </p>
       </div>
     </section>
 
@@ -346,7 +287,7 @@
         <video
           class="visit-wall-img visit-wall-video"
           id="visitVideo"
-          poster="assets/storefront.webp?v=1784177000"
+          poster="assets/storefront.webp?v=1784179000"
           width="1280"
           height="720"
           muted
@@ -357,12 +298,12 @@
           disableremoteplayback
           aria-label="Zhe · The Fold storefront at dusk"
         >
-          <source src="assets/storefront-loop.mp4?v=1784177000" type="video/mp4" />
+          <source src="assets/storefront-loop.mp4?v=1784179000" type="video/mp4" />
         </video>
         <img
           class="visit-wall-img visit-wall-poster"
           id="visitPoster"
-          src="assets/storefront.webp?v=1784177000"
+          src="assets/storefront.webp?v=1784179000"
           alt=""
           width="1400"
           height="787"
@@ -483,7 +424,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <script type="application/ld+json" id="restaurantJsonLd"></script>
-  <script src="data.js?v=1784177000"></script>
-  <script src="script.js?v=1784177000"></script>
+  <script src="data.js?v=1784179000"></script>
+  <script src="script.js?v=1784179000"></script>
 </body>
 </html>

@@ -108,85 +108,88 @@
     el.hidden = !html;
   };
 
+  /** Protein / house line for ledger rows — always scannable */
+  const proteinLine = (item) => {
+    const bits = [];
+    if (item.popular) bits.push("house");
+    (item.tags || []).forEach((t) => {
+      const label = TAG_LABELS[t] || t;
+      if (label && !bits.includes(label.toLowerCase())) bits.push(label.toLowerCase());
+    });
+    return bits.join(" · ");
+  };
+
+  const dishRowHtml = (item, { active = false } = {}) => {
+    const src = asset(item.image);
+    const tags = (item.tags || []).join(",");
+    const popular = item.popular ? "true" : "false";
+    const pos = item.position || "center center";
+    const posM = item.positionMobile || pos;
+    const proteins = proteinLine(item);
+    const label = `${item.en}${item.price ? ` · ${item.price}` : ""}`;
+    return `<li class="menu-list-item${active ? " is-active" : ""}" role="option" tabindex="${active ? "0" : "-1"}"
+      data-id="${esc(item.id)}"
+      data-category="${esc(item.category)}" data-image="${esc(src)}"
+      data-position="${esc(pos)}"
+      data-position-mobile="${esc(posM)}"
+      data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
+      data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
+      data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
+      data-popular="${popular}" aria-selected="${active ? "true" : "false"}"
+      aria-label="${esc(label)}">
+      <span class="list-cat">${esc(item.catLabel || "")}</span>
+      <span class="list-en">${esc(item.en)}</span>
+      <span class="list-price">${esc(item.price)}</span>
+      <span class="list-cn" lang="zh-Hans">${esc(item.cn)}</span>
+      ${proteins ? `<span class="list-proteins">${esc(proteins)}</span>` : ""}
+      <span class="list-desc">${esc(item.desc)}</span>
+    </li>`;
+  };
+
   /* ── Render menu + story + schema from single data source ── */
   const renderMenuDom = () => {
-    const rail = $("#menuList");
     const list = $("#menuListView");
-    if (!rail || !list) return;
-    rail.innerHTML = Z.MENU_ITEMS.map((item, i) => {
-      const active = i === 0 ? " is-active" : "";
-      const sel = i === 0 ? "true" : "false";
-      const thumb = asset(item.image, { thumb: true });
-      const full = asset(item.image);
-      const tags = (item.tags || []).join(",");
-      const popular = item.popular ? "true" : "false";
-      const pos = item.position || "center center";
-      const posM = item.positionMobile || pos;
-      /* Short rail name for SR; spotlight carries full name + price visually */
-      const label = `${item.rail || item.en}${item.price ? ` · ${item.price}` : ""}`;
-      return `<li role="option" class="menu-rail-item${active}" tabindex="0"
-        data-id="${esc(item.id)}"
-        data-category="${esc(item.category)}" data-image="${esc(full)}"
-        data-position="${esc(pos)}"
-        data-position-mobile="${esc(posM)}"
-        data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
-        data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
-        data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
-        data-popular="${popular}" aria-selected="${sel}"
-        aria-label="${esc(label)}">
-        <img src="${esc(thumb)}" alt="" width="120" height="120" loading="lazy" decoding="async" />
-      </li>`;
-    }).join("");
-    list.innerHTML = Z.MENU_ITEMS.map((item, i) => {
-      const src = asset(item.image);
-      const active = i === 0 ? " is-active" : "";
-      const sel = i === 0 ? "true" : "false";
-      const tags = (item.tags || []).join(",");
-      const popular = item.popular ? "true" : "false";
-      const markBits = marksHtml(item);
-      const pos = item.position || "center center";
-      const posM = item.positionMobile || pos;
-      return `<li class="menu-list-item${active}" role="option" tabindex="0"
-        data-id="${esc(item.id)}"
-        data-category="${esc(item.category)}" data-image="${esc(src)}"
-        data-position="${esc(pos)}"
-        data-position-mobile="${esc(posM)}"
-        data-cn="${esc(item.cn)}" data-en="${esc(item.en)}"
-        data-desc="${esc(item.desc)}" data-price="${esc(item.price)}"
-        data-cat-label="${esc(item.catLabel)}" data-tags="${esc(tags)}"
-        data-popular="${popular}" aria-selected="${sel}">
-        <span class="list-en">${esc(item.en)}</span>
-        <span class="list-cn" lang="zh-Hans">${esc(item.cn)}</span>
-        <span class="list-price">${esc(item.price)}</span>
-        <span class="list-desc">${esc(item.desc)}</span>
-        ${markBits ? `<span class="list-marks">${markBits}</span>` : ""}
-      </li>`;
-    }).join("");
-    // seed walls + spotlight from first dish
-    const first = Z.MENU_ITEMS[0];
-    if (first) {
-      const src = asset(first.image);
+    if (!list) return;
+
+    // Group by category when showing all (ledger section kickers)
+    const order = ["classic", "seasonal", "plant"];
+    const byCat = new Map(order.map((k) => [k, []]));
+    Z.MENU_ITEMS.forEach((item) => {
+      const k = item.category || "classic";
+      if (!byCat.has(k)) byCat.set(k, []);
+      byCat.get(k).push(item);
+    });
+
+    let first = true;
+    const chunks = [];
+    order.forEach((cat) => {
+      const items = byCat.get(cat) || [];
+      if (!items.length) return;
+      const label = items[0].catLabel || cat;
+      chunks.push(
+        `<li class="menu-list-group" role="presentation" data-group="${esc(cat)}">
+          <span class="menu-list-group-label">${esc(label)}</span>
+        </li>`
+      );
+      items.forEach((item) => {
+        chunks.push(dishRowHtml(item, { active: first }));
+        first = false;
+      });
+    });
+    list.innerHTML = chunks.join("");
+
+    const seedItem = Z.MENU_ITEMS[0];
+    if (seedItem) {
+      const src = asset(seedItem.image);
       const a = $("#wallImgA");
       const b = $("#wallImgB");
       if (a) a.src = src;
       if (b) b.src = src;
-      // Framing applied after menu runtime mounts (frameMenuWall)
-      const set = (id, v) => {
-        const el = $(id);
-        if (el) el.textContent = v;
-      };
-      set("#featuredCat", first.catLabel);
-      set("#featuredEn", first.en);
-      set("#featuredCn", first.cn);
-      set("#featuredDesc", first.desc);
-      set("#featuredPrice", first.price);
-      paintFeaturedMarks(first);
-      // Stash seed focal for first selectDish / setWall
       window.__zheMenuSeed = {
         image: src,
-        position: first.position || "center center",
+        position: seedItem.position || "center center",
         positionMobile:
-          first.positionMobile || first.position || "center center",
+          seedItem.positionMobile || seedItem.position || "center center",
       };
     }
   };
@@ -1003,7 +1006,7 @@
   const resetNestedScroll = (root) => {
     if (!root) return;
     const nodes = root.querySelectorAll(
-      ".stage, .visit-spotlight, .menu-list-view, .menu-rail"
+      ".stage, .visit-spotlight, .menu-ledger, .menu-list-view"
     );
     nodes.forEach((el) => {
       if (el.scrollTop) el.scrollTop = 0;
@@ -1766,20 +1769,13 @@
     bindStoryObserver();
   })();
 
-  /* ── Menu carousel (fits locked panel height) ── */
+  /* ── Menu ledger + wall (hybrid list) ── */
   const filterBtns = $$(".filter-btn");
-  let railItems = $$(".menu-rail-item");
   const wallA = $("#wallImgA");
   const wallB = $("#wallImgB");
-  const featuredCat = $("#featuredCat");
-  const featuredCn = $("#featuredCn");
-  const featuredEn = $("#featuredEn");
-  const featuredDesc = $("#featuredDesc");
-  const featuredPrice = $("#featuredPrice");
-  const menuFeatured = $("#menuFeatured");
   const menuSection = $("#menu");
-  const menuViewBtns = $$(".menu-view-btn");
-  const menuListView = $(".menu-list-view");
+  const menuListView = $("#menuListView");
+  const menuLedger = $(".menu-ledger");
 
   let activeLayer = wallA;
   let idleLayer = wallB;
@@ -1788,12 +1784,7 @@
   let category = "all";
   let index = 0;
   let menuInView = false;
-  let autoTimer = null;
-  let userPausedUntil = 0;
-  let listViewOn = Boolean(menuSection?.classList.contains("is-list-view"));
-  let toneBeforeList = null;
-  const AUTO_MS = 3800;
-  const USER_PAUSE_MS = 9000;
+  let listItems = [];
   const preloadCache = new Map();
 
   const preload = (src) => {
@@ -1808,33 +1799,18 @@
     return p;
   };
 
-  const refreshRailItems = () => {
-    railItems = $$(".menu-rail-item");
-    // Only warm the first dish — full preload of every plate crushed mobile LCP
-    const first = railItems[0];
+  const refreshListItems = () => {
+    listItems = menuListView
+      ? $$(".menu-list-item", menuListView)
+      : [];
+    const first = listItems.find((el) => !el.classList.contains("is-hidden"));
     if (first?.dataset.image) preload(first.dataset.image);
   };
-  refreshRailItems();
+  refreshListItems();
 
   const visibleItems = () =>
-    category === "all"
-      ? railItems.slice()
-      : railItems.filter((item) => item.dataset.category === category);
+    listItems.filter((item) => !item.classList.contains("is-hidden"));
 
-  /** Announce dish only after deliberate user pick — not auto-rotate */
-  const announceFeatured = () => {
-    if (!menuFeatured) return;
-    menuFeatured.setAttribute("aria-live", "polite");
-    window.clearTimeout(announceFeatured._t);
-    announceFeatured._t = window.setTimeout(() => {
-      menuFeatured.removeAttribute("aria-live");
-    }, 1500);
-  };
-
-  /**
-   * Wall geometry (scale / origin) is CSS-only and identical in photo + list.
-   * JS only sets object-position per dish — never transform, or List/Photos jumps.
-   */
   const menuMobileMq = window.matchMedia("(max-width: 768px)");
   const isMenuMobile = () => menuMobileMq.matches;
 
@@ -1844,7 +1820,6 @@
     const pos =
       (mobile && positionMobile) || position || "center center";
     img.style.objectPosition = pos;
-    /* Guard: never leave transform-based crops (List/Photos must not jump) */
     img.style.removeProperty("transform");
     img.style.removeProperty("transform-origin");
   };
@@ -1858,8 +1833,7 @@
     if (src === currentSrc) {
       frameMenuWall(activeLayer, frame);
       frameMenuWall(idleLayer, frame);
-      // List mode keeps forced dark chrome — don't re-sample luminance thrash
-      if (!listViewOn && typeof window.__zheUpdateMenuTone === "function") {
+      if (typeof window.__zheUpdateMenuTone === "function") {
         window.__zheUpdateMenuTone();
       }
       return;
@@ -1868,7 +1842,6 @@
     await preload(src);
     if (gen !== previewGen) return;
 
-    /* Frame BOTH layers to the same crop BEFORE crossfade — no size flip */
     idleLayer.src = src;
     frameMenuWall(idleLayer, frame);
     frameMenuWall(activeLayer, frame);
@@ -1879,11 +1852,7 @@
     activeLayer = idleLayer;
     idleLayer = tmp;
     currentSrc = src;
-    if (listViewOn) {
-      // Quiet list crossfade: hold dark reading chrome (no light/dark flip mid-list)
-      menuSection?.setAttribute("data-tone", "dark");
-    } else if (typeof window.__zheUpdateMenuTone === "function") {
-      // Wait a frame so the active layer is painted
+    if (typeof window.__zheUpdateMenuTone === "function") {
       requestAnimationFrame(() => window.__zheUpdateMenuTone());
     }
   };
@@ -1894,192 +1863,37 @@
       el?.dataset?.positionMobile || el?.dataset?.position || "center center",
   });
 
-  const menuRail = $("#menuList");
-  let railProgrammatic = false;
-
-  /** Center a rail item; flags programmatic scroll so snap-sync doesn't re-fire */
-  const scrollRailToItem = (item) => {
-    const rail = item?.closest(".menu-rail") || menuRail;
-    if (!rail || !item) return;
-    railProgrammatic = true;
-    const railRect = rail.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
-    const delta =
-      itemRect.left + itemRect.width / 2 - (railRect.left + railRect.width / 2);
-    rail.scrollBy({
-      left: delta,
-      behavior: reduced ? "auto" : "smooth",
-    });
-    window.setTimeout(() => {
-      railProgrammatic = false;
-    }, reduced ? 50 : 420);
-  };
-
-  const selectDish = (item, { scrollRail = true } = {}) => {
+  const selectDish = (item, { scrollIntoView = false } = {}) => {
     if (!item) return;
     const pool = visibleItems();
     index = Math.max(0, pool.indexOf(item));
 
-    railItems.forEach((el) => {
+    listItems.forEach((el) => {
       const on = el === item;
       el.classList.toggle("is-active", on);
       el.setAttribute("aria-selected", String(on));
+      el.tabIndex = on ? 0 : -1;
     });
 
-    // Sync list-view active state if present
-    if (menuListView) {
-      $$(".menu-list-item", menuListView).forEach((el) => {
-        const match =
-          el.dataset.cn === item.dataset.cn ||
-          el.dataset.image === item.dataset.image ||
-          el.dataset.en === item.dataset.en;
-        el.classList.toggle("is-active", match);
-        el.setAttribute("aria-selected", String(match));
-      });
-    }
-
-    if (featuredCat) featuredCat.textContent = item.dataset.catLabel || "";
-    if (featuredEn) featuredEn.textContent = item.dataset.en || "";
-    if (featuredCn) featuredCn.textContent = item.dataset.cn || "";
-    if (featuredDesc) featuredDesc.textContent = item.dataset.desc || "";
-    if (featuredPrice) featuredPrice.textContent = item.dataset.price || "";
-    paintFeaturedMarks(item);
-
-    if (menuFeatured) {
-      const en = item.dataset.en || "";
-      const cn = item.dataset.cn || "";
-      const price = item.dataset.price || "";
-      const parts = [en, cn, price].filter(Boolean);
-      menuFeatured.setAttribute("aria-label", parts.join(" · "));
-    }
-
-    // Collapse expanded description when switching dishes
-    featuredDesc?.closest(".menu-spotlight-copy")?.classList.remove("is-expanded");
-
-    // Always update wall; list mode uses a slow CSS crossfade (no Ken Burns)
     setWall(item.dataset.image, framingFromEl(item));
-    // Only scroll the horizontal rail in photo mode — never the page
-    if (!listViewOn && scrollRail && menuInView) scrollRailToItem(item);
-  };
 
-  const selectDishUser = (item, opts) => {
-    selectDish(item, opts);
-    announceFeatured();
-  };
-
-  const stopAutoRotate = () => {
-    if (autoTimer) {
-      clearInterval(autoTimer);
-      autoTimer = null;
-    }
-  };
-
-  const canAutoRotate = () =>
-    category === "all" && menuInView && !reduced && !listViewOn;
-
-  const startAutoRotate = () => {
-    stopAutoRotate();
-    if (!canAutoRotate()) return;
-
-    autoTimer = window.setInterval(() => {
-      if (!canAutoRotate()) return;
-      if (Date.now() < userPausedUntil) return;
-      step(1, { fromAuto: true });
-    }, AUTO_MS);
-  };
-
-  const pauseAutoBriefly = () => {
-    userPausedUntil = Date.now() + USER_PAUSE_MS;
-  };
-
-  const syncListToggleUi = () => {
-    menuViewBtns.forEach((btn) => {
-      const isList = btn.dataset.view === "list";
-      const active = isList ? listViewOn : !listViewOn;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", String(active));
-    });
-  };
-
-  const setListView = (on) => {
-    if (!menuSection) return;
-    const next = Boolean(on);
-    if (next === listViewOn) {
-      syncListToggleUi();
-      return;
-    }
-    listViewOn = next;
-    menuSection.classList.toggle("is-list-view", listViewOn);
-    if (menuListView) {
-      if (listViewOn) menuListView.removeAttribute("hidden");
-      else menuListView.setAttribute("hidden", "");
-    }
-    syncListToggleUi();
-    track("toggle_list_view", { mode: listViewOn ? "list" : "photos" });
-    if (listViewOn) {
-      stopAutoRotate();
-      // Reading mode: force dark chrome — do NOT reframe/reload wall
-      toneBeforeList = menuSection.getAttribute("data-tone");
-      menuSection.setAttribute("data-tone", "dark");
-    } else {
-      if (toneBeforeList) menuSection.setAttribute("data-tone", toneBeforeList);
-      else if (typeof window.__zheUpdateMenuTone === "function") {
-        requestAnimationFrame(() => window.__zheUpdateMenuTone());
+    if (scrollIntoView && menuLedger) {
+      const ledgerRect = menuLedger.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      if (
+        itemRect.top < ledgerRect.top + 8 ||
+        itemRect.bottom > ledgerRect.bottom - 8
+      ) {
+        item.scrollIntoView({
+          block: "nearest",
+          behavior: reduced ? "auto" : "smooth",
+        });
       }
-      toneBeforeList = null;
-      if (category === "all") startAutoRotate();
     }
   };
 
-  /**
-   * Size the dish strip to the visible thumbs:
-   *  · few items → compact centered row (no empty stretch / scroll)
-   *  · many items → full width + horizontal scroll
-   */
-  const menuCarousel = $("#menuCarousel");
-  let railLayoutRaf = 0;
-  const syncMenuRailLayout = () => {
-    if (!menuCarousel || !menuRail) return;
-    if (railLayoutRaf) cancelAnimationFrame(railLayoutRaf);
-    railLayoutRaf = requestAnimationFrame(() => {
-      railLayoutRaf = 0;
-      const visible = railItems.filter(
-        (el) => !el.classList.contains("is-hidden")
-      );
-      const n = visible.length;
-      menuCarousel.dataset.items = String(n);
-
-      // Show chevrons before measuring so their width is real (n>1)
-      const showChev = n > 1;
-      if (menuPrev) menuPrev.hidden = !showChev;
-      if (menuNext) menuNext.hidden = !showChev;
-      void menuCarousel.offsetWidth;
-
-      // Measure real laid-out thumbs (never parseFloat("5.35rem"))
-      const sample = visible[0];
-      const thumbW = sample?.getBoundingClientRect().width || 116;
-      const railStyles = getComputedStyle(menuRail);
-      const gap = parseFloat(railStyles.columnGap || railStyles.gap) || 8;
-      const padL = parseFloat(railStyles.paddingLeft) || 0;
-      const padR = parseFloat(railStyles.paddingRight) || 0;
-      const contentW =
-        n > 0 ? n * thumbW + Math.max(0, n - 1) * gap + padL + padR : 0;
-
-      const chevW =
-        (showChev &&
-          (menuPrev?.getBoundingClientRect().width ||
-            menuNext?.getBoundingClientRect().width)) ||
-        38;
-      const colGap = parseFloat(getComputedStyle(menuCarousel).columnGap) || 4;
-      const chromeW = showChev ? chevW * 2 + colGap * 2 : 0;
-      const stage = menuCarousel.parentElement;
-      const stageW = stage?.clientWidth || menuCarousel.clientWidth || 0;
-      const maxInner = Math.max(0, stageW - chromeW - 4);
-
-      const overflows = n > 1 && contentW > maxInner + 1;
-      menuCarousel.classList.toggle("is-overflowing", overflows);
-      menuCarousel.classList.toggle("is-compact", !overflows && n > 0);
-    });
+  const selectDishUser = (item) => {
+    selectDish(item, { scrollIntoView: true });
   };
 
   const applyCategory = (key, { selectFirst = true } = {}) => {
@@ -2090,235 +1904,96 @@
       btn.setAttribute("aria-pressed", String(active));
     });
 
-    railItems.forEach((item) => {
-      const show = key === "all" || item.dataset.category === key;
-      item.classList.toggle("is-hidden", !show);
-    });
-
-    // Keep list-view filters in sync with the rail
+    // Show/hide group headers + rows
     if (menuListView) {
-      $$(".menu-list-item", menuListView).forEach((item) => {
+      $$(".menu-list-group", menuListView).forEach((g) => {
+        const cat = g.dataset.group;
+        const show = key === "all" || cat === key;
+        g.classList.toggle("is-hidden", !show);
+        g.hidden = !show;
+      });
+      listItems.forEach((item) => {
         const show = key === "all" || item.dataset.category === key;
         item.classList.toggle("is-hidden", !show);
+        if (!show) {
+          item.classList.remove("is-active");
+          item.setAttribute("aria-selected", "false");
+          item.tabIndex = -1;
+        }
       });
     }
 
     if (selectFirst) {
       const pool = visibleItems();
       index = 0;
-      // Avoid rail.scrollIntoView-style page jumps when menu is off-screen
-      if (pool[0]) selectDish(pool[0], { scrollRail: menuInView });
+      if (pool[0]) selectDish(pool[0]);
     }
-
-    if (key === "all" && !listViewOn) startAutoRotate();
-    else stopAutoRotate();
-
-    syncMenuRailLayout();
   };
 
-  const step = (dir, { fromAuto = false } = {}) => {
+  const step = (dir) => {
     const pool = visibleItems();
     if (!pool.length) return;
     index = (index + dir + pool.length) % pool.length;
-    selectDish(pool[index], { scrollRail: true });
-    if (!fromAuto) {
-      pauseAutoBriefly();
-      announceFeatured();
-    }
+    selectDishUser(pool[index]);
   };
-
-  /* ── Carousel: prev/next, rail snap-select, swipe on photo ── */
-  const menuPrev = $("#menuPrev");
-  const menuNext = $("#menuNext");
-
-  menuPrev?.addEventListener("click", () => {
-    pauseAutoBriefly();
-    step(-1);
-  });
-  menuNext?.addEventListener("click", () => {
-    pauseAutoBriefly();
-    step(1);
-  });
-
-  // After a free swipe on the thumbnail strip, select the dish nearest center
-  let railScrollTimer = 0;
-  menuRail?.addEventListener(
-    "scroll",
-    () => {
-      if (railProgrammatic || listViewOn || !menuInView) return;
-      clearTimeout(railScrollTimer);
-      railScrollTimer = window.setTimeout(() => {
-        const railRect = menuRail.getBoundingClientRect();
-        const center = railRect.left + railRect.width / 2;
-        let best = null;
-        let bestDist = Infinity;
-        visibleItems().forEach((item) => {
-          const r = item.getBoundingClientRect();
-          const c = r.left + r.width / 2;
-          const d = Math.abs(c - center);
-          if (d < bestDist) {
-            bestDist = d;
-            best = item;
-          }
-        });
-        if (best && !best.classList.contains("is-active")) {
-          pauseAutoBriefly();
-          selectDish(best, { scrollRail: false });
-        }
-      }, 90);
-    },
-    { passive: true }
-  );
-
-  // Same section-level capture as Origins so swipe works across the plate.
-  // Only ignore real controls; overflowing rail keeps native pan-x (see below).
-  bindCarouselGestures(menuSection, {
-    onPrev: () => {
-      pauseAutoBriefly();
-      step(-1);
-    },
-    onNext: () => {
-      pauseAutoBriefly();
-      step(1);
-    },
-    isEnabled: () => !listViewOn,
-    shouldIgnore: (t) => {
-      if (
-        t.closest?.(
-          "button, a, .nav, .menu-list-view, .filter-btn, .menu-view-btn, .menu-carousel-btn, input, select, textarea"
-        )
-      ) {
-        return true;
-      }
-      // Long overflowing strip: let the user scrub thumbs without stepping the wall
-      if (
-        t.closest?.(".menu-rail-wrap") &&
-        menuCarousel?.classList.contains("is-overflowing")
-      ) {
-        return true;
-      }
-      return false;
-    },
-  });
-
-  // Trackpad / mouse wheel: horizontal intent over menu carousel
-  menuRail?.addEventListener(
-    "wheel",
-    (e) => {
-      if (listViewOn) return;
-      const mostlyHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-      if (mostlyHorizontal) {
-        // native horizontal scroll handles the rail
-        pauseAutoBriefly();
-        return;
-      }
-      // Shift+wheel or strong vertical on rail → convert to dish step when over rail edge
-      if (e.shiftKey && Math.abs(e.deltaY) > 8) {
-        e.preventDefault();
-        pauseAutoBriefly();
-        step(e.deltaY > 0 ? 1 : -1);
-      }
-    },
-    { passive: false }
-  );
 
   filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      pauseAutoBriefly();
       const cat = btn.dataset.filter;
       applyCategory(cat);
       track("filter_menu", { category: cat || "all" });
-      // Drop focus from the whole tablist so mobile sticky :focus/:hover can't linger
       filterBtns.forEach((b) => b.blur());
     });
   });
 
-  const pickRailDish = (item) => {
-    if (category !== "all" && item.dataset.category !== category) {
-      applyCategory("all", { selectFirst: false });
-    }
-    pauseAutoBriefly();
-    selectDishUser(item);
-    if (item.dataset.id) track("select_dish", { id: item.dataset.id, view: "rail" });
-  };
-
-  // Event delegation — works after DOM render from data.js
-  menuRail?.addEventListener("click", (e) => {
-    const item = e.target.closest(".menu-rail-item[data-image]");
-    if (!item || !menuRail.contains(item)) return;
-    pickRailDish(item);
-  });
-  menuRail?.addEventListener("keydown", (e) => {
-    const item = e.target.closest(".menu-rail-item[data-image]");
-    if (!item || !menuRail.contains(item)) return;
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      pickRailDish(item);
-    }
-    if (e.key === "ArrowRight") {
-      e.preventDefault();
-      step(1);
-    }
-    if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      step(-1);
-    }
-  });
-
   if (menuListView) {
-    const pickListDish = (item) => {
-      if (
-        category !== "all" &&
-        item.dataset.category &&
-        item.dataset.category !== category
-      ) {
-        applyCategory("all", { selectFirst: false });
-      }
-      pauseAutoBriefly();
-      refreshRailItems();
-      const railMatch =
-        railItems.find(
-          (r) =>
-            r.dataset.image === item.dataset.image ||
-            (item.dataset.cn && r.dataset.cn === item.dataset.cn)
-        ) || item;
-      selectDishUser(railMatch);
-      if (item.dataset.id) {
-        track("select_dish", { id: item.dataset.id, view: "list" });
-      }
-    };
-
     menuListView.addEventListener("click", (e) => {
       const item = e.target.closest(".menu-list-item[data-image]");
-      if (!item) return;
-      pickListDish(item);
+      if (!item || item.classList.contains("is-hidden")) return;
+      selectDishUser(item);
+      if (item.dataset.id) {
+        track("select_dish", { id: item.dataset.id, view: "ledger" });
+      }
     });
     menuListView.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter" && e.key !== " ") return;
       const item = e.target.closest(".menu-list-item[data-image]");
       if (!item) return;
-      e.preventDefault();
-      pickListDish(item);
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectDishUser(item);
+        if (item.dataset.id) {
+          track("select_dish", { id: item.dataset.id, view: "ledger" });
+        }
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        step(1);
+        visibleItems()[index]?.focus();
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        step(-1);
+        visibleItems()[index]?.focus();
+      }
     });
   }
 
-  // Photo view | List view segment
-  menuViewBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      setListView(btn.dataset.view === "list");
-    });
+  // Wall swipe still steps dishes (ignore ledger controls)
+  bindCarouselGestures(menuSection, {
+    onPrev: () => step(-1),
+    onNext: () => step(1),
+    isEnabled: () => true,
+    shouldIgnore: (t) =>
+      Boolean(
+        t.closest?.(
+          "button, a, .nav, .menu-ledger, .menu-list-view, .filter-btn, input, select, textarea"
+        )
+      ),
   });
-  // Sync list hidden with initial class state
-  if (menuListView) {
-    if (listViewOn) menuListView.removeAttribute("hidden");
-    else menuListView.setAttribute("hidden", "");
-  }
-  syncListToggleUi();
 
-  // Apply focal framing for the current dish (seed + mobile/desktop switch)
   const reframeActiveDish = () => {
     const pool = visibleItems();
-    const current = pool[index] || pool[0] || railItems[0];
+    const current = pool[index] || pool[0];
     if (current?.dataset.image) {
       setWall(current.dataset.image, framingFromEl(current));
       return;
@@ -2332,28 +2007,19 @@
     }
   };
   reframeActiveDish();
-  /* Breakpoint change only — never on List/Photos toggle */
   if (typeof menuMobileMq.addEventListener === "function") {
     menuMobileMq.addEventListener("change", reframeActiveDish);
   } else if (typeof menuMobileMq.addListener === "function") {
     menuMobileMq.addListener(reframeActiveDish);
   }
 
-  // Expand description (mobile clamp only — desktop shows full copy)
-  const expandTarget = featuredDesc?.closest(".menu-spotlight-copy");
-  expandTarget?.addEventListener("click", () => {
-    if (!window.matchMedia || !window.matchMedia("(max-width: 768px)").matches) {
-      return;
-    }
-    expandTarget.classList.toggle("is-expanded");
-  });
-
-  // One keyboard router for Story + Menu carousels (no double-step mid-snap)
   window.__zheMenuCarouselStep = step;
   window.addEventListener("keydown", (e) => {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     const tag = (e.target && e.target.tagName) || "";
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    // Don't steal arrows while focus is inside the ledger list
+    if (e.target?.closest?.(".menu-list-view")) return;
     const active = getActivePanel();
     const dir = e.key === "ArrowRight" ? 1 : -1;
     if (active?.id === "story" && typeof window.__zheStoryCarouselStep === "function") {
@@ -2361,17 +2027,12 @@
       window.__zheStoryCarouselStep(dir);
       return;
     }
-    if (
-      active?.id === "menu" &&
-      !listViewOn &&
-      typeof window.__zheMenuCarouselStep === "function"
-    ) {
+    if (active?.id === "menu" && typeof window.__zheMenuCarouselStep === "function") {
       e.preventDefault();
       window.__zheMenuCarouselStep(dir);
     }
   });
 
-  // Auto-rotate only while menu is on screen (rebind on breakpoint change)
   let menuObs = null;
   const bindMenuObserver = () => {
     if (!menuSection || !("IntersectionObserver" in window)) {
@@ -2382,8 +2043,6 @@
     menuObs = new IntersectionObserver(
       ([entry]) => {
         menuInView = entry.isIntersecting && entry.intersectionRatio > 0.25;
-        if (menuInView && canAutoRotate()) startAutoRotate();
-        else stopAutoRotate();
       },
       {
         root: isMobileChrome() && siteMain ? siteMain : null,
@@ -2394,24 +2053,7 @@
   };
   bindMenuObserver();
 
-  // Pause when tab is hidden
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopAutoRotate();
-    else if (canAutoRotate()) startAutoRotate();
-  });
-
-  // Init menu without scrolling the page
   applyCategory("all");
-  // After layout / images, remeasure rail fit (filters already call this)
-  window.addEventListener(
-    "resize",
-    () => {
-      syncMenuRailLayout();
-    },
-    { passive: true }
-  );
-  // Second pass once thumbs have laid out
-  requestAnimationFrame(() => syncMenuRailLayout());
 
   /* ── In-page section navigation (nav links, logo, hash) ── */
   $$('a[href^="#"]').forEach((a) => {
@@ -2919,8 +2561,8 @@
 
     const updateMenuTone = async () => {
       const panel = $("#menu");
-      // List mode keeps forced dark chrome — don't re-sample photo luminance
-      if (panel?.classList.contains("is-list-view")) return;
+      // Ledger always sits on a reading scrim — keep dark chrome for scannable type
+      if (panel) panel.setAttribute("data-tone", "dark");
       const img =
         panel?.querySelector(".menu-wall-img.is-active") ||
         $("#wallImgA") ||
@@ -2928,14 +2570,18 @@
       const photoBox = $("#menuWall") || panel;
       const ready = await ensureImage(img);
       if (!panel || !ready || !photoBox) return;
-      const texts = visibleCopy(panel, [
-        ".menu-head-title",
-        ".menu-filters",
-        ".menu-tools",
-        ".menu-spotlight-copy",
-        ".menu-note",
-      ]);
-      applyTone(panel, sampleUnderText(ready, photoBox, texts));
+      // Still sample under head/ledger so we could refine later; force dark for now
+      void sampleUnderText(
+        ready,
+        photoBox,
+        visibleCopy(panel, [
+          ".menu-head-title",
+          ".menu-filters",
+          ".menu-ledger",
+          ".menu-note",
+        ])
+      );
+      applyTone(panel, 0.15);
     };
 
     const updateVisitTone = async () => {
