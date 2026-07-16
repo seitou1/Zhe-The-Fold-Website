@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784186800");
+  background-image: url("assets/paper-texture.webp?v=1784187600");
   background-size: cover;
 }
 
@@ -2625,24 +2625,25 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   text-shadow: none;
 }
 
-/* Ledger column — floats over plate; type-shadow carries legibility */
+/* Ledger column — left edge (scan path); plate opens to the right */
 .menu-ledger {
   flex: 1 1 auto;
   min-height: 0;
   width: min(26.5rem, 100%);
   max-width: 100%;
-  margin-left: auto;
+  margin-left: 0;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  padding: 0.35rem 0.15rem 0.25rem 1.1rem;
-  /* Whisper of hold on the right — no slab */
+  padding: 0.35rem 1rem 0.25rem 0.15rem;
+  /* Soft hold on the left under type — no slab */
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    rgba(8, 5, 4, 0.12) 28%,
-    rgba(8, 5, 4, 0.28) 70%,
-    rgba(8, 5, 4, 0.36) 100%
+    rgba(8, 5, 4, 0.36) 0%,
+    rgba(8, 5, 4, 0.22) 42%,
+    rgba(8, 5, 4, 0.08) 72%,
+    transparent 100%
   );
   border-radius: 0;
 }
@@ -2944,17 +2945,24 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   line-height: 1.45;
 }
 
-/* Desktop: light right hold for ledger column; base panel-veil does the rest */
+/* Desktop: light left hold for ledger; plate opens right */
 .menu-wall-veil {
   background:
     linear-gradient(
       to right,
-      transparent 0%,
-      transparent 52%,
-      rgba(8, 5, 4, 0.14) 72%,
-      rgba(8, 5, 4, 0.32) 100%
+      rgba(8, 5, 4, 0.3) 0%,
+      rgba(8, 5, 4, 0.12) 28%,
+      transparent 48%,
+      transparent 100%
     ),
     var(--panel-veil);
+}
+
+/* Wide: nudge plate into the open right half beside the list */
+@media (min-width: 901px) {
+  .menu {
+    --menu-wall-origin: 62% center;
+  }
 }
 
 @media (max-width: 900px) {
