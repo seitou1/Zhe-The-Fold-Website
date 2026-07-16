@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784190500");
+  background-image: url("assets/paper-texture.webp?v=1784192000");
   background-size: cover;
 }
 
@@ -2627,7 +2627,8 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
 
 /* Ledger column — left edge (scan path); plate opens to the right */
 .menu-ledger {
-  flex: 1 1 auto;
+  /* flex-basis 0 so overflow child gets a real height (not content-sized) */
+  flex: 1 1 0%;
   min-height: 0;
   width: min(26.5rem, 100%);
   max-width: 100%;
@@ -2637,6 +2638,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.35rem 1rem 0.25rem 0.15rem;
+  overflow: hidden;
   /* No side band — type-shadow holds the list over open plate */
   background: transparent;
   border-radius: 0;
@@ -2646,12 +2648,16 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: flex;
   flex-direction: column;
   gap: 0;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-height: 0;
+  max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
+  /* Nested scroller owns vertical pan; horizontal dish swipe is on the wall */
+  touch-action: pan-y;
   list-style: none;
   margin: 0;
   padding: 0.1rem 0.2rem 0.35rem 0;
@@ -3085,20 +3091,23 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     width: 100%;
     margin-left: 0;
     margin-top: 0;
-    flex: 1 1 auto;
+    flex: 1 1 0%;
     height: auto;
     max-height: none;
     min-height: 0;
+    overflow: hidden;
     padding: 0.35rem 0.2rem 0.2rem;
     background: transparent;
   }
 
   .menu-list-view {
-    flex: 1 1 auto;
+    flex: 1 1 0%;
     min-height: 0;
+    max-height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
+    touch-action: pan-y;
     padding-right: 0.15rem;
   }
 

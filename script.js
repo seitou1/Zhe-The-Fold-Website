@@ -1055,6 +1055,10 @@
           if (drift > 2) {
             scrollRootTo(sectionScrollY(target), "auto");
           }
+          // Menu list needs a post-snap reflow or nested pan-y stays dead on iOS
+          if (target.id === "menu" && typeof window.__zhePrimeMenuListScroll === "function") {
+            window.__zhePrimeMenuListScroll();
+          }
           if (gen === navGen) navInFlight = false;
         });
       });
@@ -1981,11 +1985,17 @@
     });
   }
 
-  // Wall swipe still steps dishes (ignore ledger controls)
-  bindCarouselGestures(menuSection, {
+  /*
+   * Dish swipe lives on the wall only — never on #menu as a whole.
+   * Section-level non-passive touchmove is an ancestor of the ledger and
+   * breaks nested list scroll on iOS the first time you land on Menu
+   * (works after leave/return once the scroller is “primed”).
+   */
+  const menuWallEl = $("#menuWall") || $(".menu-wall", menuSection);
+  bindCarouselGestures(menuWallEl || menuSection, {
     onPrev: () => step(-1),
     onNext: () => step(1),
-    isEnabled: () => true,
+    isEnabled: () => menuInView,
     shouldIgnore: (t) =>
       Boolean(
         t.closest?.(
@@ -1993,6 +2003,18 @@
         )
       ),
   });
+
+  /** Force list overflow to recompute after snap nav (flex + iOS) */
+  const primeMenuListScroll = () => {
+    if (!menuListView) return;
+    const keep = menuListView.scrollTop;
+    // Toggle overflow to re-establish the scrollport after section snap
+    menuListView.style.overflowY = "hidden";
+    void menuListView.offsetHeight;
+    menuListView.style.overflowY = "";
+    menuListView.scrollTop = keep;
+  };
+  window.__zhePrimeMenuListScroll = primeMenuListScroll;
 
   const reframeActiveDish = () => {
     const pool = visibleItems();
@@ -2040,12 +2062,21 @@
   const bindMenuObserver = () => {
     if (!menuSection || !("IntersectionObserver" in window)) {
       menuInView = true;
+      primeMenuListScroll();
       return;
     }
     menuObs?.disconnect();
     menuObs = new IntersectionObserver(
       ([entry]) => {
+        const was = menuInView;
         menuInView = entry.isIntersecting && entry.intersectionRatio > 0.25;
+        // First enter (or re-enter): re-prime nested list scroll after snap layout
+        if (menuInView && !was) {
+          requestAnimationFrame(() => {
+            primeMenuListScroll();
+            requestAnimationFrame(primeMenuListScroll);
+          });
+        }
       },
       {
         root: isMobileChrome() && siteMain ? siteMain : null,
