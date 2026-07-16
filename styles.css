@@ -1852,7 +1852,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   z-index: 3;
   opacity: 0.045;
   mix-blend-mode: soft-light;
-  background-image: url("assets/paper-texture.webp?v=1784181000");
+  background-image: url("assets/paper-texture.webp?v=1784184000");
   background-size: cover;
 }
 
@@ -2662,7 +2662,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   text-shadow: none;
 }
 
-/* Ledger column — floats over plate */
+/* Ledger column — floats over plate; type-shadow carries legibility */
 .menu-ledger {
   flex: 1 1 auto;
   min-height: 0;
@@ -2672,14 +2672,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  /* Soft reading band over photo */
   padding: 0.35rem 0.15rem 0.25rem 1.1rem;
+  /* Whisper of hold on the right — no slab */
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(8, 5, 4, 0.42) 12%,
-    rgba(8, 5, 4, 0.72) 38%,
-    rgba(8, 5, 4, 0.82) 100%
+    rgba(8, 5, 4, 0.12) 28%,
+    rgba(8, 5, 4, 0.28) 70%,
+    rgba(8, 5, 4, 0.36) 100%
   );
   border-radius: 0;
 }
@@ -2892,23 +2892,23 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   letter-spacing: var(--type-body-track);
 }
 
-/* Stronger plate scrim under ledger band (desktop) */
+/* Desktop: light right hold for ledger column; base panel-veil does the rest */
 .menu-wall-veil {
   background:
     linear-gradient(
       to right,
       transparent 0%,
-      transparent 42%,
-      rgba(8, 5, 4, 0.35) 62%,
-      rgba(8, 5, 4, 0.72) 100%
+      transparent 52%,
+      rgba(8, 5, 4, 0.14) 72%,
+      rgba(8, 5, 4, 0.32) 100%
     ),
     var(--panel-veil);
 }
 
 @media (max-width: 900px) {
   /*
-   * Phone / narrow: plate owns the top; ledger docks below (~55%).
-   * Stage is a column: head → flexible air (plate) → ledger.
+   * Phone / narrow: head on top, ledger fills remaining stage.
+   * Plate shows through — no half-panel dock, no black slab.
    */
   .menu-stage {
     display: flex;
@@ -2947,19 +2947,13 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .menu-ledger {
     width: 100%;
     margin-left: 0;
-    margin-top: auto;
-    flex: 0 0 auto;
-    height: 55%;
-    max-height: 55%;
-    min-height: 12rem;
-    padding: 0.75rem 0.2rem 0.25rem;
-    background: linear-gradient(
-      to top,
-      rgba(8, 5, 4, 0.94) 0%,
-      rgba(8, 5, 4, 0.88) 42%,
-      rgba(8, 5, 4, 0.55) 78%,
-      rgba(8, 5, 4, 0.2) 100%
-    );
+    margin-top: 0;
+    flex: 1 1 auto;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    padding: 0.35rem 0.2rem 0.2rem;
+    background: transparent;
   }
 
   .menu-list-view {
@@ -2971,15 +2965,9 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     padding-right: 0.15rem;
   }
 
+  /* Rely on shared panel-veil-mobile — no extra bottom mud */
   .menu-wall-veil {
-    background:
-      linear-gradient(
-        to top,
-        rgba(8, 5, 4, 0.82) 0%,
-        rgba(8, 5, 4, 0.35) 38%,
-        transparent 62%
-      ),
-      var(--panel-veil-mobile, var(--panel-veil));
+    background: var(--panel-veil-mobile, var(--panel-veil));
   }
 
   .menu-list-item {
@@ -2991,6 +2979,11 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     column-gap: 0.65rem;
     row-gap: 0.1rem;
     padding: 0.55rem 0.1rem 0.55rem 0.25rem;
+    /* Plate shows through — type holds itself */
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.85),
+      0 2px 14px rgba(0, 0, 0, 0.62),
+      0 0 1px rgba(0, 0, 0, 0.9);
   }
 
   .menu-list-item.is-active {
@@ -3029,12 +3022,7 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   }
 }
 
-@media (max-width: 768px) {
-  .menu-ledger {
-    height: 56%;
-    max-height: 56%;
-  }
-}
+
 
 
 /* ── Visit — storefront is the dish (same stage grammar as Story / Menu) ── */
@@ -3998,15 +3986,14 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
     height: min(44%, 12.5rem);
   }
 
-  /* Menu head is stacked (title + filters/tools) — taller, denser scrim */
+  /* Menu head — soft top hold only (title + filters), not a mud curtain */
   .menu-wall-veil::before {
-    height: min(52%, 16.5rem);
+    height: min(38%, 11rem);
     background: linear-gradient(
       to bottom,
-      rgba(5, 3, 2, 0.88) 0%,
-      rgba(8, 5, 4, 0.68) 32%,
-      rgba(10, 7, 5, 0.38) 58%,
-      rgba(12, 8, 6, 0.12) 78%,
+      rgba(5, 3, 2, 0.55) 0%,
+      rgba(8, 5, 4, 0.28) 42%,
+      rgba(10, 7, 5, 0.08) 72%,
       transparent 100%
     );
   }
@@ -4100,8 +4087,6 @@ body:has(.panel[data-tone="light"]:not(#hero)) .nav.is-past-hero .nav-links a.is
   .visit[data-tone="light"] .visit-wall-veil {
     background: var(--panel-veil-mobile-light);
   }
-
-  /* Phone menu veil: plate on top, ledger scrim from hybrid block */
 
   /* ── Visit mobile — Origins rhythm: head top, photo mid, caption bottom ── */
   .visit {
